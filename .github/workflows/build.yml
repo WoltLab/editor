@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  webpack:
+    name: Webpack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+      - run: npm install
+      - run: npx webpack --mode development
+      - uses: actions/upload-artifact@v3
+        with:
+          name: development_build
+          path: dist/
+          retention-days: 7

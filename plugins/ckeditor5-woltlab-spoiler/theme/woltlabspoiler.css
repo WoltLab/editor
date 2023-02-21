@@ -1,0 +1,43 @@
+/**
+ * @author Alexander Ebert
+ * @copyright 2001-2023 WoltLab GmbH
+ * @license LGPL-2.1-or-later
+ * @since 6.0
+ */
+
+.ck.ck-content .ck-woltlabspoiler {
+  column-gap: 10px;
+  display: grid;
+  grid-template-areas:
+    "label   title"
+    "content content";
+  grid-template-columns: min-content auto;
+  margin-top: var(--ck-spacing-large);
+  padding: 5px 5px 5px 15px;
+  position: relative;
+}
+
+.ck.ck-content .ck-woltlabspoiler::after {
+  border: 5px solid #ccc;
+  border-right-width: 0;
+  bottom: 1px;
+  content: "";
+  left: 1px;
+  position: absolute;
+  top: 1px;
+  width: 5px;
+}
+
+.ck.ck-content .ck-woltlabspoiler::before {
+  content: attr(data-label);
+  color: #999;
+  grid-area: label;
+}
+
+.ck.ck-content .ck-woltlabspoiler__title {
+  grid-area: title;
+}
+
+.ck.ck-content .ck-woltlabspoiler__content {
+  grid-area: content;
+}

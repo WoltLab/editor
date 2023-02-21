@@ -1,0 +1,30 @@
+/**
+ * @author Alexander Ebert
+ * @copyright 2001-2023 WoltLab GmbH
+ * @license LGPL-2.1-or-later
+ * @since 6.0
+ */
+
+.ck.ck-content blockquote {
+  font-style: normal;
+  padding-left: 10px;
+}
+
+.ck.ck-content blockquote > :first-child {
+  margin-top: 10px;
+}
+
+.ck.ck-content blockquote > :last-child {
+  margin-bottom: 10px;
+}
+
+.ck.ck-content blockquote[data-source] > :last-child {
+  margin-bottom: 0;
+}
+
+.ck.ck-content blockquote[data-source]::after {
+  content: " – " attr(data-source);
+  display: block;
+  font-style: italic;
+  margin: 10px 0;
+}

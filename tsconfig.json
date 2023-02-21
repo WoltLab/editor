@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "ES2022",
+    "module": "amd",
+    "outDir": "dist/",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "newLine": "lf"
+  }
+}
