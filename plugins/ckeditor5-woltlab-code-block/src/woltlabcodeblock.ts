@@ -32,7 +32,7 @@ function attributeValueToString(
 }
 
 export class WoltlabCodeBlock extends Plugin {
-  #command: CodeBlockCommand;
+  #command!: CodeBlockCommand;
   #lastView: WoltlabCodeBlockPanelView | undefined = undefined;
 
   static get pluginName() {
