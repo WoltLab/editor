@@ -54,7 +54,9 @@ module.exports = (env, argv) => {
               options: {
                 postcssOptions: styles.getPostCssConfig({
                   themeImporter: {
-                    themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
+                    themePath: require.resolve(
+                      "@ckeditor/ckeditor5-theme-lark"
+                    ),
                   },
                   minify: true,
                 }),
@@ -71,7 +73,7 @@ module.exports = (env, argv) => {
 
     // By default webpack logs warnings if the bundle is bigger than 200kb.
     performance: { hints: false },
-  }
+  };
 
   if (argv.mode === "development") {
     config.devtool = "source-map";

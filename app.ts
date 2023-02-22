@@ -33,7 +33,6 @@ import {
   ImageUploadUI,
 } from "@ckeditor/ckeditor5-image";
 import { Indent } from "@ckeditor/ckeditor5-indent";
-import * as CKEditorInspector from "@ckeditor/ckeditor5-inspector";
 import { Link, LinkImage } from "@ckeditor/ckeditor5-link";
 import { List } from "@ckeditor/ckeditor5-list";
 import { Mention } from "@ckeditor/ckeditor5-mention";
@@ -106,8 +105,7 @@ const defaultConfig: EditorConfig = {
 
 export async function create(
   element: HTMLElement,
-  configuration: EditorConfig,
-  enableDebug: boolean
+  configuration: EditorConfig
 ): Promise<ClassicEditor> {
   configuration = Object.assign(configuration, defaultConfig);
 
@@ -132,10 +130,6 @@ export async function create(
   }
 
   const editor = await ClassicEditor.create(element, configuration);
-
-  if (enableDebug) {
-    CKEditorInspector.attach(editor);
-  }
 
   return editor;
 }
