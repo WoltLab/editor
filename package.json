@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "npx webpack --mode production",
     "dev": "npx webpack --mode development --watch"
   },
   "dependencies": {
