@@ -33,7 +33,7 @@ import {
   ImageUploadUI,
 } from "@ckeditor/ckeditor5-image";
 import { Indent } from "@ckeditor/ckeditor5-indent";
-import CKEditorInspector from "@ckeditor/ckeditor5-inspector";
+import * as CKEditorInspector from "@ckeditor/ckeditor5-inspector";
 import { Link, LinkImage } from "@ckeditor/ckeditor5-link";
 import { List } from "@ckeditor/ckeditor5-list";
 import { Mention } from "@ckeditor/ckeditor5-mention";
