@@ -5,12 +5,7 @@
 const path = require("path");
 const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 
-module.exports = (env, argv) => {
-  let filename = "ckeditor5.min.js";
-  if (argv.mode === "development") {
-    filename = "ckeditor5.debug.js";
-  }
-
+module.exports = (_env, argv) => {
   const config = {
     // https://webpack.js.org/configuration/entry-context/
     entry: "./app.ts",
@@ -18,7 +13,7 @@ module.exports = (env, argv) => {
     // https://webpack.js.org/configuration/output/
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename,
+      filename: "ckeditor5.bundle.js",
       library: "CKEditor5",
       //libraryTarget: 'amd',
     },
