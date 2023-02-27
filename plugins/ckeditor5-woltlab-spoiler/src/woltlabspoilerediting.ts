@@ -130,7 +130,7 @@ export class WoltlabSpoilerEditing extends Plugin {
 
     conversion.for("upcast").add((dispatcher) => {
       dispatcher.on(
-        "element:woltlab-ckeditor-spoiler",
+        "element:woltlab-spoiler",
         (_evt, data, conversionApi) => {
           const {
             consumable,
@@ -153,7 +153,7 @@ export class WoltlabSpoilerEditing extends Plugin {
           const spoilerTitle = writer.createElement("spoilerTitle");
           writer.append(spoilerTitle, spoiler);
 
-          const label = (viewItem.getAttribute("label") || "").trim();
+          const label = (viewItem.getAttribute("data-label") || "").trim();
           writer.appendText(label, spoilerTitle);
 
           const spoilerContent = writer.createElement("spoilerContent");
@@ -200,9 +200,9 @@ export class WoltlabSpoilerEditing extends Plugin {
         }
 
         const spoiler = writer.createContainerElement(
-          "woltlab-ckeditor-spoiler",
+          "woltlab-spoiler",
           {
-            label,
+            "data-label": label,
           }
         );
 
