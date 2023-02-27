@@ -28,8 +28,7 @@
   width: 5px;
 }
 
-.ck.ck-content .ck-woltlabspoiler::before {
-  content: attr(data-label);
+.ck.ck-content .ck-woltlabspoiler__label {
   color: #999;
   grid-area: label;
 }
