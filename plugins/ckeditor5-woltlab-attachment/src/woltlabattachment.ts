@@ -49,7 +49,7 @@ export class WoltlabAttachment extends Plugin {
               const viewWriter = conversionApi.writer;
               let img = conversionApi.mapper.toViewElement(data.item);
               if (img.is("element", "figure")) {
-                img = img.getChild(0) as any;
+                img = img.getChild(0);
               }
 
               if (!img.is("element", "img")) {
