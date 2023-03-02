@@ -18,16 +18,17 @@ export class WoltlabBbcode extends Plugin {
   }
 
   override init() {
-    const editor = this.editor;
-    const { componentFactory } = editor.ui;
+    const { componentFactory } = this.editor.ui;
 
-    const options = editor.config.get("woltlabBbcode") as WoltlabBbcodeConfig;
+    const options = this.editor.config.get(
+      "woltlabBbcode"
+    ) as WoltlabBbcodeConfig;
 
     if (!options) {
       return;
     }
 
-    const command = new WoltlabBbcodeCommand(editor);
+    const command = new WoltlabBbcodeCommand(this.editor);
     this.editor.commands.add("insertBbcode", command);
 
     for (const item of options) {
