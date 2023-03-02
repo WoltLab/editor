@@ -24,9 +24,7 @@ export class WoltlabSmiley extends Plugin {
       });
     }
 
-    // The typings for `conversion` are outdated.
-    const conv = conversion as any;
-    conv.attributeToAttribute({
+    conversion.attributeToAttribute({
       model: "classList",
       view: {
         name: "img",
