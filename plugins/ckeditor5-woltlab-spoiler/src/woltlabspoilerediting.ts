@@ -92,8 +92,7 @@ export class WoltlabSpoilerEditing extends Plugin {
     });
 
     // The typings are outdated.
-    const s = schema as any;
-    s.addChildCheck((context, childDefinition) => {
+    schema.addChildCheck((context, childDefinition) => {
       if (
         childDefinition.name === "spoiler" &&
         Array.from(context.getNames()).includes("spoiler")
