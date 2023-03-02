@@ -17,8 +17,6 @@ import { ButtonView } from "@ckeditor/ckeditor5-ui";
 import "../theme/woltlabspoiler.css";
 import WoltlabSpoilerCommand from "./woltlabspoilercommand";
 
-import type { EditorWithUI } from "@ckeditor/ckeditor5-core/src/editor/editorwithui";
-
 export class WoltlabSpoilerEditing extends Plugin {
   static get pluginName() {
     return "WoltlabSpoilerEditing";
@@ -41,10 +39,10 @@ export class WoltlabSpoilerEditing extends Plugin {
   }
 
   #setupButton() {
-    const editor = this.editor as EditorWithUI;
+    const editor = this.editor;
     const { t } = editor.locale;
     editor.ui.componentFactory.add("spoiler", (locale) => {
-      const command = editor.commands.get("insertSpoiler")!;
+      const command = editor.commands.get("insertSpoiler")! as any;
 
       const buttonView = new ButtonView(locale);
       buttonView.set({
