@@ -9,11 +9,10 @@
  */
 
 import { Command, Plugin } from "@ckeditor/ckeditor5-core";
-import { ButtonView } from "@ckeditor/ckeditor5-ui";
+import { ButtonView, ComponentFactory } from "@ckeditor/ckeditor5-ui";
 import WoltlabBbcodeCommand from "./woltlabbbcodecommand";
 
 import type { EditorWithUI } from "@ckeditor/ckeditor5-core/src/editor/editorwithui";
-import type ComponentFactory from "@ckeditor/ckeditor5-ui/src/componentfactory";
 
 export class WoltlabBbcode extends Plugin {
   static get pluginName() {
