@@ -24,10 +24,8 @@ export class WoltlabToolbarGroup extends Plugin {
       return;
     }
 
-    // The typings for the classic editor is missing.
-    const editor = this.editor as any;
-    editor.once("ready", () => {
-      const toolbar = editor.ui.view.toolbar.element;
+    this.editor.once("ready", () => {
+      const toolbar = (this.editor.ui.view as any).toolbar.element;
 
       Object.entries(options).forEach(([name, item]) => {
         const button = toolbar.querySelector(
