@@ -39,10 +39,9 @@ export class WoltlabSpoilerEditing extends Plugin {
   }
 
   #setupButton() {
-    const editor = this.editor;
-    const { t } = editor.locale;
-    editor.ui.componentFactory.add("spoiler", (locale) => {
-      const command = editor.commands.get("insertSpoiler")! as any;
+    const { t } = this.editor.locale;
+    this.editor.ui.componentFactory.add("spoiler", (locale) => {
+      const command = this.editor.commands.get("insertSpoiler")! as any;
 
       const buttonView = new ButtonView(locale);
       buttonView.set({
@@ -62,7 +61,7 @@ export class WoltlabSpoilerEditing extends Plugin {
       buttonView.bind("isEnabled").to(command, "isEnabled");
 
       this.listenTo(buttonView, "execute", () =>
-        editor.execute("insertSpoiler")
+        this.editor.execute("insertSpoiler")
       );
 
       return buttonView;
