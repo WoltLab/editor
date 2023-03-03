@@ -2,6 +2,8 @@ name: Build
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -9,14 +11,14 @@ jobs:
     name: "TSC"
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: "16"
-        cache: "npm"
-    - run: npm install
-    - run: npx tsc --noEmit
+      - uses: actions/checkout@v3
+      - name: Set up node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+      - run: npm install
+      - run: npx tsc --noEmit
   webpack:
     name: Webpack
     needs: tsc
