@@ -67,8 +67,7 @@ export class WoltlabBlockQuote extends Plugin {
     const componentFactory = (editor as EditorWithUI).ui.componentFactory;
 
     componentFactory.add("blockQuote", (locale) => {
-      // TODO: The typing for `createDropdown()` are outdated.
-      const dropdownView = createDropdown(locale, SplitButtonView as any);
+      const dropdownView = createDropdown(locale, SplitButtonView);
       const splitButtonView = dropdownView.buttonView;
 
       splitButtonView.set({
