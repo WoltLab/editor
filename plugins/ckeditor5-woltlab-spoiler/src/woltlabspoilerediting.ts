@@ -18,6 +18,7 @@ import "../theme/woltlabspoiler.css";
 import WoltlabSpoilerCommand from "./woltlabspoilercommand";
 
 import type { EditorWithUI } from "@ckeditor/ckeditor5-core/src/editor/editorwithui";
+import type { DowncastWriter } from "@ckeditor/ckeditor5-engine";
 
 export class WoltlabSpoilerEditing extends Plugin {
   static get pluginName() {
@@ -230,15 +231,32 @@ export class WoltlabSpoilerEditing extends Plugin {
       });
     });
 
-    conversion
-      .for("editingDowncast")
-      .elementToElement({
+    (conversion.for("editingDowncast") as any)
+      .elementToStructure({
         model: "spoiler",
-        view: (_modelElement, { writer }) => {
-          const div = writer.createContainerElement("div", {
-            class: "ck-woltlabspoiler",
-            "data-label": t("Spoiler"),
-          });
+        view: (_modelElement, { writer }: { writer: DowncastWriter }) => {
+          const div = writer.createContainerElement(
+            "div",
+            {
+              class: "ck-woltlabspoiler",
+            },
+            [
+              writer.createUIElement(
+                "span",
+                {
+                  class: "ck-woltlabspoiler__label",
+                },
+                function (domDocument) {
+                  const domElement = this.toDomElement(domDocument);
+
+                  domElement.innerText = t("Spoiler");
+
+                  return domElement;
+                }
+              ),
+              (writer as any).createSlot(),
+            ] as any
+          );
 
           return toWidget(div, writer, { label: "spoiler widget" });
         },
