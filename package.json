@@ -28,7 +28,7 @@
     "@types/ckeditor__ckeditor5-core": "^33.0.3",
     "ckeditor5-package-generator": "^1.0.0-beta.8",
     "css-loader": "^6.7.3",
-    "postcss-loader": "^7.0.2",
+    "postcss-loader": "^7.1.0",
     "raw-loader": "^4.0.2",
     "style-loader": "^3.3.1",
     "webpack": "^5.75.0",
