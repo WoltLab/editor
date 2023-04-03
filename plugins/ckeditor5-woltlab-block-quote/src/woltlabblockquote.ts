@@ -33,7 +33,6 @@ function attributeValueToString(value: unknown): string {
 }
 
 export class WoltlabBlockQuote extends Plugin {
-  #command: BlockQuoteCommand;
   #lastView: WoltlabBlockQuotePanelView | undefined = undefined;
 
   static get pluginName() {
@@ -42,20 +41,20 @@ export class WoltlabBlockQuote extends Plugin {
 
   init() {
     const editor = this.editor;
-    this.#command = editor.commands.get("blockQuote")!;
 
     editor.model.schema.extend("blockQuote", {
       allowAttributes: ["author", "link"],
     });
 
-    this.#setupBlockQuote();
+    const command = editor.commands.get("blockQuote")!;
+    this.#setupBlockQuote(command);
 
     this.#setupUpcast();
     this.#setupDowncast();
     this.#setupEditingDowncast();
 
     this.listenTo(
-      this.#command,
+      command,
       "execute",
       () => {
         this.#updateCustomAttributes(this.#lastView);
@@ -64,7 +63,7 @@ export class WoltlabBlockQuote extends Plugin {
     );
   }
 
-  #setupBlockQuote(): void {
+  #setupBlockQuote(command: BlockQuoteCommand): void {
     const editor = this.editor;
     const t = editor.t;
 
@@ -79,9 +78,7 @@ export class WoltlabBlockQuote extends Plugin {
         isToggleable: true,
       });
 
-      splitButtonView
-        .bind("isOn")
-        .to(this.#command, "value", (value) => !!value);
+      splitButtonView.bind("isOn").to(command, "value", (value) => !!value);
 
       splitButtonView.on("execute", () => {
         editor.execute("blockQuote");
@@ -113,7 +110,7 @@ export class WoltlabBlockQuote extends Plugin {
         dropdownView.isOpen = false;
       });
 
-      dropdownView.bind("isEnabled").to(this.#command);
+      dropdownView.bind("isEnabled").to(command!);
 
       const view = new WoltlabBlockQuotePanelView(editor);
 
