@@ -129,47 +129,44 @@ export class WoltlabSpoilerEditing extends Plugin {
     const { t } = this.editor.locale;
 
     conversion.for("upcast").add((dispatcher) => {
-      dispatcher.on(
-        "element:woltlab-spoiler",
-        (_evt, data, conversionApi) => {
-          const {
-            consumable,
-            writer,
-            safeInsert,
-            convertChildren,
-            updateConversionResult,
-          } = conversionApi;
+      dispatcher.on("element:woltlab-spoiler", (_evt, data, conversionApi) => {
+        const {
+          consumable,
+          writer,
+          safeInsert,
+          convertChildren,
+          updateConversionResult,
+        } = conversionApi;
 
-          const { viewItem } = data;
+        const { viewItem } = data;
 
-          const wrapper = { name: true };
+        const wrapper = { name: true };
 
-          if (!consumable.test(viewItem, wrapper)) {
-            return;
-          }
-
-          const spoiler = writer.createElement("spoiler");
-
-          const spoilerTitle = writer.createElement("spoilerTitle");
-          writer.append(spoilerTitle, spoiler);
-
-          const label = (viewItem.getAttribute("data-label") || "").trim();
-          writer.appendText(label, spoilerTitle);
-
-          const spoilerContent = writer.createElement("spoilerContent");
-          writer.append(spoilerContent, spoiler);
-
-          if (!safeInsert(spoiler, data.modelCursor)) {
-            return;
-          }
-
-          consumable.consume(viewItem, wrapper);
-
-          convertChildren(viewItem, spoilerContent);
-
-          updateConversionResult(spoiler, data);
+        if (!consumable.test(viewItem, wrapper)) {
+          return;
         }
-      );
+
+        const spoiler = writer.createElement("spoiler");
+
+        const spoilerTitle = writer.createElement("spoilerTitle");
+        writer.append(spoilerTitle, spoiler);
+
+        const label = (viewItem.getAttribute("data-label") || "").trim();
+        writer.appendText(label, spoilerTitle);
+
+        const spoilerContent = writer.createElement("spoilerContent");
+        writer.append(spoilerContent, spoiler);
+
+        if (!safeInsert(spoiler, data.modelCursor)) {
+          return;
+        }
+
+        consumable.consume(viewItem, wrapper);
+
+        convertChildren(viewItem, spoilerContent);
+
+        updateConversionResult(spoiler, data);
+      });
     });
 
     conversion.for("dataDowncast").add((dispatcher) => {
@@ -199,12 +196,9 @@ export class WoltlabSpoilerEditing extends Plugin {
           }
         }
 
-        const spoiler = writer.createContainerElement(
-          "woltlab-spoiler",
-          {
-            "data-label": label,
-          }
-        );
+        const spoiler = writer.createContainerElement("woltlab-spoiler", {
+          "data-label": label,
+        });
 
         const position = mapper.toViewPosition(
           this.editor.model.createPositionBefore(modelElement)
