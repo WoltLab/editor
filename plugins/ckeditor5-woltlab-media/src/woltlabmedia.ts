@@ -14,7 +14,7 @@ export class WoltlabMedia extends Plugin {
     return "WoltlabMedia";
   }
 
-  override init() {
+  init() {
     const { conversion, model } = this.editor;
 
     // We need to register a custom attribute to keep track of
@@ -50,7 +50,7 @@ export class WoltlabMedia extends Plugin {
               const viewWriter = conversionApi.writer;
               let img = conversionApi.mapper.toViewElement(data.item);
               if (img.is("element", "figure")) {
-                img = img.getChild(0) as any;
+                img = img.getChild(0);
               }
 
               if (!img.is("element", "img")) {

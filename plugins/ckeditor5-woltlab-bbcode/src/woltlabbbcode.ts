@@ -9,28 +9,26 @@
  */
 
 import { Command, Plugin } from "@ckeditor/ckeditor5-core";
-import { ButtonView } from "@ckeditor/ckeditor5-ui";
+import { ButtonView, ComponentFactory } from "@ckeditor/ckeditor5-ui";
 import WoltlabBbcodeCommand from "./woltlabbbcodecommand";
-
-import type { EditorWithUI } from "@ckeditor/ckeditor5-core/src/editor/editorwithui";
-import type ComponentFactory from "@ckeditor/ckeditor5-ui/src/componentfactory";
 
 export class WoltlabBbcode extends Plugin {
   static get pluginName() {
     return "WoltlabBbcode";
   }
 
-  override init() {
-    const editor = this.editor as EditorWithUI;
-    const { componentFactory } = editor.ui;
+  init() {
+    const { componentFactory } = this.editor.ui;
 
-    const options = editor.config.get("woltlabBbcode") as WoltlabBbcodeConfig;
+    const options = this.editor.config.get(
+      "woltlabBbcode"
+    ) as WoltlabBbcodeConfig;
 
     if (!options) {
       return;
     }
 
-    const command = new WoltlabBbcodeCommand(editor);
+    const command = new WoltlabBbcodeCommand(this.editor);
     this.editor.commands.add("insertBbcode", command);
 
     for (const item of options) {

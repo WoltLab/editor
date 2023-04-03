@@ -31,7 +31,7 @@ export class WoltlabUpload extends Plugin {
     return [FileRepository];
   }
 
-  override init() {
+  init() {
     const { config, editing, plugins } = this.editor;
 
     const options = config.get("woltlabUpload") as WoltlabUploadConfig;

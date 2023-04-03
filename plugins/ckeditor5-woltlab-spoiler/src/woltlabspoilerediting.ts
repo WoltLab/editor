@@ -17,8 +17,6 @@ import { ButtonView } from "@ckeditor/ckeditor5-ui";
 import "../theme/woltlabspoiler.css";
 import WoltlabSpoilerCommand from "./woltlabspoilercommand";
 
-import type { EditorWithUI } from "@ckeditor/ckeditor5-core/src/editor/editorwithui";
-
 export class WoltlabSpoilerEditing extends Plugin {
   static get pluginName() {
     return "WoltlabSpoilerEditing";
@@ -28,7 +26,7 @@ export class WoltlabSpoilerEditing extends Plugin {
     return [Widget];
   }
 
-  override init() {
+  init() {
     this.#setupSchema();
     this.#setupConversion();
 
@@ -41,10 +39,9 @@ export class WoltlabSpoilerEditing extends Plugin {
   }
 
   #setupButton() {
-    const editor = this.editor as EditorWithUI;
-    const { t } = editor.locale;
-    editor.ui.componentFactory.add("spoiler", (locale) => {
-      const command = editor.commands.get("insertSpoiler")!;
+    const { t } = this.editor.locale;
+    this.editor.ui.componentFactory.add("spoiler", (locale) => {
+      const command = this.editor.commands.get("insertSpoiler")! as any;
 
       const buttonView = new ButtonView(locale);
       buttonView.set({
@@ -64,7 +61,7 @@ export class WoltlabSpoilerEditing extends Plugin {
       buttonView.bind("isEnabled").to(command, "isEnabled");
 
       this.listenTo(buttonView, "execute", () =>
-        editor.execute("insertSpoiler")
+        this.editor.execute("insertSpoiler")
       );
 
       return buttonView;
@@ -92,8 +89,7 @@ export class WoltlabSpoilerEditing extends Plugin {
     });
 
     // The typings are outdated.
-    const s = schema as any;
-    s.addChildCheck((context, childDefinition) => {
+    schema.addChildCheck((context, childDefinition) => {
       if (
         childDefinition.name === "spoiler" &&
         Array.from(context.getNames()).includes("spoiler")

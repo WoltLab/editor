@@ -19,7 +19,8 @@ import {
   InputNumberView,
   InputTextView,
   LabeledFieldView,
-  ListDropdownItemDefinition,
+  type ListDropdownButtonDefinition,
+  type ListDropdownItemDefinition,
   Model,
   submitHandler,
   View,
@@ -34,8 +35,11 @@ import {
 
 import WoltlabCodeBlockFormRowView from "./woltlabcodeblockformrowview";
 
-import type { CodeBlockLanguageDefinition } from "@ckeditor/ckeditor5-code-block/src/codeblock";
 import type DropdownView from "@ckeditor/ckeditor5-ui/src/dropdown/dropdownview";
+
+type CodeBlockLanguageDefinition = ReturnType<
+  typeof getNormalizedAndLocalizedLanguageDefinitions
+>;
 
 export class WoltlabCodeBlockPanelView extends View {
   readonly #insertButtonView: ButtonView;
@@ -145,7 +149,7 @@ export class WoltlabCodeBlockPanelView extends View {
 
   #createHighlighterDropdown(
     locale: Locale,
-    normalizedLanguageDefs: CodeBlockLanguageDefinition[]
+    normalizedLanguageDefs: CodeBlockLanguageDefinition
   ): DropdownView {
     const t = locale.t;
     const dropdown = createDropdown(locale);
@@ -153,7 +157,8 @@ export class WoltlabCodeBlockPanelView extends View {
       normalizedLanguageDefs
     );
 
-    this.highlighter = groupDefinitions.first!.model._codeBlockLanguage;
+    this.highlighter = (groupDefinitions.first! as ListDropdownButtonDefinition)
+      .model._codeBlockLanguage as string;
 
     dropdown.buttonView.bind("label").to(this, "highlighter", (highlighter) => {
       const language = highlighter ? highlighter.toString() : "plaintext";
@@ -170,7 +175,7 @@ export class WoltlabCodeBlockPanelView extends View {
     });
 
     dropdown.on("execute", (evt) => {
-      this.highlighter = (evt.source as Model)._codeBlockLanguage;
+      this.highlighter = (evt.source as Model)._codeBlockLanguage as string;
     });
 
     addListToDropdown(dropdown, groupDefinitions);
@@ -221,7 +226,7 @@ export class WoltlabCodeBlockPanelView extends View {
   }
 
   #getLanguageGroupListItemDefinitions(
-    normalizedLanguageDefs: CodeBlockLanguageDefinition[]
+    normalizedLanguageDefs: CodeBlockLanguageDefinition
   ): Collection<ListDropdownItemDefinition> {
     const groupDefs = new Collection<ListDropdownItemDefinition>();
 

@@ -14,7 +14,7 @@ export class WoltlabSmiley extends Plugin {
     return "WoltlabSmiley";
   }
 
-  override init() {
+  init() {
     const { conversion, model } = this.editor;
 
     const imageTypes = ["imageBlock", "imageInline"];
@@ -24,9 +24,7 @@ export class WoltlabSmiley extends Plugin {
       });
     }
 
-    // The typings for `conversion` are outdated.
-    const conv = conversion as any;
-    conv.attributeToAttribute({
+    conversion.attributeToAttribute({
       model: "classList",
       view: {
         name: "img",

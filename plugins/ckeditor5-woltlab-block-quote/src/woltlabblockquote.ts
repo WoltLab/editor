@@ -17,42 +17,44 @@ import { WoltlabBlockQuotePanelView } from "./ui/woltlabblockquotepanelview";
 import "../theme/woltlabblockquote.css";
 
 import type BlockQuoteCommand from "@ckeditor/ckeditor5-block-quote/src/blockquotecommand";
-import type { EditorWithUI } from "@ckeditor/ckeditor5-core/src/editor/editorwithui";
 
-function attributeValueToString(
-  value: string | number | boolean | undefined
-): string {
-  if (value === undefined) {
-    return "";
+function attributeValueToString(value: unknown): string {
+  switch (typeof value) {
+    case "string":
+      return value;
+
+    case "number":
+    case "boolean":
+      return value.toString();
+
+    default:
+      return "";
   }
-
-  return value.toString();
 }
 
 export class WoltlabBlockQuote extends Plugin {
-  #command: BlockQuoteCommand;
   #lastView: WoltlabBlockQuotePanelView | undefined = undefined;
 
   static get pluginName() {
     return "WoltlabBlockQuote";
   }
 
-  override init() {
+  init() {
     const editor = this.editor;
-    this.#command = editor.commands.get("blockQuote")!;
 
     editor.model.schema.extend("blockQuote", {
       allowAttributes: ["author", "link"],
     });
 
-    this.#setupBlockQuote();
+    const command = editor.commands.get("blockQuote")!;
+    this.#setupBlockQuote(command);
 
     this.#setupUpcast();
     this.#setupDowncast();
     this.#setupEditingDowncast();
 
     this.listenTo(
-      this.#command,
+      command,
       "execute",
       () => {
         this.#updateCustomAttributes(this.#lastView);
@@ -61,14 +63,12 @@ export class WoltlabBlockQuote extends Plugin {
     );
   }
 
-  #setupBlockQuote(): void {
+  #setupBlockQuote(command: BlockQuoteCommand): void {
     const editor = this.editor;
     const t = editor.t;
-    const componentFactory = (editor as EditorWithUI).ui.componentFactory;
 
-    componentFactory.add("blockQuote", (locale) => {
-      // TODO: The typing for `createDropdown()` are outdated.
-      const dropdownView = createDropdown(locale, SplitButtonView as any);
+    this.editor.ui.componentFactory.add("blockQuote", (locale) => {
+      const dropdownView = createDropdown(locale, SplitButtonView);
       const splitButtonView = dropdownView.buttonView;
 
       splitButtonView.set({
@@ -78,9 +78,7 @@ export class WoltlabBlockQuote extends Plugin {
         isToggleable: true,
       });
 
-      splitButtonView
-        .bind("isOn")
-        .to(this.#command, "value", (value) => !!value);
+      splitButtonView.bind("isOn").to(command, "value", (value) => !!value);
 
       splitButtonView.on("execute", () => {
         editor.execute("blockQuote");
@@ -112,7 +110,7 @@ export class WoltlabBlockQuote extends Plugin {
         dropdownView.isOpen = false;
       });
 
-      dropdownView.bind("isEnabled").to(this.#command);
+      dropdownView.bind("isEnabled").to(command!);
 
       const view = new WoltlabBlockQuotePanelView(editor);
 
