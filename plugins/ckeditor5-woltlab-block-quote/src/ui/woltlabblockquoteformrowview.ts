@@ -26,7 +26,7 @@ export class WoltlabBlockQuoteFormRowView extends View {
 
     const bind = this.bindTemplate;
 
-    this.set("class", options.class || null);
+    this.set("class", options.class || "");
 
     this.children = this.createCollection();
 

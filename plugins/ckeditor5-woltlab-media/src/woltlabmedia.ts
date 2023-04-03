@@ -14,7 +14,7 @@ export class WoltlabMedia extends Plugin {
     return "WoltlabMedia";
   }
 
-  override init() {
+  init() {
     const { conversion, model } = this.editor;
 
     // We need to register a custom attribute to keep track of

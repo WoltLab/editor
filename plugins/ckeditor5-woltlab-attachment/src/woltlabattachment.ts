@@ -14,7 +14,7 @@ export class WoltlabAttachment extends Plugin {
     return "WoltlabAttachment";
   }
 
-  override init() {
+  init() {
     const { conversion, model, plugins } = this.editor;
 
     // We need to register a custom attribute to keep track of

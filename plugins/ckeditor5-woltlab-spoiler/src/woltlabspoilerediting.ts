@@ -26,7 +26,7 @@ export class WoltlabSpoilerEditing extends Plugin {
     return [Widget];
   }
 
-  override init() {
+  init() {
     this.#setupSchema();
     this.#setupConversion();
 

@@ -17,7 +17,7 @@ export class WoltlabBbcode extends Plugin {
     return "WoltlabBbcode";
   }
 
-  override init() {
+  init() {
     const { componentFactory } = this.editor.ui;
 
     const options = this.editor.config.get(

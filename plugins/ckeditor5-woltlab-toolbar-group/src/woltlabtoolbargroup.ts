@@ -15,7 +15,7 @@ export class WoltlabToolbarGroup extends Plugin {
     return "WoltlabToolbarGroup";
   }
 
-  override init() {
+  init() {
     const options = this.editor.config.get("woltlabToolbarGroup") as
       | WoltlabToolbarGroupConfig
       | undefined;

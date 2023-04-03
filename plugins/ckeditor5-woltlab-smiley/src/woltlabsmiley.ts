@@ -14,7 +14,7 @@ export class WoltlabSmiley extends Plugin {
     return "WoltlabSmiley";
   }
 
-  override init() {
+  init() {
     const { conversion, model } = this.editor;
 
     const imageTypes = ["imageBlock", "imageInline"];

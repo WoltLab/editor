@@ -15,7 +15,7 @@ export class WoltlabMetacode extends Plugin {
     return "WoltlabMetacode";
   }
 
-  override init() {
+  init() {
     this.#setupConversion();
   }
 

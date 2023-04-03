@@ -17,16 +17,19 @@ import { WoltlabBlockQuotePanelView } from "./ui/woltlabblockquotepanelview";
 import "../theme/woltlabblockquote.css";
 
 import type BlockQuoteCommand from "@ckeditor/ckeditor5-block-quote/src/blockquotecommand";
-import type { EditorWithUI } from "@ckeditor/ckeditor5-core/src/editor/editorwithui";
 
-function attributeValueToString(
-  value: string | number | boolean | undefined
-): string {
-  if (value === undefined) {
-    return "";
+function attributeValueToString(value: unknown): string {
+  switch (typeof value) {
+    case "string":
+      return value;
+
+    case "number":
+    case "boolean":
+      return value.toString();
+
+    default:
+      return "";
   }
-
-  return value.toString();
 }
 
 export class WoltlabBlockQuote extends Plugin {
@@ -37,7 +40,7 @@ export class WoltlabBlockQuote extends Plugin {
     return "WoltlabBlockQuote";
   }
 
-  override init() {
+  init() {
     const editor = this.editor;
     this.#command = editor.commands.get("blockQuote")!;
 
@@ -64,9 +67,8 @@ export class WoltlabBlockQuote extends Plugin {
   #setupBlockQuote(): void {
     const editor = this.editor;
     const t = editor.t;
-    const componentFactory = (editor as EditorWithUI).ui.componentFactory;
 
-    componentFactory.add("blockQuote", (locale) => {
+    this.editor.ui.componentFactory.add("blockQuote", (locale) => {
       const dropdownView = createDropdown(locale, SplitButtonView);
       const splitButtonView = dropdownView.buttonView;
 

@@ -113,6 +113,7 @@ export async function create(
   if (!removePlugins.includes("Image")) {
     configuration.image = {
       insert: {
+        integrations: [],
         type: "inline",
       },
       toolbar: ["imageStyle:inline", "imageStyle:block", "imageStyle:side"],
