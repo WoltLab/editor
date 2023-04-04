@@ -151,7 +151,7 @@ export class WoltlabCodeBlock extends Plugin {
 
   #setupUpcast(): void {
     this.editor.data.upcastDispatcher.on(
-      "element:woltlab-ckeditor-codeblock",
+      "element:pre",
       (_evt, data, conversionApi) => {
         const { viewItem } = data;
         const { consumable, writer } = conversionApi;
@@ -159,9 +159,9 @@ export class WoltlabCodeBlock extends Plugin {
         const codeBlock = writer.createElement("codeBlock");
         writer.setAttributes(
           {
-            file: viewItem.getAttribute("file") || "",
-            language: viewItem.getAttribute("language") || "",
-            line: viewItem.getAttribute("line") || "",
+            file: viewItem.getAttribute("data-file") || "",
+            language: viewItem.getAttribute("data-highlighter") || "",
+            line: viewItem.getAttribute("data-line") || "",
           },
           codeBlock
         );
@@ -207,10 +207,15 @@ export class WoltlabCodeBlock extends Plugin {
           class: `language-${codeBlockLanguage}`,
         });
 
+        let label = "";
         const localizedLanguage = localizedLanguageDefs.find(
           (def) => def.language === codeBlockLanguage
         )!;
-        let label = localizedLanguage.label;
+        if (localizedLanguage) {
+          label += localizedLanguage.label;
+        } else {
+          label += `Unknown (${codeBlockLanguage})`;
+        }
         if (codeBlockFile || codeBlockLine) {
           label += " (";
 
@@ -272,14 +277,11 @@ export class WoltlabCodeBlock extends Plugin {
           this.editor.model.createPositionBefore(data.item)
         );
 
-        const pre = writer.createContainerElement(
-          "woltlab-ckeditor-codeblock",
-          {
-            file: codeBlockFile,
-            language: codeBlockLanguage,
-            line: codeBlockLine,
-          }
-        );
+        const pre = writer.createContainerElement("pre", {
+          "data-file": codeBlockFile,
+          "data-highlighter": codeBlockLanguage,
+          "data-line": codeBlockLine,
+        });
 
         writer.insert(targetViewPosition, pre);
         mapper.bindElements(data.item, pre);
