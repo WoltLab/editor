@@ -140,7 +140,7 @@ export class WoltlabBlockQuote extends Plugin {
 
   #setupUpcast(): void {
     this.editor.data.upcastDispatcher.on(
-      "element:woltlab-ckeditor-blockquote",
+      "element:woltlab-quote",
       (_evt, data, conversionApi) => {
         const { viewItem } = data;
         const { consumable, writer } = conversionApi;
@@ -148,8 +148,8 @@ export class WoltlabBlockQuote extends Plugin {
         const blockQuote = writer.createElement("blockQuote");
         writer.setAttributes(
           {
-            author: viewItem.getAttribute("author") || "",
-            link: viewItem.getAttribute("link") || "",
+            author: viewItem.getAttribute("data-author") || "",
+            link: viewItem.getAttribute("data-link") || "",
           },
           blockQuote
         );
@@ -255,10 +255,10 @@ export class WoltlabBlockQuote extends Plugin {
           this.editor.model.createPositionBefore(data.item)
         );
 
-        const pre = writer.createContainerElement(
-          "woltlab-ckeditor-blockquote",
-          { author, link }
-        );
+        const pre = writer.createContainerElement("woltlab-quote", {
+          "data-author": author,
+          "data-link": link,
+        });
 
         writer.insert(targetViewPosition, pre);
         mapper.bindElements(data.item, pre);
