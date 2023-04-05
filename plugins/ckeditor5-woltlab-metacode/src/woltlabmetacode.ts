@@ -9,6 +9,11 @@
  */
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
+import type {
+  UpcastConversionApi,
+  UpcastConversionData,
+} from "@ckeditor/ckeditor5-engine";
+import { EventInfo } from "@ckeditor/ckeditor5-utils";
 
 type Attributes = (number | string)[];
 
@@ -41,6 +46,18 @@ export class WoltlabMetacode extends Plugin {
         const attributes = this.#unserializeAttributes(
           viewItem.getAttribute("data-attributes") || ""
         );
+
+        const eventInfo = new EventInfo(this, "upcast");
+        const eventData: WoltlabMetacodeUpcast = {
+          attributes,
+          conversionApi,
+          data,
+          name,
+        };
+        this.fire(eventInfo, eventData);
+        if (eventInfo.stop.called) {
+          return;
+        }
 
         const attributeString = this.#serializedAttributesToString(attributes);
         const openingTag = writer.createText(`[${name}${attributeString}]`);
@@ -94,3 +111,10 @@ export class WoltlabMetacode extends Plugin {
 }
 
 export default WoltlabMetacode;
+
+export type WoltlabMetacodeUpcast = {
+  attributes: Attributes;
+  conversionApi: UpcastConversionApi;
+  data: UpcastConversionData;
+  name: string;
+};
