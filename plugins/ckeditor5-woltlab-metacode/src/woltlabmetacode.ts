@@ -10,6 +10,8 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 
+type Attributes = (number | string)[];
+
 export class WoltlabMetacode extends Plugin {
   static get pluginName() {
     return "WoltlabMetacode";
@@ -36,11 +38,12 @@ export class WoltlabMetacode extends Plugin {
           return;
         }
 
-        const attributes = this.#serializedAttributesToString(
+        const attributes = this.#unserializeAttributes(
           viewItem.getAttribute("data-attributes") || ""
         );
 
-        const openingTag = writer.createText(`[${name}${attributes}]`);
+        const attributeString = this.#serializedAttributesToString(attributes);
+        const openingTag = writer.createText(`[${name}${attributeString}]`);
         const closingTag = writer.createText(`[/${name}]`);
 
         let modelCursor = data.modelCursor;
@@ -54,22 +57,30 @@ export class WoltlabMetacode extends Plugin {
     });
   }
 
-  #serializedAttributesToString(serializedAttributes: string): string {
+  #unserializeAttributes(serializedAttributes: string): Attributes {
     if (serializedAttributes === "") {
-      return "";
+      return [];
     }
 
     const stringifiedValues = atob(serializedAttributes);
-    let values: (string | number)[];
+    let values: Attributes;
     try {
       values = JSON.parse(stringifiedValues);
     } catch (e) {
+      return [];
+    }
+
+    return values;
+  }
+
+  #serializedAttributesToString(attributes: Attributes): string {
+    if (attributes.length === 0) {
       return "";
     }
 
     return (
       "=" +
-      values
+      attributes
         .map((value) => {
           if (typeof value === "number") {
             return value.toString();
