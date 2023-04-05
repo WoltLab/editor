@@ -25,7 +25,7 @@
     "@ckeditor/ckeditor5-theme-lark": "^37.0.0-rc.0",
     "@ckeditor/ckeditor5-ui": "^37.0.0-rc.0",
     "@ckeditor/ckeditor5-widget": "^37.0.0-rc.0",
-    "ckeditor5-package-generator": "^1.0.0-beta.8",
+    "ckeditor5-package-generator": "^1.0.0-beta.10",
     "css-loader": "^6.7.3",
     "postcss-loader": "^7.2.4",
     "raw-loader": "^4.0.2",
