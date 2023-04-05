@@ -12,6 +12,7 @@ import { Plugin } from "@ckeditor/ckeditor5-core";
 import type {
   UpcastConversionApi,
   UpcastConversionData,
+  ViewElement,
 } from "@ckeditor/ckeditor5-engine";
 import { EventInfo } from "@ckeditor/ckeditor5-utils";
 
@@ -115,6 +116,6 @@ export default WoltlabMetacode;
 export type WoltlabMetacodeUpcast = {
   attributes: Attributes;
   conversionApi: UpcastConversionApi;
-  data: UpcastConversionData;
+  data: UpcastConversionData<ViewElement>;
   name: string;
 };
