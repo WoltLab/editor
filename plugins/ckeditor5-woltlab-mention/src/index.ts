@@ -5,4 +5,4 @@
  * @since 6.0
  */
 
-export { WoltlabMetacode, WoltlabMetacodeUpcast } from "./woltlabmetacode";
+export { WoltlabMention } from "./woltlabmention";

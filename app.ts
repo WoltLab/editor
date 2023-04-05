@@ -51,6 +51,7 @@ import { WoltlabToolbarGroup } from "./plugins/ckeditor5-woltlab-toolbar-group";
 import { WoltlabUpload } from "./plugins/ckeditor5-woltlab-upload";
 
 import type { EditorConfig } from "@ckeditor/ckeditor5-core/src/editor/editorconfig";
+import { WoltlabMention } from "./plugins/ckeditor5-woltlab-mention/src";
 
 const defaultConfig: EditorConfig = {
   plugins: [
@@ -95,6 +96,7 @@ const defaultConfig: EditorConfig = {
     WoltlabBbcode,
     WoltlabCodeBlock,
     WoltlabMedia,
+    WoltlabMention,
     WoltlabMetacode,
     WoltlabSmiley,
     WoltlabSpoiler,
