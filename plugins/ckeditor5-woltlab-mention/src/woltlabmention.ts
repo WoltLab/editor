@@ -17,7 +17,8 @@ import {
 } from "../../ckeditor5-woltlab-metacode/src";
 
 type WoltlabMentionAttribute = MentionAttribute & {
-  woltlabMentionType: "user";
+  objectId: number;
+  type: "user";
 };
 
 export class WoltlabMention extends Plugin {
@@ -66,7 +67,8 @@ export class WoltlabMention extends Plugin {
         "mention",
         {
           id: attributes[0].toString(),
-          woltlabMentionType: name,
+          objectId: attributes[0],
+          type: name,
           _text: text.data,
         } as WoltlabMentionAttribute,
         node
@@ -82,12 +84,12 @@ export class WoltlabMention extends Plugin {
           return;
         }
 
-        const id = parseInt(modelAttributeValue.id);
+        const id = modelAttributeValue.objectId;
 
         return writer.createAttributeElement(
           "woltlab-metacode",
           {
-            "data-name": modelAttributeValue.woltlabMentionType,
+            "data-name": modelAttributeValue.type,
             "data-attributes": btoa(JSON.stringify([id])),
           },
           {
