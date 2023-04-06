@@ -14,7 +14,7 @@ import type { MentionAttribute } from "@ckeditor/ckeditor5-mention/src/mention";
 import {
   WoltlabMetacode,
   type WoltlabMetacodeUpcast,
-} from "../../ckeditor5-woltlab-metacode/src";
+} from "../../ckeditor5-woltlab-metacode";
 
 type WoltlabMentionAttribute = MentionAttribute & {
   objectId: number;

@@ -44,14 +44,14 @@ import { WoltlabBbcode } from "./plugins/ckeditor5-woltlab-bbcode";
 import { WoltlabBlockQuote } from "./plugins/ckeditor5-woltlab-block-quote";
 import { WoltlabCodeBlock } from "./plugins/ckeditor5-woltlab-code-block";
 import { WoltlabMedia } from "./plugins/ckeditor5-woltlab-media";
+import { WoltlabMention } from "./plugins/ckeditor5-woltlab-mention";
 import { WoltlabMetacode } from "./plugins/ckeditor5-woltlab-metacode";
 import { WoltlabSmiley } from "./plugins/ckeditor5-woltlab-smiley";
 import { WoltlabSpoiler } from "./plugins/ckeditor5-woltlab-spoiler";
 import { WoltlabToolbarGroup } from "./plugins/ckeditor5-woltlab-toolbar-group";
 import { WoltlabUpload } from "./plugins/ckeditor5-woltlab-upload";
 
-import type { EditorConfig } from "@ckeditor/ckeditor5-core/src/editor/editorconfig";
-import { WoltlabMention } from "./plugins/ckeditor5-woltlab-mention/src";
+import type { EditorConfig } from "@ckeditor/ckeditor5-core";
 
 const defaultConfig: EditorConfig = {
   plugins: [

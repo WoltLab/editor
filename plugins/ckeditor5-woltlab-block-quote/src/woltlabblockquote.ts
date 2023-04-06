@@ -16,7 +16,7 @@ import { WoltlabBlockQuotePanelView } from "./ui/woltlabblockquotepanelview";
 
 import "../theme/woltlabblockquote.css";
 
-import type BlockQuoteCommand from "@ckeditor/ckeditor5-block-quote/src/blockquotecommand";
+import type { BlockQuoteCommand } from "@ckeditor/ckeditor5-block-quote";
 
 function attributeValueToString(value: unknown): string {
   switch (typeof value) {

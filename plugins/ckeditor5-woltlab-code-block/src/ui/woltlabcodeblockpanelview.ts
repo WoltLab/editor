@@ -35,7 +35,7 @@ import {
 
 import WoltlabCodeBlockFormRowView from "./woltlabcodeblockformrowview";
 
-import type DropdownView from "@ckeditor/ckeditor5-ui/src/dropdown/dropdownview";
+import type { DropdownView } from "@ckeditor/ckeditor5-ui";
 
 type CodeBlockLanguageDefinition = ReturnType<
   typeof getNormalizedAndLocalizedLanguageDefinitions

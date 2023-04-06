@@ -11,9 +11,7 @@ import { Command } from "@ckeditor/ckeditor5-core";
 import { Element, Range } from "@ckeditor/ckeditor5-engine";
 import { first } from "@ckeditor/ckeditor5-utils";
 
-import type Position from "@ckeditor/ckeditor5-engine/src/model/position";
-import type Schema from "@ckeditor/ckeditor5-engine/src/model/schema";
-import type Writer from "@ckeditor/ckeditor5-engine/src/model/writer";
+import type { Position, Schema, Writer } from "@ckeditor/ckeditor5-engine";
 
 export class WoltlabSpoilerCommand extends Command {
   override execute() {
