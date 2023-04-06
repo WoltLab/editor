@@ -15,7 +15,7 @@ export class WoltlabCode extends Plugin {
     return "WoltlabCode";
   }
 
-  public static get requires() {
+  static get requires() {
     return [Code] as const;
   }
 

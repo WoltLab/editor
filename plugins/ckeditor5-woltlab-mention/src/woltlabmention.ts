@@ -26,7 +26,7 @@ export class WoltlabMention extends Plugin {
     return "WoltlabMention";
   }
 
-  public static get requires() {
+  static get requires() {
     return [Mention, WoltlabMetacode] as const;
   }
 

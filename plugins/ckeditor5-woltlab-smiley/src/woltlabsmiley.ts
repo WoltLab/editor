@@ -8,10 +8,15 @@
  */
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
+import { Image } from "@ckeditor/ckeditor5-image";
 
 export class WoltlabSmiley extends Plugin {
   static get pluginName() {
     return "WoltlabSmiley";
+  }
+
+  static get requires() {
+    return [Image] as const;
   }
 
   init() {
