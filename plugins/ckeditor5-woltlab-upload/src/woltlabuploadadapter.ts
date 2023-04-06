@@ -7,10 +7,7 @@
  * @since 6.0
  */
 
-import type {
-  FileLoader,
-  UploadAdapter,
-} from "@ckeditor/ckeditor5-upload";
+import type { FileLoader, UploadAdapter } from "@ckeditor/ckeditor5-upload";
 import type { WoltlabUploadConfig } from "./woltlabupload";
 
 export class WoltlabUploadAdapter implements UploadAdapter {
