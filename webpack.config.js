@@ -4,6 +4,9 @@
 
 const path = require("path");
 const { styles } = require("@ckeditor/ckeditor5-dev-utils");
+const {
+  CKEditorTranslationsPlugin,
+} = require("@ckeditor/ckeditor5-dev-translations");
 
 module.exports = (_env, argv) => {
   const config = {
@@ -17,6 +20,13 @@ module.exports = (_env, argv) => {
       library: "CKEditor5",
       //libraryTarget: 'amd',
     },
+
+    plugins: [
+      new CKEditorTranslationsPlugin({
+        additionalLanguages: "all",
+        language: "en",
+      }),
+    ],
 
     module: {
       rules: [
