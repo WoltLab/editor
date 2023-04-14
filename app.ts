@@ -42,7 +42,7 @@ import { Table, TableToolbar } from "@ckeditor/ckeditor5-table";
 import { WoltlabAttachment } from "./plugins/ckeditor5-woltlab-attachment";
 import { WoltlabBbcode } from "./plugins/ckeditor5-woltlab-bbcode";
 import { WoltlabBlockQuote } from "./plugins/ckeditor5-woltlab-block-quote";
-import { WoltlabCode } from "./plugins/ckeditor5-woltlab-code/ckeditor5-woltlab-mention";
+import { WoltlabCode } from "./plugins/ckeditor5-woltlab-code";
 import { WoltlabCodeBlock } from "./plugins/ckeditor5-woltlab-code-block";
 import { WoltlabMedia } from "./plugins/ckeditor5-woltlab-media";
 import { WoltlabMention } from "./plugins/ckeditor5-woltlab-mention";
