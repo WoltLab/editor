@@ -40,6 +40,7 @@ import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
 import { PasteFromOffice } from "@ckeditor/ckeditor5-paste-from-office";
 import { Table, TableToolbar } from "@ckeditor/ckeditor5-table";
 import { WoltlabAttachment } from "./plugins/ckeditor5-woltlab-attachment";
+import { WoltlabAutosave } from "./plugins/ckeditor5-woltlab-autosave";
 import { WoltlabBbcode } from "./plugins/ckeditor5-woltlab-bbcode";
 import { WoltlabBlockQuote } from "./plugins/ckeditor5-woltlab-block-quote";
 import { WoltlabCode } from "./plugins/ckeditor5-woltlab-code";
@@ -93,6 +94,7 @@ const defaultConfig: EditorConfig = {
 
     // WoltLab
     WoltlabAttachment,
+    WoltlabAutosave,
     WoltlabBlockQuote,
     WoltlabBbcode,
     WoltlabCode,
