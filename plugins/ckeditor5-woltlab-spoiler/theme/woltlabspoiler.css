@@ -11,7 +11,7 @@
   grid-template-areas:
     "label   title"
     "content content";
-  grid-template-columns: min-content auto;
+  grid-template-columns: minmax(0, max-content) auto;
   margin-top: var(--ck-spacing-large);
   padding: 5px 5px 5px 15px;
   position: relative;
