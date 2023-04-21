@@ -29,6 +29,7 @@
 }
 
 .ck.ck-content .ck-woltlabspoiler::before {
+  align-self: center;
   content: attr(data-label);
   color: #999;
   grid-area: label;
