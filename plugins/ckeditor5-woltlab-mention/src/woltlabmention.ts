@@ -37,10 +37,10 @@ export class WoltlabMention extends Plugin {
     woltlabMetacode.on(
       "upcast",
       (eventInfo, eventData: WoltlabMetacodeUpcast) => {
-        eventInfo.stop();
-
         if (eventData.name === "user" && eventData.attributes.length === 1) {
           if (!Number.isNaN(parseInt(eventData.attributes[0].toString()))) {
+            eventInfo.stop();
+
             this.#upcastMention(eventData);
           }
         }
