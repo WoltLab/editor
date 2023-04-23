@@ -9,6 +9,7 @@
  */
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
+import type { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 
 export class WoltlabToolbarGroup extends Plugin {
   static get pluginName() {
@@ -25,12 +26,22 @@ export class WoltlabToolbarGroup extends Plugin {
     }
 
     this.editor.once("ready", () => {
-      const toolbar = (this.editor.ui.view as any).toolbar.element;
+      const editor = this.editor as ClassicEditor;
+      const toolbarItems = editor.ui.view.toolbar.items;
 
       Object.entries(options).forEach(([name, item]) => {
-        const button = toolbar.querySelector(
-          `.ck-dropdown__button[data-cke-tooltip-text="woltlabToolbarGroup_${name}"]`
-        ) as HTMLButtonElement;
+        const viewItem = toolbarItems.find((view) => {
+          if (
+            view.element?.querySelector(
+              `[data-cke-tooltip-text="woltlabToolbarGroup_${name}"]`
+            ) !== null
+          ) {
+            return true;
+          }
+
+          return false;
+        });
+        const button = viewItem!.element as HTMLElement;
         const existingIcon = button.querySelector(
           ".ck-button__icon"
         ) as SVGElement;
