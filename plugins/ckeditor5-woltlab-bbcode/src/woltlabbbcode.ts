@@ -50,18 +50,27 @@ export class WoltlabBbcode extends Plugin {
       button.withText = true;
 
       if (icon) {
-        const [iconName, useSolid] = icon.split(";", 2);
-        let attributes: Record<string, string> = {
-          name: iconName,
-        };
-        if (useSolid === "true") {
-          attributes.solid = "true";
-        }
+        if (icon.includes(";")) {
+          const [iconName, useSolid] = icon.split(";", 2);
+          let attributes: Record<string, string> = {
+            name: iconName,
+          };
+          if (useSolid === "true") {
+            attributes.solid = "true";
+          }
 
-        button.labelView.setTemplate({
-          tag: "fa-icon",
-          attributes,
-        });
+          button.labelView.setTemplate({
+            tag: "fa-icon",
+            attributes,
+          });
+        } else {
+          button.labelView.setTemplate({
+            tag: "img",
+            attributes: {
+              src: icon,
+            },
+          });
+        }
       }
 
       button.bind("isEnabled").to(command, "isEnabled");
