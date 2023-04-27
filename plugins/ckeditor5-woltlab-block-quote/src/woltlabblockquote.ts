@@ -72,7 +72,7 @@ export class WoltlabBlockQuote extends Plugin {
       const splitButtonView = dropdownView.buttonView;
 
       splitButtonView.set({
-        label: t("Insert block quote"),
+        label: t("Block quote"),
         tooltip: true,
         icon: icons.quote,
         isToggleable: true,

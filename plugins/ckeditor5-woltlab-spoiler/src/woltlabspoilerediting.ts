@@ -45,7 +45,7 @@ export class WoltlabSpoilerEditing extends Plugin {
 
       const buttonView = new ButtonView(locale);
       buttonView.set({
-        label: t("Insert spoiler"),
+        label: t("Spoiler"),
         tooltip: true,
         withText: true,
       });
