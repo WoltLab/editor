@@ -18,7 +18,7 @@ import {
 
 type WoltlabMentionAttribute = MentionAttribute & {
   objectId: number;
-  type: "user";
+  type: "group" | "user";
 };
 
 export class WoltlabMention extends Plugin {
