@@ -13,6 +13,7 @@
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import { toWidget, toWidgetEditable, Widget } from "@ckeditor/ckeditor5-widget";
 
+import { enablePlaceholder } from "@ckeditor/ckeditor5-engine";
 import { ButtonView } from "@ckeditor/ckeditor5-ui";
 import "../theme/woltlabspoiler.css";
 import WoltlabSpoilerCommand from "./woltlabspoilercommand";
@@ -238,6 +239,13 @@ export class WoltlabSpoilerEditing extends Plugin {
         view: (_modelElement, { writer }) => {
           const div = writer.createEditableElement("div", {
             class: "ck-woltlabspoiler__title",
+          });
+
+          enablePlaceholder({
+            view: this.editor.editing.view,
+            element: div,
+            text: t("Type your title"),
+            keepOnFocus: true,
           });
 
           return toWidgetEditable(div, writer);
