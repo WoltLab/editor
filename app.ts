@@ -22,6 +22,7 @@ import { BlockQuote } from "@ckeditor/ckeditor5-block-quote";
 import { CodeBlock } from "@ckeditor/ckeditor5-code-block";
 import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 import { Essentials } from "@ckeditor/ckeditor5-essentials";
+import { FontColor, FontFamily, FontSize } from "@ckeditor/ckeditor5-font";
 import { Heading } from "@ckeditor/ckeditor5-heading";
 import { HtmlEmbed } from "@ckeditor/ckeditor5-html-embed";
 import {
@@ -69,6 +70,9 @@ const defaultConfig: EditorConfig = {
     Alignment,
     Bold,
     Code,
+    FontColor,
+    FontFamily,
+    FontSize,
     Heading,
     Italic,
     Strikethrough,
