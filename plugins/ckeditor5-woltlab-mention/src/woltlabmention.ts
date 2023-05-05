@@ -64,6 +64,10 @@ export class WoltlabMention extends Plugin {
     );
 
     for (const node of Array.from(data.modelRange!.getItems())) {
+      if (!node.is("$text") && !node.is("$textProxy")) {
+        continue;
+      }
+
       writer.setAttribute(
         "mention",
         {
