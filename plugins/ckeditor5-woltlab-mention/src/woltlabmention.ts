@@ -15,6 +15,7 @@ import {
   WoltlabMetacode,
   type WoltlabMetacodeUpcast,
 } from "../../ckeditor5-woltlab-metacode";
+import { uid } from "@ckeditor/ckeditor5-utils";
 
 type WoltlabMentionAttribute = MentionAttribute & {
   objectId: number;
@@ -69,6 +70,7 @@ export class WoltlabMention extends Plugin {
           id: attributes[0].toString(),
           objectId: attributes[0],
           type: name,
+          uid: uid(),
           _text: text.data,
         } as WoltlabMentionAttribute,
         node
@@ -94,7 +96,7 @@ export class WoltlabMention extends Plugin {
           },
           {
             priority: 20,
-            id: modelAttributeValue.id,
+            id: modelAttributeValue.uid,
           }
         );
       },
