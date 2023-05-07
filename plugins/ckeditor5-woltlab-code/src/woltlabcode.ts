@@ -20,7 +20,14 @@ export class WoltlabCode extends Plugin {
   }
 
   init() {
-    this.editor.conversion.for("dataDowncast").attributeToElement({
+    const { conversion } = this.editor;
+
+    conversion.for("upcast").elementToAttribute({
+      view: "kbd",
+      model: "code",
+      converterPriority: "high",
+    });
+    conversion.for("dataDowncast").attributeToElement({
       model: "code",
       view: "kbd",
       converterPriority: "high",
