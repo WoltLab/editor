@@ -9,6 +9,10 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import { Image } from "@ckeditor/ckeditor5-image";
+import {
+  WoltlabMetacode,
+  WoltlabMetacodeUpcast,
+} from "../../ckeditor5-woltlab-metacode/src";
 
 export class WoltlabMedia extends Plugin {
   static get pluginName() {
@@ -16,10 +20,15 @@ export class WoltlabMedia extends Plugin {
   }
 
   static get requires() {
-    return [Image] as const;
+    return [Image, WoltlabMetacode] as const;
   }
 
   init() {
+    this.#setupImageElement();
+    this.#setupWsmUpcast();
+  }
+
+  #setupImageElement(): void {
     const { conversion, model } = this.editor;
 
     // We need to register a custom attribute to keep track of
@@ -73,6 +82,86 @@ export class WoltlabMedia extends Plugin {
       });
     });
   }
+
+  #setupWsmUpcast(): void {
+    const options = this.editor.config.get(
+      "woltlabMedia"
+    ) as WoltlabMediaConfig;
+
+    const woltlabMetacode = this.editor.plugins.get(
+      "WoltlabMetacode"
+    ) as WoltlabMetacode;
+    woltlabMetacode.on(
+      "upcast",
+      (eventInfo, eventData: WoltlabMetacodeUpcast) => {
+        if (eventData.name === "wsm") {
+          const mediaId = parseInt(eventData.attributes[0].toString());
+          if (Number.isNaN(mediaId)) {
+            return;
+          }
+
+          const mediaSize = eventData.attributes[1]
+            ? eventData.attributes[1].toString()
+            : "original";
+
+          if (
+            this.#upcastMedia(
+              eventData,
+              options.resolveMediaUrl,
+              mediaId,
+              mediaSize
+            )
+          ) {
+            eventInfo.stop();
+          }
+        }
+      }
+    );
+  }
+
+  #upcastMedia(
+    eventData: WoltlabMetacodeUpcast,
+    resolveMediaUrl: ResolveMediaUrl,
+    mediaId: number,
+    mediaSize: string
+  ): boolean {
+    const { conversionApi, data } = eventData;
+    const { consumable, writer } = conversionApi;
+    const { viewItem } = data;
+
+    const image = writer.createElement("imageInline");
+    writer.setAttributes(
+      {
+        src: resolveMediaUrl(mediaId, mediaSize),
+        mediaId,
+        mediaSize,
+      },
+      image
+    );
+
+    conversionApi.convertChildren(viewItem, image);
+
+    if (!conversionApi.safeInsert(image, data.modelCursor)) {
+      return false;
+    }
+
+    consumable.consume(viewItem, { name: true });
+    conversionApi.updateConversionResult(image, data);
+
+    return true;
+  }
 }
 
 export default WoltlabMedia;
+
+type ResolveMediaUrl = (mediaId: number, mediaSize: string) => string;
+
+type WoltlabMediaConfig = {
+  resolveMediaUrl: ResolveMediaUrl;
+};
+
+declare module "@ckeditor/ckeditor5-core" {
+  interface EditorConfig {
+    woltlabMedia?: WoltlabMediaConfig;
+  }
+}
