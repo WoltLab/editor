@@ -161,7 +161,7 @@ export class WoltlabCodeBlockPanelView extends View {
       .model._codeBlockLanguage as string;
 
     dropdown.buttonView.bind("label").to(this, "highlighter", (highlighter) => {
-      const language = highlighter ? highlighter.toString() : "plaintext";
+      const language = highlighter ? highlighter.toString() : "plain";
 
       return normalizedLanguageDefs.find((def) => def.language == language)!
         .label;
