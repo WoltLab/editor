@@ -231,7 +231,10 @@ export class WoltlabSpoilerEditing extends Plugin {
             "data-label": t("Spoiler"),
           });
 
-          return toWidget(div, writer, { label: "spoiler widget" });
+          return toWidget(div, writer, {
+            hasSelectionHandle: true,
+            label: "spoiler widget",
+          });
         },
       })
       .elementToElement({
