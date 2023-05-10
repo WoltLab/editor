@@ -20,6 +20,7 @@ import {
 } from "@ckeditor/ckeditor5-basic-styles";
 import { BlockQuote } from "@ckeditor/ckeditor5-block-quote";
 import { CodeBlock } from "@ckeditor/ckeditor5-code-block";
+import { icons } from "@ckeditor/ckeditor5-core";
 import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 import { Essentials } from "@ckeditor/ckeditor5-essentials";
 import { FontColor, FontFamily, FontSize } from "@ckeditor/ckeditor5-font";
@@ -126,7 +127,26 @@ export async function create(
         integrations: ["insertImageViaUrl"],
         type: "inline",
       },
-      toolbar: ["imageStyle:inline", "imageStyle:block", "imageStyle:side"],
+      toolbar: [
+        "imageStyle:inline",
+        "imageStyle:sideLeft",
+        "imageStyle:block",
+        "imageStyle:side",
+      ],
+      styles: {
+        options: [
+          "inline",
+          {
+            name: "sideLeft",
+            title: "Left aligned image",
+            icon: icons.objectLeft,
+            modelElements: ["imageBlock"],
+            className: "image-style-side-left",
+          },
+          "block",
+          "side",
+        ],
+      },
     };
 
     if (!removePlugins.includes("Link")) {
