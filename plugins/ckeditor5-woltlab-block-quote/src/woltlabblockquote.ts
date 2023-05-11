@@ -12,6 +12,7 @@ import { icons, Plugin } from "@ckeditor/ckeditor5-core";
 import { Element as CKEditorElement } from "@ckeditor/ckeditor5-engine";
 import { createDropdown, SplitButtonView } from "@ckeditor/ckeditor5-ui";
 import { first } from "@ckeditor/ckeditor5-utils";
+import { toWidget, toWidgetEditable } from "@ckeditor/ckeditor5-widget";
 import { WoltlabBlockQuotePanelView } from "./ui/woltlabblockquotepanelview";
 
 import "../theme/woltlabblockquote.css";
@@ -42,8 +43,15 @@ export class WoltlabBlockQuote extends Plugin {
   init() {
     const editor = this.editor;
 
+    editor.model.schema.register("blockQuoteWidget", {
+      allowWhere: "$block",
+      isObject: true,
+    });
+
     editor.model.schema.extend("blockQuote", {
       allowAttributes: ["author", "link"],
+      allowIn: "blockQuoteWidget",
+      isLimit: true,
     });
 
     const command = editor.commands.get("blockQuote")!;
@@ -145,6 +153,8 @@ export class WoltlabBlockQuote extends Plugin {
         const { viewItem } = data;
         const { consumable, writer } = conversionApi;
 
+        const blockQuoteWidget = writer.createElement("blockQuoteWidget");
+
         const blockQuote = writer.createElement("blockQuote");
         writer.setAttributes(
           {
@@ -153,23 +163,49 @@ export class WoltlabBlockQuote extends Plugin {
           },
           blockQuote
         );
+        writer.append(blockQuote, blockQuoteWidget);
 
-        conversionApi.convertChildren(viewItem, blockQuote);
-
-        if (!conversionApi.safeInsert(blockQuote, data.modelCursor)) {
+        if (!conversionApi.safeInsert(blockQuoteWidget, data.modelCursor)) {
           return;
         }
 
         consumable.consume(viewItem, { name: true });
-        conversionApi.updateConversionResult(blockQuote, data);
+
+        conversionApi.convertChildren(viewItem, blockQuote);
+
+        conversionApi.updateConversionResult(blockQuoteWidget, data);
       },
       { priority: "high" }
     );
   }
 
   #setupEditingDowncast(): void {
+    this.editor.conversion
+      .for("editingDowncast")
+      .elementToElement({
+        model: "blockQuoteWidget",
+        view: (_modelElement, { writer }) => {
+          const div = writer.createContainerElement("div", {
+            class: "ck-woltlabblockquote",
+          });
+
+          return toWidget(div, writer, { hasSelectionHandle: true });
+        },
+      })
+      .elementToElement({
+        model: "blockQuote",
+        view: (_modelElement, { writer }) => {
+          const div = writer.createEditableElement("div", {
+            class: "ck-woltlabblockquote__content",
+          });
+
+          return toWidgetEditable(div, writer);
+        },
+        converterPriority: "highest",
+      });
+
     this.editor.editing.downcastDispatcher.on(
-      "insert:blockQuote",
+      "insert:blockQuotex",
       (_evt, data, conversionApi) => {
         const { writer, mapper, consumable } = conversionApi;
 
@@ -240,7 +276,7 @@ export class WoltlabBlockQuote extends Plugin {
 
   #setupDowncast(): void {
     this.editor.data.downcastDispatcher.on(
-      "insert:blockQuote",
+      "insert:blockQuoteWidget",
       (_evt, data, conversionApi) => {
         const { writer, mapper, consumable } = conversionApi;
 
@@ -262,6 +298,12 @@ export class WoltlabBlockQuote extends Plugin {
 
         writer.insert(targetViewPosition, pre);
         mapper.bindElements(data.item, pre);
+
+        const content = data.item.getChild(0);
+        if (content.is("element", "blockQuote")) {
+          mapper.bindElements(content, pre);
+          consumable.consume(content, "insert");
+        }
       },
       { priority: "high" }
     );
