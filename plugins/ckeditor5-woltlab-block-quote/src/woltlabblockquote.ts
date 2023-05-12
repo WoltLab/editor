@@ -194,48 +194,30 @@ export class WoltlabBlockQuote extends Plugin {
       })
       .elementToElement({
         model: "blockQuote",
-        view: (_modelElement, { writer }) => {
-          const div = writer.createEditableElement("div", {
+        view: (modelElement, { writer }) => {
+          const author = attributeValueToString(
+            modelElement.getAttribute("author")
+          );
+          const link = attributeValueToString(
+            modelElement.getAttribute("link")
+          );
+          const source = this.getSource(author, link);
+
+          const attributes: Record<string, string> = {
             class: "ck-woltlabblockquote__content",
-          });
+          };
+          if (source !== "") {
+            attributes["data-source"] = source;
+          }
+
+          // Must not use the `<blockquote>` element because the blokquote
+          // plugin attaches an event listener to it to handle the enter key.
+          const div = writer.createEditableElement("div", attributes);
 
           return toWidgetEditable(div, writer);
         },
         converterPriority: "highest",
       });
-
-    this.editor.editing.downcastDispatcher.on(
-      "insert:blockQuotex",
-      (_evt, data, conversionApi) => {
-        const { writer, mapper, consumable } = conversionApi;
-
-        if (!consumable.consume(data.item, "insert")) {
-          return;
-        }
-
-        const author = attributeValueToString(data.item.getAttribute("author"));
-        const link = attributeValueToString(data.item.getAttribute("link"));
-        const source = this.getSource(author, link);
-
-        const attributes: Record<string, string> = {};
-        if (source !== "") {
-          attributes["data-source"] = source;
-        }
-
-        const blockquote = writer.createContainerElement(
-          "blockquote",
-          attributes
-        );
-
-        const targetViewPosition = mapper.toViewPosition(
-          this.editor.model.createPositionBefore(data.item)
-        );
-        writer.insert(targetViewPosition, blockquote);
-
-        mapper.bindElements(data.item, blockquote);
-      },
-      { priority: "high" }
-    );
 
     this.editor.editing.downcastDispatcher.on(
       "attribute:author:blockQuote",
