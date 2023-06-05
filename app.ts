@@ -40,6 +40,7 @@ import { List } from "@ckeditor/ckeditor5-list";
 import { Mention } from "@ckeditor/ckeditor5-mention";
 import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
 import { PasteFromOffice } from "@ckeditor/ckeditor5-paste-from-office";
+import { RemoveFormat } from "@ckeditor/ckeditor5-remove-format";
 import { Table, TableToolbar } from "@ckeditor/ckeditor5-table";
 import { WoltlabAttachment } from "./plugins/ckeditor5-woltlab-attachment";
 import { WoltlabAutosave } from "./plugins/ckeditor5-woltlab-autosave";
@@ -76,6 +77,7 @@ const defaultConfig: EditorConfig = {
     FontSize,
     Heading,
     Italic,
+    RemoveFormat,
     Strikethrough,
     Subscript,
     Superscript,
