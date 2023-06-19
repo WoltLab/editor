@@ -297,15 +297,13 @@ export class WoltlabBlockQuote extends Plugin {
   }
 
   getSource(author: string, link: string): string {
-    const components: string[] = [];
+    const { t } = this.editor;
+
     if (author) {
-      components.push(author);
-    }
-    if (link) {
-      components.push(link);
+      return t("Quote from %0", author);
     }
 
-    return components.join(", ");
+    return t("Quote");
   }
 }
 
