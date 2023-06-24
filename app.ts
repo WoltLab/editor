@@ -25,6 +25,7 @@ import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 import { Essentials } from "@ckeditor/ckeditor5-essentials";
 import { FontColor, FontFamily, FontSize } from "@ckeditor/ckeditor5-font";
 import { Heading } from "@ckeditor/ckeditor5-heading";
+import { Highlight } from "@ckeditor/ckeditor5-highlight";
 import { HtmlEmbed } from "@ckeditor/ckeditor5-html-embed";
 import {
   Image,
@@ -76,6 +77,7 @@ const defaultConfig: EditorConfig = {
     FontFamily,
     FontSize,
     Heading,
+    Highlight,
     Italic,
     RemoveFormat,
     Strikethrough,
