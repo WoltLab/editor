@@ -192,13 +192,11 @@ export class WoltlabCodeBlockPanelView extends View {
     );
     labeledFieldView.label = t("Line number");
 
-    labeledFieldView.fieldView
-      .bind("value")
-      .to(this, "line", (value) => value || "");
-    labeledFieldView.fieldView.on("input", () => {
-      this.line = (
-        labeledFieldView.fieldView.element as HTMLInputElement
-      ).value;
+    const { fieldView } = labeledFieldView;
+    fieldView.min = 0;
+    fieldView.bind("value").to(this, "line", (value) => value || "");
+    fieldView.on("input", () => {
+      this.line = (fieldView.element as HTMLInputElement).value;
     });
 
     return labeledFieldView;
