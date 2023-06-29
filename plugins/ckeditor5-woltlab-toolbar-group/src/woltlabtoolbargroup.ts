@@ -10,6 +10,7 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import type { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
+import type { DropdownView } from "@ckeditor/ckeditor5-ui";
 
 export class WoltlabToolbarGroup extends Plugin {
   static get pluginName() {
@@ -40,8 +41,8 @@ export class WoltlabToolbarGroup extends Plugin {
           }
 
           return false;
-        });
-        const button = viewItem!.element as HTMLElement;
+        }) as DropdownView;
+        const button = viewItem.element as HTMLElement;
         const existingIcon = button.querySelector(
           ".ck-button__icon"
         ) as SVGElement;
@@ -53,10 +54,7 @@ export class WoltlabToolbarGroup extends Plugin {
 
         existingIcon.replaceWith(newIcon);
 
-        const label = button.querySelector(
-          ".ck-button__label"
-        ) as HTMLSpanElement;
-        label.textContent = item.label;
+        viewItem.buttonView.label = item.label;
 
         button.dataset.ckeTooltipText = item.label;
       });
