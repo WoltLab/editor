@@ -10,7 +10,11 @@
 
 import { getNormalizedAndLocalizedLanguageDefinitions } from "@ckeditor/ckeditor5-code-block/src/utils";
 import { Plugin } from "@ckeditor/ckeditor5-core";
-import { Element as CKEditorElement } from "@ckeditor/ckeditor5-engine";
+import {
+  Element as CKEditorElement,
+  type UpcastElementEvent,
+  type DowncastInsertEvent,
+} from "@ckeditor/ckeditor5-engine";
 import { createDropdown, SplitButtonView } from "@ckeditor/ckeditor5-ui";
 import { first } from "@ckeditor/ckeditor5-utils";
 import { WoltlabCodeBlockPanelView } from "./ui/woltlabcodeblockpanelview";
@@ -150,7 +154,7 @@ export class WoltlabCodeBlock extends Plugin {
   }
 
   #setupUpcast(): void {
-    this.editor.data.upcastDispatcher.on(
+    this.editor.data.upcastDispatcher.on<UpcastElementEvent>(
       "element:pre",
       (_evt, data, conversionApi) => {
         const { viewItem } = data;
@@ -184,7 +188,7 @@ export class WoltlabCodeBlock extends Plugin {
       this.editor
     );
 
-    this.editor.editing.downcastDispatcher.on(
+    this.editor.editing.downcastDispatcher.on<DowncastInsertEvent>(
       "insert:codeBlock",
       (_evt, data, conversionApi) => {
         const { writer, mapper, consumable } = conversionApi;
@@ -247,14 +251,14 @@ export class WoltlabCodeBlock extends Plugin {
         );
         writer.insert(targetViewPosition, pre);
 
-        mapper.bindElements(data.item, code);
+        mapper.bindElements(data.item as CKEditorElement, code);
       },
       { priority: "high" }
     );
   }
 
   #setupDowncast(): void {
-    this.editor.data.downcastDispatcher.on(
+    this.editor.data.downcastDispatcher.on<DowncastInsertEvent>(
       "insert:codeBlock",
       (_evt, data, conversionApi) => {
         const { writer, mapper, consumable } = conversionApi;
