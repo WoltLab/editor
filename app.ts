@@ -43,6 +43,7 @@ import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
 import { PasteFromOffice } from "@ckeditor/ckeditor5-paste-from-office";
 import { RemoveFormat } from "@ckeditor/ckeditor5-remove-format";
 import { Table, TableToolbar } from "@ckeditor/ckeditor5-table";
+import { Undo } from "@ckeditor/ckeditor5-undo";
 import { WoltlabAttachment } from "./plugins/ckeditor5-woltlab-attachment";
 import { WoltlabAutosave } from "./plugins/ckeditor5-woltlab-autosave";
 import { WoltlabBbcode } from "./plugins/ckeditor5-woltlab-bbcode";
@@ -68,6 +69,7 @@ const defaultConfig: EditorConfig = {
     Mention,
     Paragraph,
     PasteFromOffice,
+    Undo,
 
     // Formatting
     Alignment,
