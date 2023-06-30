@@ -288,7 +288,7 @@ export class WoltlabCodeBlock extends Plugin {
         });
 
         writer.insert(targetViewPosition, pre);
-        mapper.bindElements(data.item, pre);
+        mapper.bindElements(data.item as CKEditorElement, pre);
       },
       { priority: "high" }
     );
