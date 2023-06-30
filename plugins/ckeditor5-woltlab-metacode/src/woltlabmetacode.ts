@@ -10,6 +10,7 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import type {
+  UpcastElementEvent,
   UpcastConversionApi,
   UpcastConversionData,
   ViewElement,
@@ -29,49 +30,53 @@ export class WoltlabMetacode extends Plugin {
 
   #setupConversion() {
     this.editor.conversion.for("upcast").add((dispatcher) => {
-      dispatcher.on("element:woltlab-metacode", (_evt, data, conversionApi) => {
-        const { consumable, writer } = conversionApi;
-        const { viewItem } = data;
+      dispatcher.on<UpcastElementEvent>(
+        "element:woltlab-metacode",
+        (_evt, data, conversionApi) => {
+          const { consumable, writer } = conversionApi;
+          const { viewItem } = data;
 
-        const wrapper = { name: true };
+          const wrapper = { name: true };
 
-        if (!consumable.test(viewItem, wrapper)) {
-          return;
+          if (!consumable.test(viewItem, wrapper)) {
+            return;
+          }
+
+          const name = viewItem.getAttribute("data-name");
+          if (name === undefined) {
+            return;
+          }
+
+          const attributes = this.#unserializeAttributes(
+            viewItem.getAttribute("data-attributes") || ""
+          );
+
+          const eventInfo = new EventInfo(this, "upcast");
+          const eventData: WoltlabMetacodeUpcast = {
+            attributes,
+            conversionApi,
+            data,
+            name,
+          };
+          this.fire(eventInfo, eventData);
+          if (eventInfo.stop.called) {
+            return;
+          }
+
+          const attributeString =
+            this.#serializedAttributesToString(attributes);
+          const openingTag = writer.createText(`[${name}${attributeString}]`);
+          const closingTag = writer.createText(`[/${name}]`);
+
+          let modelCursor = data.modelCursor;
+          writer.insert(openingTag, modelCursor, 0);
+          modelCursor = modelCursor.getShiftedBy(openingTag.offsetSize);
+
+          writer.insert(closingTag, modelCursor, "end");
+
+          data.modelCursor = modelCursor;
         }
-
-        const name = viewItem.getAttribute("data-name");
-        if (name === undefined) {
-          return;
-        }
-
-        const attributes = this.#unserializeAttributes(
-          viewItem.getAttribute("data-attributes") || ""
-        );
-
-        const eventInfo = new EventInfo(this, "upcast");
-        const eventData: WoltlabMetacodeUpcast = {
-          attributes,
-          conversionApi,
-          data,
-          name,
-        };
-        this.fire(eventInfo, eventData);
-        if (eventInfo.stop.called) {
-          return;
-        }
-
-        const attributeString = this.#serializedAttributesToString(attributes);
-        const openingTag = writer.createText(`[${name}${attributeString}]`);
-        const closingTag = writer.createText(`[/${name}]`);
-
-        let modelCursor = data.modelCursor;
-        writer.insert(openingTag, modelCursor, 0);
-        modelCursor = modelCursor.getShiftedBy(openingTag.offsetSize);
-
-        writer.insert(closingTag, modelCursor, "end");
-
-        data.modelCursor = modelCursor;
-      });
+      );
     });
   }
 
