@@ -10,6 +10,7 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import type {
+  Element,
   UpcastElementEvent,
   UpcastConversionApi,
   UpcastConversionData,
@@ -63,16 +64,33 @@ export class WoltlabMetacode extends Plugin {
             return;
           }
 
+          let { modelCursor } = data;
+
+          // BBCodes may not be placed as text directly in the root of the editor,
+          // they must be wrapped in a paragraph instead.
+          const ancestors = modelCursor.getAncestors();
+
+          let paragraph: Element | undefined = undefined;
+          if (ancestors.length === 1 && ancestors[0].name === "$root") {
+            paragraph = writer.createElement("paragraph");
+
+            writer.insert(paragraph, modelCursor, 0);
+            modelCursor = writer.createPositionAt(paragraph, 0);
+          }
+
           const attributeString =
             this.#serializedAttributesToString(attributes);
           const openingTag = writer.createText(`[${name}${attributeString}]`);
           const closingTag = writer.createText(`[/${name}]`);
 
-          let modelCursor = data.modelCursor;
           writer.insert(openingTag, modelCursor, 0);
           modelCursor = modelCursor.getShiftedBy(openingTag.offsetSize);
 
           writer.insert(closingTag, modelCursor, "end");
+
+          if (paragraph !== undefined) {
+            modelCursor = writer.createPositionAfter(paragraph);
+          }
 
           data.modelCursor = modelCursor;
         }
