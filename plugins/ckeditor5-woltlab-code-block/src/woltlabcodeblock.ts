@@ -13,6 +13,7 @@ import { Plugin } from "@ckeditor/ckeditor5-core";
 import {
   Element as CKEditorElement,
   type UpcastElementEvent,
+  type DowncastAttributeEvent,
   type DowncastInsertEvent,
 } from "@ckeditor/ckeditor5-engine";
 import { createDropdown, SplitButtonView } from "@ckeditor/ckeditor5-ui";
@@ -59,15 +60,11 @@ export class WoltlabCodeBlock extends Plugin {
     this.#setupUpcast();
     this.#setupDowncast();
     this.#setupEditingDowncast();
+    this.#setupAttributeSummary();
 
-    this.listenTo(
-      this.#command,
-      "execute",
-      () => {
-        this.#updateCustomAttributes(this.#lastView);
-      },
-      { priority: "high" }
-    );
+    this.listenTo(this.#command, "execute", () => {
+      this.#updateCustomAttributes(this.#lastView);
+    });
   }
 
   #setupCodeBlock(): void {
@@ -294,13 +291,86 @@ export class WoltlabCodeBlock extends Plugin {
     );
   }
 
-  #updateCustomAttributes(lastView: WoltlabCodeBlockPanelView | undefined) {
+  #updateCustomAttributes(
+    lastView: WoltlabCodeBlockPanelView | undefined
+  ): void {
     const codeBlock = this.#getActiveCodeBlock();
     if (codeBlock && lastView !== undefined) {
       this.editor.model.change((writer) => {
         writer.setAttribute("file", lastView.file, codeBlock);
         writer.setAttribute("line", lastView.line, codeBlock);
       });
+    }
+  }
+
+  #setupAttributeSummary(): void {
+    const localizedLanguageDefs = getNormalizedAndLocalizedLanguageDefinitions(
+      this.editor
+    );
+
+    const attributes = ["file", "line"];
+    for (const attributeName of attributes) {
+      this.editor.editing.downcastDispatcher.on<DowncastAttributeEvent>(
+        `attribute:${attributeName}:codeBlock`,
+        (_evt, data, conversionApi) => {
+          const { mapper } = conversionApi;
+
+          const viewElement = mapper.toViewElement(
+            data.item as CKEditorElement
+          );
+          if (viewElement === undefined) {
+            return;
+          }
+
+          // Find the wrapping `<pre>`
+          const ancestors = viewElement.getAncestors();
+          const pre = ancestors[ancestors.length - 1];
+          if (!pre.is("element", "pre")) {
+            return;
+          }
+
+          const codeBlockFile = attributeValueToString(
+            data.item.getAttribute("file")
+          );
+          const codeBlockLanguage = attributeValueToString(
+            data.item.getAttribute("language")
+          );
+          const codeBlockLine = attributeValueToString(
+            data.item.getAttribute("line")
+          );
+
+          let label = "";
+          const localizedLanguage = localizedLanguageDefs.find(
+            (def) => def.language === codeBlockLanguage
+          )!;
+          if (localizedLanguage) {
+            label += localizedLanguage.label;
+          } else {
+            label += `Unknown (${codeBlockLanguage})`;
+          }
+          if (codeBlockFile || codeBlockLine) {
+            label += " (";
+
+            if (codeBlockFile) {
+              label += codeBlockFile;
+            }
+
+            if (codeBlockLine) {
+              if (codeBlockFile) {
+                label += " ";
+              }
+
+              label += `@ ${codeBlockLine}`;
+            }
+
+            label += ")";
+          }
+
+          this.editor.editing.view.change((writer) => {
+            writer.setAttribute("data-language", label, pre);
+          });
+        }
+      );
     }
   }
 
