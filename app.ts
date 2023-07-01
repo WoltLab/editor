@@ -50,6 +50,7 @@ import { WoltlabBbcode } from "./plugins/ckeditor5-woltlab-bbcode";
 import { WoltlabBlockQuote } from "./plugins/ckeditor5-woltlab-block-quote";
 import { WoltlabCode } from "./plugins/ckeditor5-woltlab-code";
 import { WoltlabCodeBlock } from "./plugins/ckeditor5-woltlab-code-block";
+import { WoltlabMagicParagraph } from "./plugins/ckeditor5-woltlab-magic-paragraph";
 import { WoltlabMedia } from "./plugins/ckeditor5-woltlab-media";
 import { WoltlabMention } from "./plugins/ckeditor5-woltlab-mention";
 import { WoltlabMetacode } from "./plugins/ckeditor5-woltlab-metacode";
@@ -110,6 +111,7 @@ const defaultConfig: EditorConfig = {
     WoltlabBbcode,
     WoltlabCode,
     WoltlabCodeBlock,
+    WoltlabMagicParagraph,
     WoltlabMedia,
     WoltlabMention,
     WoltlabMetacode,
