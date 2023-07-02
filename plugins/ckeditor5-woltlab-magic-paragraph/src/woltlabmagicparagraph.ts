@@ -100,6 +100,13 @@ export class WoltlabMagicParagraph extends Plugin {
         const topBoundary = top - parseInt(marginTop);
         const bottomBoundary = bottom + parseInt(marginBottom);
 
+        if (clientY < topBoundary) {
+          // The click occurred somewhere above this element but outsides its
+          // margin. Elements are being transversed from top to bottom which
+          // means that we can safely stop searching at this point.
+          return;
+        }
+
         if (clientY >= topBoundary && clientY <= top) {
           this.#insertParagraphBefore(candidate);
 
