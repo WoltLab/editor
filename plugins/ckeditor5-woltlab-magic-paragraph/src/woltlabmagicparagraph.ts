@@ -47,9 +47,55 @@ export class WoltlabMagicParagraph extends Plugin {
         }
 
         const { clientY } = domEvent;
+        const { domConverter } = this.editor.editing.view;
+
+        // Check if the click occurred before the first element or after the
+        // last element. These elements do not have a margin thus they would
+        // fail to detect in the margin hit check below.
+        const root = this.editor.editing.view.document.getRoot()!;
+        const firstChild = root.getChild(0);
+        if (firstChild === undefined) {
+          return;
+        }
+
+        if (firstChild.is("containerElement")) {
+          const model = this.editor.editing.mapper.toModelElement(firstChild);
+          if (model && WoltlabMagicParagraph.blockModels.includes(model.name)) {
+            const domElement = domConverter.mapViewToDom(firstChild)!;
+            const { top } = domElement?.getBoundingClientRect();
+
+            if (clientY <= top) {
+              event.stop();
+
+              this.#insertParagraphBefore(firstChild);
+              return;
+            }
+          }
+        }
+
+        if (root.childCount > 1) {
+          const lastChild = root.getChild(root.childCount - 1)!;
+
+          if (lastChild.is("containerElement")) {
+            const model = this.editor.editing.mapper.toModelElement(lastChild);
+            if (
+              model &&
+              WoltlabMagicParagraph.blockModels.includes(model.name)
+            ) {
+              const domElement = domConverter.mapViewToDom(lastChild)!;
+              const { bottom } = domElement?.getBoundingClientRect();
+
+              if (clientY >= bottom) {
+                event.stop();
+
+                this.#insertParagraphAfter(lastChild);
+                return;
+              }
+            }
+          }
+        }
 
         // Find any block element whose margin is possibly being clicked on.
-        const { domConverter } = this.editor.editing.view;
         for (const candidate of this.#findPossibleBlocks()) {
           const domElement = domConverter.mapViewToDom(candidate)!;
           const { bottom, top } = domElement.getBoundingClientRect();
