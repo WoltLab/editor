@@ -56,7 +56,7 @@ export class WoltlabMagicParagraph extends Plugin {
           const { marginBottom, marginTop } =
             window.getComputedStyle(domElement);
 
-          const topBoundary = top + parseInt(marginTop);
+          const topBoundary = top - parseInt(marginTop);
           const bottomBoundary = bottom + parseInt(marginBottom);
 
           if (clientY >= topBoundary && clientY <= top) {
