@@ -59,7 +59,7 @@ export class WoltlabMagicParagraph extends Plugin {
           const topBoundary = top + parseInt(marginTop);
           const bottomBoundary = bottom + parseInt(marginBottom);
 
-          if (clientY <= topBoundary && clientY >= top) {
+          if (clientY >= topBoundary && clientY <= top) {
             this.#insertParagraphBefore(candidate);
 
             event.stop();
@@ -76,11 +76,31 @@ export class WoltlabMagicParagraph extends Plugin {
   }
 
   #insertParagraphBefore(element: ContainerElement): void {
-    console.log("insertParagraphBefore", element);
+    // Check if the adjacent element is already paragraph.
+    let paragraph: Element | undefined = undefined;
+    if (element.previousSibling && element.previousSibling.is("element", "p")) {
+      paragraph = this.editor.editing.mapper.toModelElement(
+        element.previousSibling
+      );
+    } else {
+      paragraph = undefined;
+    }
+
+    this.editor.model.change((writer) => {
+      if (paragraph === undefined) {
+        paragraph = writer.createElement("paragraph");
+
+        const position = writer.createPositionBefore(
+          this.editor.editing.mapper.toModelElement(element)!
+        );
+        writer.insert(paragraph, position);
+      }
+
+      writer.setSelection(paragraph, "end");
+    });
   }
 
   #insertParagraphAfter(element: ContainerElement): void {
-    console.log("insertParagraphAfter", element);
     // Check if the adjacent element is already paragraph.
     let paragraph: Element | undefined = undefined;
     if (element.nextSibling && element.nextSibling.is("element", "p")) {
@@ -110,13 +130,21 @@ export class WoltlabMagicParagraph extends Plugin {
     const range = this.editor.editing.view.createRangeIn(root);
     for (const value of range.getWalker({ ignoreElementEnd: true })) {
       const node = value.item;
-      if (node.is("containerElement")) {
-        const model = this.editor.editing.mapper.toModelElement(node)!;
-        // TODO: model is undefined when hitting the edge of the contents!
-        console.log(model, "is", model.name);
-        if (WoltlabMagicParagraph.blockModels.includes(model.name)) {
-          yield node;
-        }
+      if (!node.is("containerElement")) {
+        continue;
+      }
+
+      const model = this.editor.editing.mapper.toModelElement(node);
+
+      // Certain block elements such as `<ul>` or `<ol>` are inserted into the
+      // view, but are not actually part of the model because there are only
+      // <listItem>.
+      if (model === undefined) {
+        continue;
+      }
+
+      if (WoltlabMagicParagraph.blockModels.includes(model.name)) {
+        yield node;
       }
     }
   }
