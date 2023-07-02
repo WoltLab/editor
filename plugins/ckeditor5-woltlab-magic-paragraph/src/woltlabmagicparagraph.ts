@@ -13,10 +13,10 @@
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import {
   ClickObserver,
-  Element,
+  type Element,
+  type ViewContainerElement,
   type ViewDocumentClickEvent,
 } from "@ckeditor/ckeditor5-engine";
-import ContainerElement from "@ckeditor/ckeditor5-engine/src/view/containerelement";
 
 export class WoltlabMagicParagraph extends Plugin {
   static readonly blockModels = ["blockQuote", "codeBlock", "spoiler", "table"];
@@ -122,7 +122,7 @@ export class WoltlabMagicParagraph extends Plugin {
     });
   }
 
-  #insertParagraphBefore(element: ContainerElement): void {
+  #insertParagraphBefore(element: ViewContainerElement): void {
     const { mapper } = this.editor.editing;
 
     // Check if the adjacent element is already paragraph.
@@ -147,7 +147,7 @@ export class WoltlabMagicParagraph extends Plugin {
     });
   }
 
-  #insertParagraphAfter(element: ContainerElement): void {
+  #insertParagraphAfter(element: ViewContainerElement): void {
     const { mapper } = this.editor.editing;
 
     // Check if the adjacent element is already paragraph.
@@ -172,7 +172,7 @@ export class WoltlabMagicParagraph extends Plugin {
     });
   }
 
-  *#findPossibleBlocks(): IterableIterator<ContainerElement> {
+  *#findPossibleBlocks(): IterableIterator<ViewContainerElement> {
     const { mapper, view } = this.editor.editing;
 
     const root = view.document.getRoot()!;
