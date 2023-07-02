@@ -32,8 +32,6 @@ export class WoltlabMagicParagraph extends Plugin {
     view.addObserver(ClickObserver);
 
     this.listenTo<ViewDocumentClickEvent>(document, "click", (event, data) => {
-      console.clear();
-
       const { domEvent, target } = data;
 
       // Ignore any click that hits a paragraph or list item, because those
