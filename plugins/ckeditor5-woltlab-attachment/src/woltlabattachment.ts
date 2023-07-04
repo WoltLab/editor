@@ -9,6 +9,10 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import { Image } from "@ckeditor/ckeditor5-image";
+import type {
+  WoltlabMetacode,
+  WoltlabMetacodeUpcast,
+} from "../../ckeditor5-woltlab-metacode/";
 
 export class WoltlabAttachment extends Plugin {
   static get pluginName() {
@@ -84,7 +88,116 @@ export class WoltlabAttachment extends Plugin {
           );
         });
       });
+
+    this.#setupAttachUpcast();
+  }
+
+  #setupAttachUpcast(): void {
+    const options = this.editor.config.get(
+      "woltlabAttachment"
+    ) as WoltlabAttachmentConfig;
+
+    const woltlabMetacode = this.editor.plugins.get(
+      "WoltlabMetacode"
+    ) as WoltlabMetacode;
+    woltlabMetacode.on(
+      "upcast",
+      (eventInfo, eventData: WoltlabMetacodeUpcast) => {
+        if (eventData.name !== "attach") {
+          return;
+        }
+
+        const attachmentId = parseInt(eventData.attributes[0].toString());
+        if (Number.isNaN(attachmentId)) {
+          return;
+        }
+
+        let floatBehavior = eventData.attributes[1]
+          ? eventData.attributes[1].toString()
+          : "none";
+        if (
+          floatBehavior !== "left" &&
+          floatBehavior !== "right" &&
+          floatBehavior !== "none"
+        ) {
+          floatBehavior = "none";
+        }
+
+        const isThumbnail = Boolean(
+          eventData.attributes[2] ? eventData.attributes[2] : "false"
+        );
+
+        if (
+          this.#upcastAttachment(
+            eventData,
+            options.resolveAttachmentUrl,
+            attachmentId,
+            floatBehavior as FloatBehavior,
+            isThumbnail
+          )
+        ) {
+          eventInfo.stop();
+        }
+      }
+    );
+  }
+
+  #upcastAttachment(
+    eventData: WoltlabMetacodeUpcast,
+    resolveAttachUrl: ResolveAttachmentUrl,
+    attachmentId: number,
+    floatBehavior: FloatBehavior,
+    isThumbnail: boolean
+  ): boolean {
+    const { conversionApi, data } = eventData;
+    const { consumable, writer } = conversionApi;
+    const { viewItem } = data;
+
+    let model = "imageInline";
+    let attributes: Record<string, unknown> = {
+      src: resolveAttachUrl(attachmentId, isThumbnail),
+      attachmentId,
+    };
+
+    if (floatBehavior === "left") {
+      model = "imageBlock";
+      attributes.imageStyle = "sideLeft";
+    } else if (floatBehavior === "right") {
+      model = "imageBlock";
+      attributes.imageStyle = "side";
+    }
+
+    const image = writer.createElement(model);
+    writer.setAttributes(attributes, image);
+
+    conversionApi.convertChildren(viewItem, image);
+
+    if (!conversionApi.safeInsert(image, data.modelCursor)) {
+      return false;
+    }
+
+    consumable.consume(viewItem, { name: true });
+    conversionApi.updateConversionResult(image, data);
+
+    return true;
   }
 }
 
 export default WoltlabAttachment;
+
+type FloatBehavior = "left" | "none" | "right";
+
+type ResolveAttachmentUrl = (
+  attachmentId: number,
+  isThumbnail: boolean
+) => string;
+
+type WoltlabAttachmentConfig = {
+  resolveAttachmentUrl: ResolveAttachmentUrl;
+};
+
+declare module "@ckeditor/ckeditor5-core" {
+  interface EditorConfig {
+    woltlabAttachment?: WoltlabAttachmentConfig;
+  }
+}
