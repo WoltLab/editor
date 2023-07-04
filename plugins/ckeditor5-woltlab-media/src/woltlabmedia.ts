@@ -41,6 +41,15 @@ export class WoltlabMedia extends Plugin {
       });
     });
 
+    conversion.attributeToAttribute({
+      model: "classList",
+      view: {
+        name: "img",
+        key: "class",
+        value: ["woltlabSuiteMedia"],
+      },
+    });
+
     const attributeMapping = new Map([
       ["mediaId", "data-media-id"],
       ["mediaSize", "data-media-size"],
