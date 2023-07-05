@@ -27,6 +27,7 @@ import { FontColor, FontFamily, FontSize } from "@ckeditor/ckeditor5-font";
 import { Heading } from "@ckeditor/ckeditor5-heading";
 import { Highlight } from "@ckeditor/ckeditor5-highlight";
 import { HtmlEmbed } from "@ckeditor/ckeditor5-html-embed";
+import { HorizontalLine } from "@ckeditor/ckeditor5-horizontal-line";
 import {
   Image,
   ImageInsertUI,
@@ -91,6 +92,7 @@ const defaultConfig: EditorConfig = {
     BlockQuote,
     CodeBlock,
     HtmlEmbed,
+    HorizontalLine,
     Image,
     ImageInsertUI,
     ImageToolbar,

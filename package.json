@@ -18,6 +18,7 @@
     "@ckeditor/ckeditor5-heading": "^37.1.0",
     "@ckeditor/ckeditor5-highlight": "^37.1.0",
     "@ckeditor/ckeditor5-html-embed": "^37.1.0",
+    "@ckeditor/ckeditor5-horizontal-line": "^37.1.0",
     "@ckeditor/ckeditor5-image": "^37.1.0",
     "@ckeditor/ckeditor5-indent": "^37.1.0",
     "@ckeditor/ckeditor5-link": "^37.1.0",
