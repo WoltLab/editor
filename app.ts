@@ -37,7 +37,7 @@ import {
   ImageUploadUI,
 } from "@ckeditor/ckeditor5-image";
 import { Indent } from "@ckeditor/ckeditor5-indent";
-import { Link, LinkImage } from "@ckeditor/ckeditor5-link";
+import { AutoLink, Link, LinkImage } from "@ckeditor/ckeditor5-link";
 import { List } from "@ckeditor/ckeditor5-list";
 import { Mention } from "@ckeditor/ckeditor5-mention";
 import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
@@ -171,6 +171,12 @@ export async function create(
   }
 
   const editor = await ClassicEditor.create(element, configuration);
+
+  // Unconditionally disable the `AutoLink` plugin which interferes with our
+  // own link detection and all creates potentially invalid links.
+  // See https://github.com/ckeditor/ckeditor5/issues/14497
+  const autoLink = editor.plugins.get(AutoLink);
+  autoLink?.forceDisabled("app.ts");
 
   return editor;
 }
