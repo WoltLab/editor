@@ -5,6 +5,6 @@
  * @since 6.0
  */
 
-.ck .ck-widget.smiley:hover {
-  outline: none;
+.ck .ck-widget.smiley {
+  pointer-events: none;
 }
