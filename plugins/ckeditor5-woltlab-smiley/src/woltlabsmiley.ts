@@ -55,17 +55,23 @@ export class WoltlabSmiley extends Plugin {
             return;
           }
 
-          const { mapper, writer } = conversionApi;
+          const { consumable, mapper, writer } = conversionApi;
 
-          // Inline images are widgetized which adds an outline when interacting
-          // with, breaks the caret movement and offers a toolbar to modify the
-          // positionining. Unfortunately, it is not possible to suppress this
-          // behavior, but everything depends on the custom property flag "widget"
-          // to check if it should offer any of these capabilities.
-          const viewElement = mapper.toViewElement(item)!;
-          writer.setCustomProperty("widget", false, viewElement);
+          if (!consumable.test(item, "insert")) {
+            return;
+          }
+
+          consumable.consume(item, "insert");
+
+          const image = writer.createEmptyElement("img");
+          const position = mapper.toViewPosition(
+            this.editor.model.createPositionBefore(item)
+          );
+          writer.insert(position, image);
+
+          mapper.bindElements(item, image);
         },
-        { priority: "low" }
+        { priority: "high" }
       );
     });
   }
