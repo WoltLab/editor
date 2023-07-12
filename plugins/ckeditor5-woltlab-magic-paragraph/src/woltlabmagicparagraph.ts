@@ -70,7 +70,7 @@ export class WoltlabMagicParagraph extends Plugin {
         }
       }
 
-      if (root.childCount > 1) {
+      if (root.childCount !== 0) {
         const lastChild = root.getChild(root.childCount - 1)!;
 
         if (lastChild.is("containerElement")) {
