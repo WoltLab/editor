@@ -31,6 +31,8 @@ import { HorizontalLine } from "@ckeditor/ckeditor5-horizontal-line";
 import {
   Image,
   ImageInsertUI,
+  ImageResizeEditing,
+  ImageResizeHandles,
   ImageStyle,
   ImageToolbar,
   ImageUpload,
@@ -51,6 +53,7 @@ import { WoltlabBbcode } from "./plugins/ckeditor5-woltlab-bbcode";
 import { WoltlabBlockQuote } from "./plugins/ckeditor5-woltlab-block-quote";
 import { WoltlabCode } from "./plugins/ckeditor5-woltlab-code";
 import { WoltlabCodeBlock } from "./plugins/ckeditor5-woltlab-code-block";
+import { WoltlabImage } from "./plugins/ckeditor5-woltlab-image";
 import { WoltlabMagicParagraph } from "./plugins/ckeditor5-woltlab-magic-paragraph";
 import { WoltlabMedia } from "./plugins/ckeditor5-woltlab-media";
 import { WoltlabMention } from "./plugins/ckeditor5-woltlab-mention";
@@ -97,6 +100,8 @@ const defaultConfig: EditorConfig = {
     Image,
     ImageInsertUI,
     ImageToolbar,
+    ImageResizeEditing,
+    ImageResizeHandles,
     ImageStyle,
     ImageUpload,
     ImageUploadUI,
@@ -113,6 +118,7 @@ const defaultConfig: EditorConfig = {
     WoltlabBbcode,
     WoltlabCode,
     WoltlabCodeBlock,
+    WoltlabImage,
     WoltlabMagicParagraph,
     WoltlabMedia,
     WoltlabMention,
