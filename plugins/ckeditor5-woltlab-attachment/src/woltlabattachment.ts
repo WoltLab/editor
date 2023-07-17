@@ -123,9 +123,29 @@ export class WoltlabAttachment extends Plugin {
           floatBehavior = "none";
         }
 
-        const isThumbnail = Boolean(
-          eventData.attributes[2] ? eventData.attributes[2] : "false"
-        );
+        let isThumbnail = eventData.attributes[2] as unknown;
+        if (typeof isThumbnail !== "boolean") {
+          if (typeof isThumbnail === "string") {
+            if (isThumbnail === "true") {
+              isThumbnail = true;
+            } else if (isThumbnail === "false") {
+              isThumbnail = false;
+            } else {
+              isThumbnail = parseInt(isThumbnail);
+              if (Number.isNaN(isThumbnail)) {
+                isThumbnail = false;
+              } else {
+                if (isThumbnail === 0) {
+                  isThumbnail = false;
+                } else {
+                  isThumbnail = true;
+                }
+              }
+            }
+          } else {
+            isThumbnail = false;
+          }
+        }
 
         if (
           this.#upcastAttachment(
