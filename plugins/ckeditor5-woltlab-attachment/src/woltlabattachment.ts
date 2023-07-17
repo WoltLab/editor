@@ -153,7 +153,7 @@ export class WoltlabAttachment extends Plugin {
             options.resolveAttachmentUrl,
             attachmentId,
             floatBehavior as FloatBehavior,
-            isThumbnail
+            isThumbnail as boolean
           )
         ) {
           eventInfo.stop();
