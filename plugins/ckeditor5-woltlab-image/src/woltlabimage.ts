@@ -54,19 +54,14 @@ export class WoltlabImage extends Plugin {
             return;
           }
 
-          const parent = item.getAncestors({ parentFirst: true })[0];
-          if (!parent.is("element")) {
-            return;
-          }
-
-          const width = parent.getAttribute("width");
+          const width = item.getAttribute("width");
           if (typeof width !== "string") {
             return;
           }
 
           const { mapper, writer } = conversionApi;
 
-          const viewElement = mapper.toViewElement(parent);
+          const viewElement = mapper.toViewElement(item);
           if (viewElement === undefined) {
             return;
           }

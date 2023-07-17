@@ -147,13 +147,22 @@ export class WoltlabAttachment extends Plugin {
           }
         }
 
+        let width = eventData.attributes[3];
+        if (
+          width === undefined ||
+          !/^(100%|\d{2}(\.\d{2})%)$/.test(width.toString())
+        ) {
+          width = "100%";
+        }
+
         if (
           this.#upcastAttachment(
             eventData,
             options.resolveAttachmentUrl,
             attachmentId,
             floatBehavior as FloatBehavior,
-            isThumbnail as boolean
+            isThumbnail as boolean,
+            width as string
           )
         ) {
           eventInfo.stop();
@@ -167,7 +176,8 @@ export class WoltlabAttachment extends Plugin {
     resolveAttachUrl: ResolveAttachmentUrl,
     attachmentId: number,
     floatBehavior: FloatBehavior,
-    isThumbnail: boolean
+    isThumbnail: boolean,
+    width: string
   ): boolean {
     const { conversionApi, data } = eventData;
     const { consumable, writer } = conversionApi;
@@ -175,8 +185,9 @@ export class WoltlabAttachment extends Plugin {
 
     let model = "imageInline";
     let attributes: Record<string, unknown> = {
-      src: resolveAttachUrl(attachmentId, isThumbnail),
       attachmentId,
+      src: resolveAttachUrl(attachmentId, isThumbnail),
+      width,
     };
 
     if (floatBehavior === "left") {
