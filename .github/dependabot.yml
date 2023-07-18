@@ -4,6 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      CKEditor:
+        patterns:
+          - "@ckeditor/*"
   - package-ecosystem: "github-actions"
     directory: /
     schedule:
