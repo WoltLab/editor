@@ -33,17 +33,17 @@
     "@ckeditor/ckeditor5-undo": "^37.1.0",
     "@ckeditor/ckeditor5-utils": "^37.1.0",
     "@ckeditor/ckeditor5-widget": "^37.1.0",
-    "css-loader": "^6.7.3",
-    "postcss-loader": "^7.3.0",
+    "css-loader": "^6.8.1",
+    "postcss-loader": "^7.3.3",
     "raw-loader": "^4.0.2",
-    "style-loader": "^3.3.2",
+    "style-loader": "^3.3.3",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-inspector": "^4.1.0",
     "prettier": "^2.8.8",
-    "ts-loader": "^9.4.2",
+    "ts-loader": "^9.4.4",
     "typescript": "^5.1.6"
   }
 }
