@@ -228,7 +228,6 @@ export class WoltlabSpoilerEditing extends Plugin {
         view: (_modelElement, { writer }) => {
           const div = writer.createContainerElement("div", {
             class: "ck-woltlabspoiler",
-            "data-label": t("Spoiler"),
           });
 
           return toWidget(div, writer, {
@@ -242,6 +241,7 @@ export class WoltlabSpoilerEditing extends Plugin {
         view: (_modelElement, { writer }) => {
           const div = writer.createEditableElement("div", {
             class: "ck-woltlabspoiler__title",
+            "data-label": t("Spoiler"),
           });
 
           enablePlaceholder({

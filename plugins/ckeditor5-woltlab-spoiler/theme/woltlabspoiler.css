@@ -6,12 +6,6 @@
  */
 
 .ck.ck-content .ck-woltlabspoiler {
-  column-gap: 10px;
-  display: grid;
-  grid-template-areas:
-    "label   title"
-    "content content";
-  grid-template-columns: minmax(0, max-content) auto;
   margin-top: var(--ck-spacing-large);
   padding: 5px 5px 5px 15px;
   position: relative;
@@ -28,17 +22,13 @@
   width: 5px;
 }
 
-.ck.ck-content .ck-woltlabspoiler::before {
+.ck.ck-content .ck-woltlabspoiler__title {
+  column-gap: 10px;
+  display: flex;
+}
+
+.ck.ck-content .ck-woltlabspoiler__title::before {
   align-self: center;
   content: attr(data-label);
   color: #999;
-  grid-area: label;
-}
-
-.ck.ck-content .ck-woltlabspoiler__title {
-  grid-area: title;
-}
-
-.ck.ck-content .ck-woltlabspoiler__content {
-  grid-area: content;
 }
