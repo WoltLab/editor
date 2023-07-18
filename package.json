@@ -32,7 +32,7 @@
     "@ckeditor/ckeditor5-ui": "^37.1.0",
     "@ckeditor/ckeditor5-undo": "^37.1.0",
     "@ckeditor/ckeditor5-utils": "^37.1.0",
-    "@ckeditor/ckeditor5-widget": "^37.1.0",
+    "@ckeditor/ckeditor5-widget": "^38.1.1",
     "css-loader": "^6.8.1",
     "postcss-loader": "^7.3.3",
     "raw-loader": "^4.0.2",
