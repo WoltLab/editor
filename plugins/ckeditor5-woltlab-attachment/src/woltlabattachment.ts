@@ -112,6 +112,10 @@ export class WoltlabAttachment extends Plugin {
           return;
         }
 
+        if (!options.inlineImageIds.includes(attachmentId)) {
+          return;
+        }
+
         let floatBehavior = eventData.attributes[1]
           ? eventData.attributes[1].toString()
           : "none";
@@ -224,6 +228,7 @@ type ResolveAttachmentUrl = (
 ) => string;
 
 type WoltlabAttachmentConfig = {
+  inlineImageIds: number[];
   resolveAttachmentUrl: ResolveAttachmentUrl;
 };
 
