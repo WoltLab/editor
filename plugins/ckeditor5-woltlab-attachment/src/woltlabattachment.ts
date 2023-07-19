@@ -159,6 +159,9 @@ export class WoltlabAttachment extends Plugin {
           width = "100%";
         }
 
+        // TODO: Remove this.
+        width = "auto";
+
         if (
           this.#upcastAttachment(
             eventData,
