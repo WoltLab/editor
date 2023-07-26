@@ -49,7 +49,7 @@ export class WoltlabMetacode extends Plugin {
           }
 
           const attributes = this.#unserializeAttributes(
-            viewItem.getAttribute("data-attributes") || ""
+            viewItem.getAttribute("data-attributes") || "",
           );
 
           const eventInfo = new EventInfo(this, "upcast");
@@ -93,7 +93,7 @@ export class WoltlabMetacode extends Plugin {
           }
 
           data.modelCursor = modelCursor;
-        }
+        },
       );
     });
   }

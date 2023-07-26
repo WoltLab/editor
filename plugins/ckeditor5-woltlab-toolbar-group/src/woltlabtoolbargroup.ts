@@ -34,7 +34,7 @@ export class WoltlabToolbarGroup extends Plugin {
         const viewItem = toolbarItems.find((view) => {
           if (
             view.element?.querySelector(
-              `[data-cke-tooltip-text="woltlabToolbarGroup_${name}"]`
+              `[data-cke-tooltip-text="woltlabToolbarGroup_${name}"]`,
             ) !== null
           ) {
             return true;
@@ -44,7 +44,7 @@ export class WoltlabToolbarGroup extends Plugin {
         }) as DropdownView;
         const button = viewItem.element as HTMLElement;
         const existingIcon = button.querySelector(
-          ".ck-button__icon"
+          ".ck-button__icon",
         ) as SVGElement;
 
         const [iconName, forceSolid] = item.icon.split(";", 2);

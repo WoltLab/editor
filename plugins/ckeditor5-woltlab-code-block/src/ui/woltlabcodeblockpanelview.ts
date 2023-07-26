@@ -75,7 +75,7 @@ export class WoltlabCodeBlockPanelView extends View {
       getNormalizedAndLocalizedLanguageDefinitions(editor);
     this.#highlightersView = this.#createHighlighterDropdown(
       locale,
-      normalizedLanguageDefs
+      normalizedLanguageDefs,
     );
 
     const lineNumberView = this.#createLineView(locale);
@@ -125,7 +125,7 @@ export class WoltlabCodeBlockPanelView extends View {
       (_evt, domEvt) => {
         domEvt.stopPropagation();
       },
-      { priority: "high" }
+      { priority: "high" },
     );
 
     this.on("submit", () => {
@@ -149,12 +149,12 @@ export class WoltlabCodeBlockPanelView extends View {
 
   #createHighlighterDropdown(
     locale: Locale,
-    normalizedLanguageDefs: CodeBlockLanguageDefinition
+    normalizedLanguageDefs: CodeBlockLanguageDefinition,
   ): DropdownView {
     const t = locale.t;
     const dropdown = createDropdown(locale);
     const groupDefinitions = this.#getLanguageGroupListItemDefinitions(
-      normalizedLanguageDefs
+      normalizedLanguageDefs,
     );
 
     this.highlighter = (groupDefinitions.first! as ListDropdownButtonDefinition)
@@ -188,7 +188,7 @@ export class WoltlabCodeBlockPanelView extends View {
 
     const labeledFieldView = new LabeledFieldView(
       locale,
-      createLabeledInputNumber
+      createLabeledInputNumber,
     );
     labeledFieldView.label = t("Line number");
 
@@ -207,7 +207,7 @@ export class WoltlabCodeBlockPanelView extends View {
 
     const labeledFieldView = new LabeledFieldView(
       locale,
-      createLabeledInputText
+      createLabeledInputText,
     );
     labeledFieldView.label = t("Filename");
 
@@ -224,7 +224,7 @@ export class WoltlabCodeBlockPanelView extends View {
   }
 
   #getLanguageGroupListItemDefinitions(
-    normalizedLanguageDefs: CodeBlockLanguageDefinition
+    normalizedLanguageDefs: CodeBlockLanguageDefinition,
   ): Collection<ListDropdownItemDefinition> {
     const groupDefs = new Collection<ListDropdownItemDefinition>();
 
@@ -283,7 +283,7 @@ export class WoltlabCodeBlockPanelView extends View {
   #setupTemplate(
     locale: Locale,
     lineNumberView: LabeledFieldView,
-    filenameView: LabeledFieldView
+    filenameView: LabeledFieldView,
   ): void {
     this.setTemplate({
       tag: "form",

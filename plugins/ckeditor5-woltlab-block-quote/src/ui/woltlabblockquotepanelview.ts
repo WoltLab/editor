@@ -98,7 +98,7 @@ export class WoltlabBlockQuotePanelView extends View {
       (_evt, domEvt) => {
         domEvt.stopPropagation();
       },
-      { priority: "high" }
+      { priority: "high" },
     );
 
     this.on("submit", () => {
@@ -125,7 +125,7 @@ export class WoltlabBlockQuotePanelView extends View {
 
     const labeledFieldView = new LabeledFieldView(
       locale,
-      createLabeledInputText
+      createLabeledInputText,
     );
     labeledFieldView.label = t("Author");
 
@@ -146,7 +146,7 @@ export class WoltlabBlockQuotePanelView extends View {
 
     const labeledFieldView = new LabeledFieldView(
       locale,
-      createLabeledInputText
+      createLabeledInputText,
     );
     labeledFieldView.label = t("Link");
 
@@ -197,7 +197,7 @@ export class WoltlabBlockQuotePanelView extends View {
   #setupTemplate(
     locale: Locale,
     authorView: LabeledFieldView,
-    linkView: LabeledFieldView
+    linkView: LabeledFieldView,
   ): void {
     this.setTemplate({
       tag: "form",

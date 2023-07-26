@@ -43,7 +43,7 @@ export class WoltlabImage extends Plugin {
 
           writer.setAttribute("data-width", width, viewElement);
         },
-        { priority: "lowest" }
+        { priority: "lowest" },
       );
 
       dispatcher.on<DowncastInsertEvent>(
@@ -68,7 +68,7 @@ export class WoltlabImage extends Plugin {
 
           writer.setAttribute("data-width", width, viewElement);
         },
-        { priority: "lowest" }
+        { priority: "lowest" },
       );
     });
   }

@@ -97,7 +97,7 @@ export class WoltlabCodeBlock extends Plugin {
 
       dropdownView.on("submit", (evt) => {
         const view = evt.path.find(
-          (view) => view instanceof WoltlabCodeBlockPanelView
+          (view) => view instanceof WoltlabCodeBlockPanelView,
         );
 
         if (view instanceof WoltlabCodeBlockPanelView) {
@@ -132,7 +132,7 @@ export class WoltlabCodeBlock extends Plugin {
           if (codeBlock) {
             view.file = attributeValueToString(codeBlock.getAttribute("file"));
             view.highlighter = attributeValueToString(
-              codeBlock.getAttribute("language")
+              codeBlock.getAttribute("language"),
             );
             view.line = attributeValueToString(codeBlock.getAttribute("line"));
           } else {
@@ -164,7 +164,7 @@ export class WoltlabCodeBlock extends Plugin {
             language: viewItem.getAttribute("data-highlighter") || "",
             line: viewItem.getAttribute("data-line") || "",
           },
-          codeBlock
+          codeBlock,
         );
 
         conversionApi.convertChildren(viewItem, codeBlock);
@@ -176,13 +176,13 @@ export class WoltlabCodeBlock extends Plugin {
         consumable.consume(viewItem, { name: true });
         conversionApi.updateConversionResult(codeBlock, data);
       },
-      { priority: "high" }
+      { priority: "high" },
     );
   }
 
   #setupEditingDowncast(): void {
     const localizedLanguageDefs = getNormalizedAndLocalizedLanguageDefinitions(
-      this.editor
+      this.editor,
     );
 
     this.editor.editing.downcastDispatcher.on<DowncastInsertEvent>(
@@ -195,13 +195,13 @@ export class WoltlabCodeBlock extends Plugin {
         }
 
         const codeBlockFile = attributeValueToString(
-          data.item.getAttribute("file")
+          data.item.getAttribute("file"),
         );
         const codeBlockLanguage = attributeValueToString(
-          data.item.getAttribute("language")
+          data.item.getAttribute("language"),
         );
         const codeBlockLine = attributeValueToString(
-          data.item.getAttribute("line")
+          data.item.getAttribute("line"),
         );
 
         const code = writer.createContainerElement("code", {
@@ -210,7 +210,7 @@ export class WoltlabCodeBlock extends Plugin {
 
         let label = "";
         const localizedLanguage = localizedLanguageDefs.find(
-          (def) => def.language === codeBlockLanguage
+          (def) => def.language === codeBlockLanguage,
         )!;
         if (localizedLanguage) {
           label += localizedLanguage.label;
@@ -240,17 +240,17 @@ export class WoltlabCodeBlock extends Plugin {
             "data-language": label,
             spellcheck: "false",
           },
-          code
+          code,
         );
 
         const targetViewPosition = mapper.toViewPosition(
-          this.editor.model.createPositionBefore(data.item)
+          this.editor.model.createPositionBefore(data.item),
         );
         writer.insert(targetViewPosition, pre);
 
         mapper.bindElements(data.item as CKEditorElement, code);
       },
-      { priority: "high" }
+      { priority: "high" },
     );
   }
 
@@ -265,17 +265,17 @@ export class WoltlabCodeBlock extends Plugin {
         }
 
         const codeBlockFile = attributeValueToString(
-          data.item.getAttribute("file")
+          data.item.getAttribute("file"),
         );
         const codeBlockLanguage = attributeValueToString(
-          data.item.getAttribute("language")
+          data.item.getAttribute("language"),
         );
         const codeBlockLine = attributeValueToString(
-          data.item.getAttribute("line")
+          data.item.getAttribute("line"),
         );
 
         const targetViewPosition = mapper.toViewPosition(
-          this.editor.model.createPositionBefore(data.item)
+          this.editor.model.createPositionBefore(data.item),
         );
 
         const pre = writer.createContainerElement("pre", {
@@ -287,12 +287,12 @@ export class WoltlabCodeBlock extends Plugin {
         writer.insert(targetViewPosition, pre);
         mapper.bindElements(data.item as CKEditorElement, pre);
       },
-      { priority: "high" }
+      { priority: "high" },
     );
   }
 
   #updateCustomAttributes(
-    lastView: WoltlabCodeBlockPanelView | undefined
+    lastView: WoltlabCodeBlockPanelView | undefined,
   ): void {
     const codeBlock = this.#getActiveCodeBlock();
     if (codeBlock && lastView !== undefined) {
@@ -305,7 +305,7 @@ export class WoltlabCodeBlock extends Plugin {
 
   #setupAttributeSummary(): void {
     const localizedLanguageDefs = getNormalizedAndLocalizedLanguageDefinitions(
-      this.editor
+      this.editor,
     );
 
     const attributes = ["file", "line"];
@@ -316,7 +316,7 @@ export class WoltlabCodeBlock extends Plugin {
           const { mapper } = conversionApi;
 
           const viewElement = mapper.toViewElement(
-            data.item as CKEditorElement
+            data.item as CKEditorElement,
           );
           if (viewElement === undefined) {
             return;
@@ -330,18 +330,18 @@ export class WoltlabCodeBlock extends Plugin {
           }
 
           const codeBlockFile = attributeValueToString(
-            data.item.getAttribute("file")
+            data.item.getAttribute("file"),
           );
           const codeBlockLanguage = attributeValueToString(
-            data.item.getAttribute("language")
+            data.item.getAttribute("language"),
           );
           const codeBlockLine = attributeValueToString(
-            data.item.getAttribute("line")
+            data.item.getAttribute("line"),
           );
 
           let label = "";
           const localizedLanguage = localizedLanguageDefs.find(
-            (def) => def.language === codeBlockLanguage
+            (def) => def.language === codeBlockLanguage,
           )!;
           if (localizedLanguage) {
             label += localizedLanguage.label;
@@ -369,7 +369,7 @@ export class WoltlabCodeBlock extends Plugin {
           this.editor.editing.view.change((writer) => {
             writer.setAttribute("data-language", label, pre);
           });
-        }
+        },
       );
     }
   }

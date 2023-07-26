@@ -21,7 +21,7 @@ export class WoltlabBbcode extends Plugin {
     const { componentFactory } = this.editor.ui;
 
     const options = this.editor.config.get(
-      "woltlabBbcode"
+      "woltlabBbcode",
     ) as WoltlabBbcodeConfig;
 
     if (!options) {
@@ -39,7 +39,7 @@ export class WoltlabBbcode extends Plugin {
   #initButton(
     item: WoltlabBbcodeButton,
     componentFactory: ComponentFactory,
-    command: Command
+    command: Command,
   ): void {
     const { icon, name, label } = item;
 

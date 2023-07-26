@@ -30,7 +30,7 @@ export class WoltlabAutosave extends Plugin {
         event.return = false;
         event.stop();
       },
-      { priority: "highest" }
+      { priority: "highest" },
     );
   }
 }

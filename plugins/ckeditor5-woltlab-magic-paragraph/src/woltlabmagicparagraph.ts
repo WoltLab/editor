@@ -136,7 +136,7 @@ export class WoltlabMagicParagraph extends Plugin {
         paragraph = writer.createElement("paragraph");
 
         const position = writer.createPositionBefore(
-          mapper.toModelElement(element)!
+          mapper.toModelElement(element)!,
         );
         writer.insert(paragraph, position);
       }
@@ -161,7 +161,7 @@ export class WoltlabMagicParagraph extends Plugin {
         paragraph = writer.createElement("paragraph");
 
         const position = writer.createPositionAfter(
-          mapper.toModelElement(element)!
+          mapper.toModelElement(element)!,
         );
         writer.insert(paragraph, position);
       }

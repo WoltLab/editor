@@ -59,7 +59,7 @@ export class WoltlabSpoilerCommand extends Command {
             cause: {
               spoilerTitle,
             },
-          }
+          },
         );
       }
 
@@ -71,7 +71,7 @@ export class WoltlabSpoilerCommand extends Command {
             cause: {
               spoiler,
             },
-          }
+          },
         );
       }
 
@@ -103,7 +103,7 @@ export class WoltlabSpoilerCommand extends Command {
         const nextSpoilerContent = nextSpoiler.getChild(1) as Element;
         writer.move(
           writer.createRangeIn(nextSpoilerContent),
-          writer.createPositionAt(currentSpoilerContent, "end")
+          writer.createPositionAt(currentSpoilerContent, "end"),
         );
 
         writer.remove(nextSpoiler);
@@ -130,7 +130,7 @@ export class WoltlabSpoilerCommand extends Command {
 
       if (!nextBlock || block.nextSibling !== nextBlock) {
         ranges.push(
-          writer.createRange(startPosition, writer.createPositionAfter(block))
+          writer.createRange(startPosition, writer.createPositionAfter(block)),
         );
         startPosition = null;
       }
@@ -181,7 +181,7 @@ export class WoltlabSpoilerCommand extends Command {
   #canBeSpoiler(schema: Schema, block: Element): boolean {
     const isSpoilerAllowed = schema.checkChild(
       block.parent as Element,
-      "spoiler"
+      "spoiler",
     );
     const isBlockAllowedInSpoiler = schema.checkChild("spoilerContent", block);
 

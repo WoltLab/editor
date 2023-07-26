@@ -71,7 +71,7 @@ export class WoltlabAttachment extends Plugin {
               } else {
                 viewWriter.removeAttribute(view, img);
               }
-            }
+            },
           );
         });
       });
@@ -84,7 +84,7 @@ export class WoltlabAttachment extends Plugin {
           writer.setAttribute(
             "attachmentId",
             data["data-attachment-id"],
-            imageElement
+            imageElement,
           );
         });
       });
@@ -94,11 +94,11 @@ export class WoltlabAttachment extends Plugin {
 
   #setupAttachUpcast(): void {
     const options = this.editor.config.get(
-      "woltlabAttachment"
+      "woltlabAttachment",
     ) as WoltlabAttachmentConfig;
 
     const woltlabMetacode = this.editor.plugins.get(
-      "WoltlabMetacode"
+      "WoltlabMetacode",
     ) as WoltlabMetacode;
     woltlabMetacode.on(
       "upcast",
@@ -169,12 +169,12 @@ export class WoltlabAttachment extends Plugin {
             attachmentId,
             floatBehavior as FloatBehavior,
             isThumbnail as boolean,
-            width as string
+            width as string,
           )
         ) {
           eventInfo.stop();
         }
-      }
+      },
     );
   }
 
@@ -184,7 +184,7 @@ export class WoltlabAttachment extends Plugin {
     attachmentId: number,
     floatBehavior: FloatBehavior,
     isThumbnail: boolean,
-    width: string
+    width: string,
   ): boolean {
     const { conversionApi, data } = eventData;
     const { consumable, writer } = conversionApi;
@@ -227,7 +227,7 @@ type FloatBehavior = "left" | "none" | "right";
 
 type ResolveAttachmentUrl = (
   attachmentId: number,
-  isThumbnail: boolean
+  isThumbnail: boolean,
 ) => string;
 
 type WoltlabAttachmentConfig = {

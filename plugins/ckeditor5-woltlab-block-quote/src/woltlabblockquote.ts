@@ -59,7 +59,7 @@ export class WoltlabBlockQuote extends Plugin {
       () => {
         this.#updateCustomAttributes(this.#lastView);
       },
-      { priority: "high" }
+      { priority: "high" },
     );
   }
 
@@ -88,7 +88,7 @@ export class WoltlabBlockQuote extends Plugin {
 
       dropdownView.on("submit", (evt) => {
         const view = evt.path.find(
-          (view) => view instanceof WoltlabBlockQuotePanelView
+          (view) => view instanceof WoltlabBlockQuotePanelView,
         );
 
         if (view instanceof WoltlabBlockQuotePanelView) {
@@ -121,7 +121,7 @@ export class WoltlabBlockQuote extends Plugin {
           const blockQuote = this.#getActiveBlockQuote();
           if (blockQuote) {
             view.author = attributeValueToString(
-              blockQuote.getAttribute("author")
+              blockQuote.getAttribute("author"),
             );
             view.link = attributeValueToString(blockQuote.getAttribute("link"));
           } else {
@@ -151,7 +151,7 @@ export class WoltlabBlockQuote extends Plugin {
             author: viewItem.getAttribute("data-author") || "",
             link: viewItem.getAttribute("data-link") || "",
           },
-          blockQuote
+          blockQuote,
         );
 
         conversionApi.convertChildren(viewItem, blockQuote);
@@ -163,7 +163,7 @@ export class WoltlabBlockQuote extends Plugin {
         consumable.consume(viewItem, { name: true });
         conversionApi.updateConversionResult(blockQuote, data);
       },
-      { priority: "high" }
+      { priority: "high" },
     );
   }
 
@@ -188,17 +188,17 @@ export class WoltlabBlockQuote extends Plugin {
 
         const blockquote = writer.createContainerElement(
           "blockquote",
-          attributes
+          attributes,
         );
 
         const targetViewPosition = mapper.toViewPosition(
-          this.editor.model.createPositionBefore(data.item)
+          this.editor.model.createPositionBefore(data.item),
         );
         writer.insert(targetViewPosition, blockquote);
 
         mapper.bindElements(data.item, blockquote);
       },
-      { priority: "high" }
+      { priority: "high" },
     );
 
     this.editor.editing.downcastDispatcher.on(
@@ -216,7 +216,7 @@ export class WoltlabBlockQuote extends Plugin {
         } else {
           writer.setAttribute("data-source", source, blockquote);
         }
-      }
+      },
     );
 
     this.editor.editing.downcastDispatcher.on(
@@ -234,7 +234,7 @@ export class WoltlabBlockQuote extends Plugin {
         } else {
           writer.setAttribute("data-source", source, blockquote);
         }
-      }
+      },
     );
   }
 
@@ -252,7 +252,7 @@ export class WoltlabBlockQuote extends Plugin {
         const link = attributeValueToString(data.item.getAttribute("link"));
 
         const targetViewPosition = mapper.toViewPosition(
-          this.editor.model.createPositionBefore(data.item)
+          this.editor.model.createPositionBefore(data.item),
         );
 
         const pre = writer.createContainerElement("woltlab-quote", {
@@ -263,7 +263,7 @@ export class WoltlabBlockQuote extends Plugin {
         writer.insert(targetViewPosition, pre);
         mapper.bindElements(data.item, pre);
       },
-      { priority: "high" }
+      { priority: "high" },
     );
   }
 

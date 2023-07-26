@@ -33,7 +33,7 @@ export class WoltlabMention extends Plugin {
 
   init() {
     const woltlabMetacode = this.editor.plugins.get(
-      "WoltlabMetacode"
+      "WoltlabMetacode",
     ) as WoltlabMetacode;
     woltlabMetacode.on(
       "upcast",
@@ -45,7 +45,7 @@ export class WoltlabMention extends Plugin {
             this.#upcastMention(eventData);
           }
         }
-      }
+      },
     );
 
     this.#setupDowncast();
@@ -60,7 +60,7 @@ export class WoltlabMention extends Plugin {
 
     Object.assign(
       data,
-      conversionApi.convertChildren(data.viewItem, data.modelCursor)
+      conversionApi.convertChildren(data.viewItem, data.modelCursor),
     );
 
     for (const node of Array.from(data.modelRange!.getItems())) {
@@ -77,7 +77,7 @@ export class WoltlabMention extends Plugin {
           uid: uid(),
           _text: text.data,
         } as WoltlabMentionAttribute,
-        node
+        node,
       );
     }
   }
@@ -101,7 +101,7 @@ export class WoltlabMention extends Plugin {
           {
             priority: 20,
             id: modelAttributeValue.uid,
-          }
+          },
         );
       },
       converterPriority: "high",

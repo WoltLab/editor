@@ -65,13 +65,13 @@ export class WoltlabSmiley extends Plugin {
 
           const image = writer.createEmptyElement("img");
           const position = mapper.toViewPosition(
-            this.editor.model.createPositionBefore(item)
+            this.editor.model.createPositionBefore(item),
           );
           writer.insert(position, image);
 
           mapper.bindElements(item, image);
         },
-        { priority: "high" }
+        { priority: "high" },
       );
     });
   }

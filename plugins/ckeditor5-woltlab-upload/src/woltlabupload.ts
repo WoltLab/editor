@@ -72,7 +72,7 @@ export class WoltlabUpload extends Plugin {
 
         event.stop();
       },
-      { priority: "lowest" }
+      { priority: "lowest" },
     );
   }
 }
@@ -82,7 +82,7 @@ export default WoltlabUpload;
 export type WoltlabUploadConfig = {
   uploadImage(
     file: File,
-    abortController: AbortController
+    abortController: AbortController,
   ): Promise<WoltlabUploadResult>;
 
   uploadOther(file: File): void;

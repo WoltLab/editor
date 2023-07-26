@@ -132,7 +132,7 @@ const defaultConfig: EditorConfig = {
 
 export async function create(
   element: HTMLElement,
-  configuration: EditorConfig
+  configuration: EditorConfig,
 ): Promise<ClassicEditor> {
   configuration = Object.assign(configuration, defaultConfig);
 

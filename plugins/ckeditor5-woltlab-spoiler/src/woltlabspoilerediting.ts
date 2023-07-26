@@ -33,7 +33,7 @@ export class WoltlabSpoilerEditing extends Plugin {
 
     this.editor.commands.add(
       "insertSpoiler",
-      new WoltlabSpoilerCommand(this.editor)
+      new WoltlabSpoilerCommand(this.editor),
     );
 
     this.#setupButton();
@@ -62,7 +62,7 @@ export class WoltlabSpoilerEditing extends Plugin {
       buttonView.bind("isEnabled").to(command, "isEnabled");
 
       this.listenTo(buttonView, "execute", () =>
-        this.editor.execute("insertSpoiler")
+        this.editor.execute("insertSpoiler"),
       );
 
       return buttonView;
@@ -198,7 +198,7 @@ export class WoltlabSpoilerEditing extends Plugin {
         });
 
         const position = mapper.toViewPosition(
-          this.editor.model.createPositionBefore(modelElement)
+          this.editor.model.createPositionBefore(modelElement),
         );
         writer.insert(position, spoiler);
 

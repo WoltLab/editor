@@ -85,7 +85,7 @@ export class WoltlabMedia extends Plugin {
               } else {
                 viewWriter.removeAttribute(view, img);
               }
-            }
+            },
           );
         });
       });
@@ -94,11 +94,11 @@ export class WoltlabMedia extends Plugin {
 
   #setupWsmUpcast(): void {
     const options = this.editor.config.get(
-      "woltlabMedia"
+      "woltlabMedia",
     ) as WoltlabMediaConfig;
 
     const woltlabMetacode = this.editor.plugins.get(
-      "WoltlabMetacode"
+      "WoltlabMetacode",
     ) as WoltlabMetacode;
     woltlabMetacode.on(
       "upcast",
@@ -118,13 +118,13 @@ export class WoltlabMedia extends Plugin {
               eventData,
               options.resolveMediaUrl,
               mediaId,
-              mediaSize
+              mediaSize,
             )
           ) {
             eventInfo.stop();
           }
         }
-      }
+      },
     );
   }
 
@@ -132,7 +132,7 @@ export class WoltlabMedia extends Plugin {
     eventData: WoltlabMetacodeUpcast,
     resolveMediaUrl: ResolveMediaUrl,
     mediaId: number,
-    mediaSize: string
+    mediaSize: string,
   ): boolean {
     const { conversionApi, data } = eventData;
     const { consumable, writer } = conversionApi;
@@ -145,7 +145,7 @@ export class WoltlabMedia extends Plugin {
         mediaId,
         mediaSize,
       },
-      image
+      image,
     );
 
     conversionApi.convertChildren(viewItem, image);
