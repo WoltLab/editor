@@ -64,6 +64,7 @@ export class WoltlabSmiley extends Plugin {
           consumable.consume(item, "insert");
 
           const image = writer.createEmptyElement("img");
+          writer.setAttribute("translate", "no", image);
           const position = mapper.toViewPosition(
             this.editor.model.createPositionBefore(item),
           );
