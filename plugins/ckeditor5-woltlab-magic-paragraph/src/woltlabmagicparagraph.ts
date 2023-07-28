@@ -56,15 +56,25 @@ export class WoltlabMagicParagraph extends Plugin {
       }
 
       if (firstChild.is("containerElement")) {
-        const model = mapper.toModelElement(firstChild);
+        let target = firstChild;
+
+        let model = mapper.toModelElement(target);
+        if (model === undefined && target.childCount > 0) {
+          const child = target.getChild(0)!;
+          if (child.is("containerElement")) {
+            target = child;
+            model = mapper.toModelElement(target);
+          }
+        }
+
         if (model && WoltlabMagicParagraph.blockModels.includes(model.name)) {
-          const domElement = domConverter.mapViewToDom(firstChild)!;
+          const domElement = domConverter.mapViewToDom(target)!;
           const { top } = domElement.getBoundingClientRect();
 
           if (clientY <= top) {
             event.stop();
 
-            this.#insertParagraphBefore(firstChild);
+            this.#insertParagraphBefore(target);
             return;
           }
         }
@@ -74,15 +84,25 @@ export class WoltlabMagicParagraph extends Plugin {
         const lastChild = root.getChild(root.childCount - 1)!;
 
         if (lastChild.is("containerElement")) {
-          const model = mapper.toModelElement(lastChild);
+          let target = lastChild;
+
+          let model = mapper.toModelElement(target);
+          if (model === undefined && target.childCount > 0) {
+            const child = target.getChild(target.childCount - 1)!;
+            if (child.is("containerElement")) {
+              target = child;
+              model = mapper.toModelElement(target);
+            }
+          }
+
           if (model && WoltlabMagicParagraph.blockModels.includes(model.name)) {
-            const domElement = domConverter.mapViewToDom(lastChild)!;
+            const domElement = domConverter.mapViewToDom(target)!;
             const { bottom } = domElement.getBoundingClientRect();
 
             if (clientY >= bottom) {
               event.stop();
 
-              this.#insertParagraphAfter(lastChild);
+              this.#insertParagraphAfter(target);
               return;
             }
           }
@@ -136,7 +156,7 @@ export class WoltlabMagicParagraph extends Plugin {
         paragraph = writer.createElement("paragraph");
 
         const position = writer.createPositionBefore(
-          mapper.toModelElement(element)!,
+          mapper.toModelElement(element)!
         );
         writer.insert(paragraph, position);
       }
@@ -161,7 +181,7 @@ export class WoltlabMagicParagraph extends Plugin {
         paragraph = writer.createElement("paragraph");
 
         const position = writer.createPositionAfter(
-          mapper.toModelElement(element)!,
+          mapper.toModelElement(element)!
         );
         writer.insert(paragraph, position);
       }
