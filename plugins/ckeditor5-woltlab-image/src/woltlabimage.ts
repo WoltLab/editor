@@ -12,7 +12,7 @@
  */
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
-import { DowncastInsertEvent } from "@ckeditor/ckeditor5-engine";
+import type { DowncastInsertEvent, Element } from "@ckeditor/ckeditor5-engine";
 
 export class WoltlabImage extends Plugin {
   static get pluginName() {
@@ -20,57 +20,76 @@ export class WoltlabImage extends Plugin {
   }
 
   init() {
-    this.editor.conversion.for("dataDowncast").add((dispatcher) => {
-      dispatcher.on<DowncastInsertEvent>(
-        "insert:imageInline",
-        (_evt, data, conversionApi) => {
-          const { item } = data;
-          if (!item.is("element")) {
-            return;
-          }
+    const { conversion } = this.editor;
 
-          const width = item.getAttribute("width");
-          if (typeof width !== "string") {
-            return;
-          }
+    const imageTypes = ["imageBlock", "imageInline"] as const;
+    for (const imageType of imageTypes) {
+      conversion.for("dataDowncast").add((dispatcher) => {
+        dispatcher.on<DowncastInsertEvent>(
+          `insert:${imageType}`,
+          (_evt, data, conversionApi) => {
+            const { item } = data;
+            if (!item.is("element")) {
+              return;
+            }
 
-          const { mapper, writer } = conversionApi;
+            const width = item.getAttribute("width");
+            if (typeof width !== "string") {
+              return;
+            }
 
-          const viewElement = mapper.toViewElement(item);
-          if (viewElement === undefined) {
-            return;
-          }
+            const { mapper, writer } = conversionApi;
 
-          writer.setAttribute("data-width", width, viewElement);
-        },
-        { priority: "lowest" },
-      );
+            const viewElement = mapper.toViewElement(item);
+            if (viewElement === undefined) {
+              return;
+            }
 
-      dispatcher.on<DowncastInsertEvent>(
-        "insert:imageBlock",
-        (_evt, data, conversionApi) => {
-          const { item } = data;
-          if (!item.is("element")) {
-            return;
-          }
+            writer.setAttribute("data-width", width, viewElement);
+          },
+          { priority: "lowest" },
+        );
+      });
 
-          const width = item.getAttribute("width");
-          if (typeof width !== "string") {
-            return;
-          }
+      conversion.for("editingDowncast").add((dispatcher) => {
+        dispatcher.on<DowncastInsertEvent>(
+          `insert:${imageType}`,
+          (_evt, { item }, conversionApi) => {
+            const { mapper, writer } = conversionApi;
+            const { domConverter } = this.editor.editing.view;
 
-          const { mapper, writer } = conversionApi;
+            const container = mapper.toViewElement(item as Element);
+            if (
+              !container ||
+              !container.is("containerElement") ||
+              container.childCount !== 1
+            ) {
+              return;
+            }
 
-          const viewElement = mapper.toViewElement(item);
-          if (viewElement === undefined) {
-            return;
-          }
+            const viewElement = container.getChild(0)!;
+            if (!viewElement.is("element")) {
+              return;
+            }
 
-          writer.setAttribute("data-width", width, viewElement);
-        },
-        { priority: "lowest" },
-      );
-    });
+            const img = domConverter.viewToDom(viewElement);
+            if (!(img instanceof HTMLImageElement)) {
+              return;
+            }
+
+            const setMaxWidth = () => {
+              writer.setStyle("max-width", `${img.naturalWidth}px`, container);
+            };
+
+            if (img.complete && img.naturalHeight !== 0) {
+              setMaxWidth();
+            } else {
+              img.addEventListener("load", () => setMaxWidth(), { once: true });
+            }
+          },
+        );
+      });
+    }
   }
 }
 
