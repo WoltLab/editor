@@ -128,35 +128,32 @@ export class WoltlabAttachment extends Plugin {
         }
 
         let isThumbnail = eventData.attributes[2] as unknown;
+        let width = "auto";
         if (typeof isThumbnail !== "boolean") {
-          if (typeof isThumbnail === "string") {
+          if (
+            typeof isThumbnail === "string" ||
+            typeof isThumbnail === "number"
+          ) {
             if (isThumbnail === "true") {
               isThumbnail = true;
             } else if (isThumbnail === "false") {
               isThumbnail = false;
             } else {
-              isThumbnail = parseInt(isThumbnail);
+              isThumbnail = parseInt(isThumbnail.toString());
               if (Number.isNaN(isThumbnail)) {
                 isThumbnail = false;
               } else {
                 if (isThumbnail === 0) {
                   isThumbnail = false;
                 } else {
-                  isThumbnail = true;
+                  width = `${isThumbnail}px`;
+                  isThumbnail = false;
                 }
               }
             }
           } else {
             isThumbnail = false;
           }
-        }
-
-        let width = eventData.attributes[3];
-        if (
-          width === undefined ||
-          !/^(100%|\d{2}(\.\d{2})%)$/.test(width.toString())
-        ) {
-          width = "100%";
         }
 
         if (
@@ -166,7 +163,7 @@ export class WoltlabAttachment extends Plugin {
             attachmentId,
             floatBehavior as FloatBehavior,
             isThumbnail as boolean,
-            width as string,
+            width,
           )
         ) {
           eventInfo.stop();
