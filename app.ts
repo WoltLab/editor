@@ -31,8 +31,8 @@ import { HorizontalLine } from "@ckeditor/ckeditor5-horizontal-line";
 import {
   Image,
   ImageInsertUI,
-  //ImageResizeEditing,
-  //ImageResizeHandles,
+  ImageResizeEditing,
+  ImageResizeHandles,
   ImageStyle,
   ImageToolbar,
   ImageUpload,
@@ -100,8 +100,8 @@ const defaultConfig: EditorConfig = {
     Image,
     ImageInsertUI,
     ImageToolbar,
-    //ImageResizeEditing,
-    //ImageResizeHandles,
+    ImageResizeEditing,
+    ImageResizeHandles,
     ImageStyle,
     ImageUpload,
     ImageUploadUI,
@@ -149,6 +149,7 @@ export async function create(
         "imageStyle:block",
         "imageStyle:side",
       ],
+      resizeUnit: "px",
       styles: {
         options: [
           "inline",
