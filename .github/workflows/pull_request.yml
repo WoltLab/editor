@@ -1,0 +1,40 @@
+name: Pull Requests
+
+on:
+  pull_request:
+    types:
+    - opened
+    - edited
+    - reopened
+    - synchronize
+    - ready_for_review
+    - review_requested
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  commit_message:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for GitHub's default message.
+        uses: gsactions/commit-message-checker@8c8c0d18ba9b1fcfed6e7385fd2bf357dfc8dccb
+        with:
+          pattern: '^(?!Update\s+\S*$).*$'
+          error: 'Please use a meaningful commit message.'
+          excludeDescription: 'true'
+          excludeTitle: 'true'
+          checkAllCommitMessages: 'true'
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check for unsquashed `fixup!` commits.
+        if: ${{ ! github.event.pull_request.draft }}
+        uses: gsactions/commit-message-checker@8c8c0d18ba9b1fcfed6e7385fd2bf357dfc8dccb
+        with:
+          pattern: '^(?!fixup!(\s|$))'
+          error: 'A `fixup!` commit was found.'
+          excludeDescription: 'true'
+          excludeTitle: 'true'
+          checkAllCommitMessages: 'true'
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
