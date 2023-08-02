@@ -12,7 +12,7 @@ import { Image } from "@ckeditor/ckeditor5-image";
 import {
   WoltlabMetacode,
   WoltlabMetacodeUpcast,
-} from "../../ckeditor5-woltlab-metacode/src";
+} from "../../ckeditor5-woltlab-metacode";
 
 export class WoltlabMedia extends Plugin {
   static get pluginName() {
@@ -42,11 +42,16 @@ export class WoltlabMedia extends Plugin {
     });
 
     conversion.attributeToAttribute({
-      model: "classList",
+      model: {
+        key: "classList",
+        values: ["woltlabSuiteMedia"],
+      },
       view: {
-        name: "img",
-        key: "class",
-        value: ["woltlabSuiteMedia"],
+        woltlabSuiteMedia: {
+          name: "img",
+          key: "class",
+          value: "woltlabSuiteMedia",
+        },
       },
     });
 

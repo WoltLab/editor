@@ -33,11 +33,16 @@ export class WoltlabSmiley extends Plugin {
     }
 
     conversion.attributeToAttribute({
-      model: "classList",
+      model: {
+        key: "classList",
+        values: ["smiley"],
+      },
       view: {
-        name: "img",
-        key: "class",
-        value: ["smiley"],
+        smiley: {
+          name: "img",
+          key: "class",
+          value: "smiley",
+        },
       },
     });
 
