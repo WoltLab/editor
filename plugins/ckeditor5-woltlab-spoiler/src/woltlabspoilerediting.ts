@@ -244,10 +244,11 @@ export class WoltlabSpoilerEditing extends Plugin {
             "data-label": t("Spoiler"),
           });
 
+          div.placeholder = t("Type your title");
+
           enablePlaceholder({
             view: this.editor.editing.view,
             element: div,
-            text: t("Type your title"),
             keepOnFocus: true,
           });
 
