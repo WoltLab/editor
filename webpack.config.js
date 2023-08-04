@@ -7,6 +7,7 @@ const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 const {
   CKEditorTranslationsPlugin,
 } = require("@ckeditor/ckeditor5-dev-translations");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (_env, argv) => {
   const config = {
@@ -26,6 +27,9 @@ module.exports = (_env, argv) => {
         additionalLanguages: "all",
         language: "en",
       }),
+      new MiniCssExtractPlugin({
+        filename: "ckeditor5.css",
+      }),
     ],
 
     module: {
@@ -44,15 +48,7 @@ module.exports = (_env, argv) => {
           test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
 
           use: [
-            {
-              loader: "style-loader",
-              options: {
-                injectType: "singletonStyleTag",
-                attributes: {
-                  "data-cke": true,
-                },
-              },
-            },
+            MiniCssExtractPlugin.loader,
             "css-loader",
             {
               loader: "postcss-loader",
