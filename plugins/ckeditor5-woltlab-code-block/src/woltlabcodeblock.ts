@@ -157,6 +157,10 @@ export class WoltlabCodeBlock extends Plugin {
         const { viewItem } = data;
         const { consumable, writer } = conversionApi;
 
+        if (viewItem.hasClass("woltlabHtml")) {
+          return;
+        }
+
         const codeBlock = writer.createElement("codeBlock");
         writer.setAttributes(
           {
