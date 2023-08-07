@@ -10,6 +10,14 @@ const {
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (_env, argv) => {
+  const postcssOptions = styles.getPostCssConfig({
+    themeImporter: {
+      themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
+    },
+    minify: true,
+  });
+  postcssOptions.plugins.push(require("postcss-hover-media-feature"));
+
   const config = {
     // https://webpack.js.org/configuration/entry-context/
     entry: "./app.ts",
@@ -53,14 +61,7 @@ module.exports = (_env, argv) => {
             {
               loader: "postcss-loader",
               options: {
-                postcssOptions: styles.getPostCssConfig({
-                  themeImporter: {
-                    themePath: require.resolve(
-                      "@ckeditor/ckeditor5-theme-lark",
-                    ),
-                  },
-                  minify: true,
-                }),
+                postcssOptions,
               },
             },
           ],
