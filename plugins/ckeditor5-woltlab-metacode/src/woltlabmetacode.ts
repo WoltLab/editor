@@ -87,6 +87,7 @@ export class WoltlabMetacode extends Plugin {
           modelCursor = modelCursor.getShiftedBy(openingTag.offsetSize);
 
           writer.insert(closingTag, modelCursor, "end");
+          modelCursor = modelCursor.getShiftedBy(closingTag.offsetSize);
 
           if (paragraph !== undefined) {
             modelCursor = writer.createPositionAfter(paragraph);
