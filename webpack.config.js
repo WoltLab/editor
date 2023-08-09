@@ -7,8 +7,17 @@ const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 const {
   CKEditorTranslationsPlugin,
 } = require("@ckeditor/ckeditor5-dev-translations");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (_env, argv) => {
+  const postcssOptions = styles.getPostCssConfig({
+    themeImporter: {
+      themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
+    },
+    minify: true,
+  });
+  postcssOptions.plugins.push(require("postcss-hover-media-feature"));
+
   const config = {
     // https://webpack.js.org/configuration/entry-context/
     entry: "./app.ts",
@@ -25,6 +34,9 @@ module.exports = (_env, argv) => {
       new CKEditorTranslationsPlugin({
         additionalLanguages: "all",
         language: "en",
+      }),
+      new MiniCssExtractPlugin({
+        filename: "ckeditor5.css",
       }),
     ],
 
@@ -44,27 +56,12 @@ module.exports = (_env, argv) => {
           test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
 
           use: [
-            {
-              loader: "style-loader",
-              options: {
-                injectType: "singletonStyleTag",
-                attributes: {
-                  "data-cke": true,
-                },
-              },
-            },
+            MiniCssExtractPlugin.loader,
             "css-loader",
             {
               loader: "postcss-loader",
               options: {
-                postcssOptions: styles.getPostCssConfig({
-                  themeImporter: {
-                    themePath: require.resolve(
-                      "@ckeditor/ckeditor5-theme-lark",
-                    ),
-                  },
-                  minify: true,
-                }),
+                postcssOptions,
               },
             },
           ],

@@ -53,14 +53,9 @@ export class WoltlabBlockQuote extends Plugin {
     this.#setupDowncast();
     this.#setupEditingDowncast();
 
-    this.listenTo(
-      command,
-      "execute",
-      () => {
-        this.#updateCustomAttributes(this.#lastView);
-      },
-      { priority: "high" },
-    );
+    this.listenTo(command, "execute", () => {
+      this.#updateCustomAttributes(this.#lastView);
+    });
   }
 
   #setupBlockQuote(command: BlockQuoteCommand): void {
