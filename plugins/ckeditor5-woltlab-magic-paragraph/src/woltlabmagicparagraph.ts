@@ -34,6 +34,12 @@ export class WoltlabMagicParagraph extends Plugin {
     this.listenTo<ViewDocumentClickEvent>(document, "click", (event, data) => {
       const { domEvent, target } = data;
 
+      if (target === undefined) {
+        // The `target` is possibly undefined if the click target is no longer
+        // part of the DOM. See https://github.com/ckeditor/ckeditor5/issues/14778
+        return;
+      }
+
       // Ignore any click that hits a paragraph or list item, because those
       // are perfectly accessible anyway.
       const elements = target.getAncestors();
