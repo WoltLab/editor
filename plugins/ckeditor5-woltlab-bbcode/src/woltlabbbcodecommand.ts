@@ -31,11 +31,16 @@ export class WoltlabBbcodeCommand extends Command {
     }
 
     model.change((writer) => {
-      const bbcodeTags = writer.createText(`[${bbcode}][/${bbcode}]`);
+      const openingTag = `[${bbcode}]`;
+      const bbcodeTags = writer.createText(`${openingTag}[/${bbcode}]`);
 
-      model.insertContent(bbcodeTags);
+      const range = model.insertContent(bbcodeTags);
 
       this.editor.editing.view.focus();
+
+      const position = range.start.getShiftedBy(openingTag.length);
+      const newRange = writer.createRange(position);
+      writer.setSelection(newRange);
     });
   }
 
