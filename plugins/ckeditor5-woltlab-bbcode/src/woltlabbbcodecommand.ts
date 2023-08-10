@@ -14,7 +14,7 @@ import { Command } from "@ckeditor/ckeditor5-core";
 
 export class WoltlabBbcodeCommand extends Command {
   override execute(bbcode: string) {
-    const { model } = this.editor;
+    const { editing, model } = this.editor;
 
     const sourceElement = (this.editor as any).sourceElement as HTMLElement;
 
@@ -31,16 +31,23 @@ export class WoltlabBbcodeCommand extends Command {
     }
 
     model.change((writer) => {
+      const selection = model.document.selection;
+
       const openingTag = `[${bbcode}]`;
-      const bbcodeTags = writer.createText(`${openingTag}[/${bbcode}]`);
+      model.insertContent(
+        writer.createText(openingTag),
+        selection.getFirstPosition(),
+      );
 
-      const range = model.insertContent(bbcodeTags);
+      const range = model.insertContent(
+        writer.createText(`[/${bbcode}]`),
+        selection.getLastPosition(),
+      );
 
-      this.editor.editing.view.focus();
-
-      const position = range.start.getShiftedBy(openingTag.length);
-      const newRange = writer.createRange(position);
+      const newRange = writer.createRange(range.start);
       writer.setSelection(newRange);
+
+      editing.view.focus();
     });
   }
 
@@ -51,10 +58,6 @@ export class WoltlabBbcodeCommand extends Command {
   #getIsEnabled(): boolean {
     const { document, schema } = this.editor.model;
     const { selection } = document;
-
-    if (!selection.isCollapsed) {
-      return false;
-    }
 
     // Any context that accepts bold text is also valid
     // for the insertion of bbcodes. This check is in place
