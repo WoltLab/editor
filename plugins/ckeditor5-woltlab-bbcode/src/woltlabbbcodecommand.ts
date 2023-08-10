@@ -33,18 +33,18 @@ export class WoltlabBbcodeCommand extends Command {
     model.change((writer) => {
       const selection = model.document.selection;
 
-      const openingTag = `[${bbcode}]`;
-      model.insertContent(
-        writer.createText(openingTag),
+      const openingTag = writer.createText(`[${bbcode}]`);
+      const startRange = model.insertContent(
+        openingTag,
         selection.getFirstPosition(),
       );
 
-      const range = model.insertContent(
+      const endRange = model.insertContent(
         writer.createText(`[/${bbcode}]`),
-        selection.getLastPosition(),
+        selection.isCollapsed ? startRange.end : selection.getLastPosition(),
       );
 
-      const newRange = writer.createRange(range.start);
+      const newRange = writer.createRange(endRange.start);
       writer.setSelection(newRange);
 
       editing.view.focus();
