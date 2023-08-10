@@ -10,7 +10,6 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import type {
-  Element,
   UpcastElementEvent,
   UpcastConversionApi,
   UpcastConversionData,
@@ -34,7 +33,7 @@ export class WoltlabMetacode extends Plugin {
       dispatcher.on<UpcastElementEvent>(
         "element:woltlab-metacode",
         (_evt, data, conversionApi) => {
-          const { consumable, writer } = conversionApi;
+          const { consumable, convertChildren, writer } = conversionApi;
           const { viewItem } = data;
 
           const wrapper = { name: true };
@@ -66,34 +65,49 @@ export class WoltlabMetacode extends Plugin {
 
           let { modelCursor } = data;
 
-          // BBCodes may not be placed as text directly in the root of the editor,
-          // they must be wrapped in a paragraph instead.
-          const ancestors = modelCursor.getAncestors();
-
-          let paragraph: Element | undefined = undefined;
-          if (ancestors.length === 1 && ancestors[0].name === "$root") {
-            paragraph = writer.createElement("paragraph");
-
-            writer.insert(paragraph, modelCursor, 0);
-            modelCursor = writer.createPositionAt(paragraph, 0);
-          }
-
           const attributeString =
             this.#serializedAttributesToString(attributes);
           const openingTag = writer.createText(`[${name}${attributeString}]`);
           const closingTag = writer.createText(`[/${name}]`);
 
-          writer.insert(openingTag, modelCursor, 0);
-          modelCursor = modelCursor.getShiftedBy(openingTag.offsetSize);
-
-          writer.insert(closingTag, modelCursor, "end");
-          modelCursor = modelCursor.getShiftedBy(closingTag.offsetSize);
-
-          if (paragraph !== undefined) {
-            modelCursor = writer.createPositionAfter(paragraph);
+          // Check if the BBCode appears to be a block element.
+          let isBlockElement = false;
+          const ancestors = modelCursor.getAncestors();
+          if (ancestors[ancestors.length - 1].name === "$root") {
+            isBlockElement = true;
+          } else {
+            for (const child of viewItem.getChildren()) {
+              if (child.is("containerElement")) {
+                isBlockElement = true;
+                break;
+              }
+            }
           }
 
-          data.modelCursor = modelCursor;
+          if (isBlockElement) {
+            let paragraph = writer.createElement("paragraph");
+            writer.insert(openingTag, paragraph);
+            writer.insert(paragraph, modelCursor);
+            modelCursor = writer.createPositionAfter(paragraph);
+
+            const result = convertChildren(viewItem, modelCursor);
+
+            paragraph = writer.createElement("paragraph");
+            writer.insert(closingTag, paragraph);
+            writer.insert(paragraph, result.modelCursor);
+
+            data.modelCursor = writer.createPositionAfter(paragraph);
+          } else {
+            writer.insert(openingTag, modelCursor);
+            modelCursor = modelCursor.getShiftedBy(openingTag.offsetSize);
+
+            const result = convertChildren(viewItem, modelCursor);
+
+            writer.insert(closingTag, result.modelCursor);
+            data.modelCursor = result.modelCursor.getShiftedBy(
+              closingTag.offsetSize,
+            );
+          }
         },
       );
     });
