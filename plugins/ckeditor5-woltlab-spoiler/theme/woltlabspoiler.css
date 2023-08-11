@@ -22,13 +22,9 @@
   width: 5px;
 }
 
-.ck.ck-content .ck-woltlabspoiler__title {
-  column-gap: 10px;
-  display: flex;
-}
-
 .ck.ck-content .ck-woltlabspoiler__title::before {
   align-self: center;
   content: attr(data-label);
   color: #999;
+  margin-right: 10px;
 }
