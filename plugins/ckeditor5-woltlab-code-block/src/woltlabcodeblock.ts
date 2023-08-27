@@ -83,12 +83,19 @@ export class WoltlabCodeBlock extends Plugin {
         isToggleable: true,
       });
 
-      splitButtonView
-        .bind("isOn")
-        .to(this.#command, "value", (value) => !!value);
+      splitButtonView.bind("isOn").to(this.#command, "value", (value) => {
+        if (typeof value === "string") {
+          return true;
+        }
+
+        return false;
+      });
 
       splitButtonView.on("execute", () => {
+        const forceValue = this.#command.value !== false;
+
         editor.execute("codeBlock", {
+          forceValue,
           usePreviousLanguageChoice: false,
         });
 
