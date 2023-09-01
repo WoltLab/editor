@@ -44,7 +44,7 @@
     "@ckeditor/ckeditor5-inspector": "^4.1.0",
     "mini-css-extract-plugin": "^2.7.6",
     "postcss-hover-media-feature": "^1.0.2",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6"
   }
