@@ -92,12 +92,15 @@ export class WoltlabCodeBlock extends Plugin {
       });
 
       splitButtonView.on("execute", () => {
-        const forceValue = this.#command.value !== false;
-
-        editor.execute("codeBlock", {
-          forceValue,
+        const options: Record<string, unknown> = {
           usePreviousLanguageChoice: false,
-        });
+        };
+
+        if (this.#command.value === "") {
+          options.forceValue = false;
+        }
+
+        editor.execute("codeBlock", options);
 
         editor.editing.view.focus();
       });
