@@ -55,8 +55,6 @@ export class WoltlabToolbarGroup extends Plugin {
         existingIcon.replaceWith(newIcon);
 
         viewItem.buttonView.label = item.label;
-
-        button.dataset.ckeTooltipText = item.label;
       });
     });
   }
