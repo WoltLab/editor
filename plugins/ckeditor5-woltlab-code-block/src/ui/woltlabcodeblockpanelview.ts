@@ -147,6 +147,10 @@ export class WoltlabCodeBlockPanelView extends View {
     this.#focusCycler.focusFirst();
   }
 
+  set insertButtonLabel(label: string) {
+    this.#insertButtonView.label = label;
+  }
+
   #createHighlighterDropdown(
     locale: Locale,
     normalizedLanguageDefs: CodeBlockLanguageDefinition,

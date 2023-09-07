@@ -145,10 +145,12 @@ export class WoltlabCodeBlock extends Plugin {
               codeBlock.getAttribute("language"),
             );
             view.line = attributeValueToString(codeBlock.getAttribute("line"));
+            view.insertButtonLabel = t("Update");
           } else {
             view.file = "";
             view.highlighter = "";
             view.line = "";
+            view.insertButtonLabel = t("Insert");
           }
         }
       });
