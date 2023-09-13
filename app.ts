@@ -5,137 +5,118 @@
  * @since 6.0
  */
 
-// app.js
-
-import { Alignment } from "@ckeditor/ckeditor5-alignment";
-import { Autosave } from "@ckeditor/ckeditor5-autosave";
 import {
-  Bold,
-  Code,
-  Italic,
-  Strikethrough,
-  Subscript,
-  Superscript,
-  Underline,
-} from "@ckeditor/ckeditor5-basic-styles";
-import { BlockQuote } from "@ckeditor/ckeditor5-block-quote";
-import { CodeBlock } from "@ckeditor/ckeditor5-code-block";
-import { icons } from "@ckeditor/ckeditor5-core";
-import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
-import { Essentials } from "@ckeditor/ckeditor5-essentials";
-import { FontColor, FontFamily, FontSize } from "@ckeditor/ckeditor5-font";
-import { Heading } from "@ckeditor/ckeditor5-heading";
-import { Highlight } from "@ckeditor/ckeditor5-highlight";
-import { HtmlEmbed } from "@ckeditor/ckeditor5-html-embed";
-import { HorizontalLine } from "@ckeditor/ckeditor5-horizontal-line";
-import {
+  Alignment,
+  Autosave,
+  BasicStyles,
+  BlockQuote,
+  ClassicEditor,
+  CodeBlock,
+  Core,
+  Essentials,
+  Font,
+  Heading,
+  Highlight,
+  HorizontalLine,
+  HtmlEmbed,
   Image,
-  ImageInsertUI,
-  ImageResizeEditing,
-  ImageResizeHandles,
-  ImageStyle,
-  ImageToolbar,
-  ImageUpload,
-  ImageUploadUI,
-} from "@ckeditor/ckeditor5-image";
-import { Indent } from "@ckeditor/ckeditor5-indent";
-import { AutoLink, Link, LinkImage } from "@ckeditor/ckeditor5-link";
-import { List } from "@ckeditor/ckeditor5-list";
-import { Mention } from "@ckeditor/ckeditor5-mention";
-import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
-import { PasteFromOffice } from "@ckeditor/ckeditor5-paste-from-office";
-import { RemoveFormat } from "@ckeditor/ckeditor5-remove-format";
-import { Table, TableToolbar } from "@ckeditor/ckeditor5-table";
-import { Undo } from "@ckeditor/ckeditor5-undo";
-import { WoltlabAttachment } from "./plugins/ckeditor5-woltlab-attachment";
-import { WoltlabAutosave } from "./plugins/ckeditor5-woltlab-autosave";
-import { WoltlabBbcode } from "./plugins/ckeditor5-woltlab-bbcode";
-import { WoltlabBlockQuote } from "./plugins/ckeditor5-woltlab-block-quote";
-import { WoltlabCode } from "./plugins/ckeditor5-woltlab-code";
-import { WoltlabCodeBlock } from "./plugins/ckeditor5-woltlab-code-block";
-import { WoltlabHtmlEmbed } from "./plugins/ckeditor5-woltlab-html-embed";
-import { WoltlabImage } from "./plugins/ckeditor5-woltlab-image";
-import { WoltlabMagicParagraph } from "./plugins/ckeditor5-woltlab-magic-paragraph";
-import { WoltlabMedia } from "./plugins/ckeditor5-woltlab-media";
-import { WoltlabMention } from "./plugins/ckeditor5-woltlab-mention";
-import { WoltlabMetacode } from "./plugins/ckeditor5-woltlab-metacode";
-import { WoltlabSmiley } from "./plugins/ckeditor5-woltlab-smiley";
-import { WoltlabSpoiler } from "./plugins/ckeditor5-woltlab-spoiler";
-import { WoltlabToolbarGroup } from "./plugins/ckeditor5-woltlab-toolbar-group";
-import { WoltlabUpload } from "./plugins/ckeditor5-woltlab-upload";
+  Indent,
+  Link,
+  List,
+  Mention,
+  Paragraph,
+  PasteFromOffice,
+  RemoveFormat,
+  Table,
+  Undo,
+  WoltlabAttachment,
+  WoltlabAutosave,
+  WoltlabBbcode,
+  WoltlabBlockQuote,
+  WoltlabCode,
+  WoltlabCodeBlock,
+  WoltlabHtmlEmbed,
+  WoltlabImage,
+  WoltlabMagicParagraph,
+  WoltlabMedia,
+  WoltlabMention,
+  WoltlabMetacode,
+  WoltlabSmiley,
+  WoltlabSpoiler,
+  WoltlabToolbarGroup,
+  WoltlabUpload,
+} from "./modules";
 
-import type { EditorConfig } from "@ckeditor/ckeditor5-core";
-
-const defaultConfig: EditorConfig = {
+const defaultConfig: Core.EditorConfig = {
   plugins: [
     // Internals
-    Autosave,
-    Essentials,
-    Indent,
-    Mention,
-    Paragraph,
-    PasteFromOffice,
-    Undo,
+    Autosave.Autosave,
+    Essentials.Essentials,
+    Indent.Indent,
+    Mention.Mention,
+    Paragraph.Paragraph,
+    PasteFromOffice.PasteFromOffice,
+    Undo.Undo,
 
     // Formatting
-    Alignment,
-    Bold,
-    Code,
-    FontColor,
-    FontFamily,
-    FontSize,
-    Heading,
-    Highlight,
-    Italic,
-    RemoveFormat,
-    Strikethrough,
-    Subscript,
-    Superscript,
-    Underline,
+    Alignment.Alignment,
+    BasicStyles.Bold,
+    BasicStyles.Code,
+    Font.FontColor,
+    Font.FontFamily,
+    Font.FontSize,
+    Heading.Heading,
+    Highlight.Highlight,
+    BasicStyles.Italic,
+    RemoveFormat.RemoveFormat,
+    BasicStyles.Strikethrough,
+    BasicStyles.Subscript,
+    BasicStyles.Superscript,
+    BasicStyles.Underline,
 
     // Components
-    BlockQuote,
-    CodeBlock,
-    HtmlEmbed,
-    HorizontalLine,
-    Image,
-    ImageInsertUI,
-    ImageToolbar,
-    ImageResizeEditing,
-    ImageResizeHandles,
-    ImageStyle,
-    ImageUpload,
-    ImageUploadUI,
-    Link,
-    LinkImage,
-    List,
-    Table,
-    TableToolbar,
+    BlockQuote.BlockQuote,
+    CodeBlock.CodeBlock,
+    HtmlEmbed.HtmlEmbed,
+    HorizontalLine.HorizontalLine,
+    Image.Image,
+    Image.ImageInsertUI,
+    Image.ImageToolbar,
+    Image.ImageResizeEditing,
+    Image.ImageResizeHandles,
+    Image.ImageStyle,
+    Image.ImageUpload,
+    Image.ImageUploadUI,
+    Link.Link,
+    Link.LinkImage,
+    List.List,
+    Table.Table,
+    Table.TableToolbar,
 
     // WoltLab
-    WoltlabAttachment,
-    WoltlabAutosave,
-    WoltlabBlockQuote,
-    WoltlabBbcode,
-    WoltlabCode,
-    WoltlabCodeBlock,
-    WoltlabHtmlEmbed,
-    WoltlabImage,
-    WoltlabMagicParagraph,
-    WoltlabMedia,
-    WoltlabMention,
-    WoltlabMetacode,
-    WoltlabSmiley,
-    WoltlabSpoiler,
-    WoltlabToolbarGroup,
-    WoltlabUpload,
+    WoltlabAttachment.WoltlabAttachment,
+    WoltlabAutosave.WoltlabAutosave,
+    WoltlabBlockQuote.WoltlabBlockQuote,
+    WoltlabBbcode.WoltlabBbcode,
+    WoltlabCode.WoltlabCode,
+    WoltlabCodeBlock.WoltlabCodeBlock,
+    WoltlabHtmlEmbed.WoltlabHtmlEmbed,
+    WoltlabImage.WoltlabImage,
+    WoltlabMagicParagraph.WoltlabMagicParagraph,
+    WoltlabMedia.WoltlabMedia,
+    WoltlabMention.WoltlabMention,
+    WoltlabMetacode.WoltlabMetacode,
+    WoltlabSmiley.WoltlabSmiley,
+    WoltlabSpoiler.WoltlabSpoiler,
+    WoltlabToolbarGroup.WoltlabToolbarGroup,
+    WoltlabUpload.WoltlabUpload,
   ],
 };
 
 export async function create(
   element: HTMLElement,
-  configuration: EditorConfig,
-): Promise<ClassicEditor> {
+  configuration: Core.EditorConfig,
+): Promise<ClassicEditor.ClassicEditor> {
   configuration = Object.assign(configuration, defaultConfig);
 
   const removePlugins = configuration.removePlugins || [];
@@ -158,7 +139,7 @@ export async function create(
           {
             name: "sideLeft",
             title: "Left aligned image",
-            icon: icons.objectLeft,
+            icon: Core.icons.objectLeft,
             modelElements: ["imageBlock"],
             className: "image-style-side-left",
           },
@@ -179,13 +160,18 @@ export async function create(
     };
   }
 
-  const editor = await ClassicEditor.create(element, configuration);
+  const editor = await ClassicEditor.ClassicEditor.create(
+    element,
+    configuration,
+  );
 
   // Unconditionally disable the `AutoLink` plugin which interferes with our
   // own link detection and all creates potentially invalid links.
   // See https://github.com/ckeditor/ckeditor5/issues/14497
-  const autoLink = editor.plugins.get(AutoLink);
+  const autoLink = editor.plugins.get(Link.AutoLink);
   autoLink?.forceDisabled("app.ts");
 
   return editor;
 }
+
+export * as modules from "./modules";
