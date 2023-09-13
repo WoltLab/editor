@@ -189,3 +189,36 @@ export async function create(
 
   return editor;
 }
+
+//export CKEditor5;
+export * as Alignment from "@ckeditor/ckeditor5-alignment";
+export * as Autosave from "@ckeditor/ckeditor5-autosave";
+export * as BasicStyles from "@ckeditor/ckeditor5-basic-styles";
+export * as BlockQuote from "@ckeditor/ckeditor5-block-quote";
+export * as Clipboard from "@ckeditor/ckeditor5-clipboard";
+export * as CodeBlock from "@ckeditor/ckeditor5-code-block";
+export * as Core from "@ckeditor/ckeditor5-core";
+export * as Editor from "@ckeditor/ckeditor5-editor-classic";
+export * as Enter from "@ckeditor/ckeditor5-enter";
+export * as Essentials from "@ckeditor/ckeditor5-essentials";
+export * as Font from "@ckeditor/ckeditor5-font";
+export * as Heading from "@ckeditor/ckeditor5-heading";
+export * as Highlight from "@ckeditor/ckeditor5-highlight";
+export * as horizontalLine from "@ckeditor/ckeditor5-horizontal-line";
+export * as HtmlEmbed from "@ckeditor/ckeditor5-html-embed";
+export * as Image from "@ckeditor/ckeditor5-image";
+export * as Indent from "@ckeditor/ckeditor5-indent";
+export * as Link from "@ckeditor/ckeditor5-link";
+export * as List from "@ckeditor/ckeditor5-list";
+export * as Mention from "@ckeditor/ckeditor5-mention";
+export * as Paragraph from "@ckeditor/ckeditor5-paragraph";
+export * as PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office";
+export * as RemoveFormat from "@ckeditor/ckeditor5-remove-format";
+export * as SelectAll from "@ckeditor/ckeditor5-select-all";
+export * as Table from "@ckeditor/ckeditor5-table";
+export * as Typing from "@ckeditor/ckeditor5-typing";
+export * as Ui from "@ckeditor/ckeditor5-ui";
+export * as Undo from "@ckeditor/ckeditor5-undo";
+export * as Upload from "@ckeditor/ckeditor5-upload";
+export * as Utils from "@ckeditor/ckeditor5-utils";
+export * as Widget from "@ckeditor/ckeditor5-widget";
