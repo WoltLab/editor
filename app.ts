@@ -47,22 +47,22 @@ import { PasteFromOffice } from "@ckeditor/ckeditor5-paste-from-office";
 import { RemoveFormat } from "@ckeditor/ckeditor5-remove-format";
 import { Table, TableToolbar } from "@ckeditor/ckeditor5-table";
 import { Undo } from "@ckeditor/ckeditor5-undo";
-import { WoltlabAttachment } from "./plugins/ckeditor5-woltlab-attachment";
-import { WoltlabAutosave } from "./plugins/ckeditor5-woltlab-autosave";
-import { WoltlabBbcode } from "./plugins/ckeditor5-woltlab-bbcode";
-import { WoltlabBlockQuote } from "./plugins/ckeditor5-woltlab-block-quote";
-import { WoltlabCode } from "./plugins/ckeditor5-woltlab-code";
-import { WoltlabCodeBlock } from "./plugins/ckeditor5-woltlab-code-block";
-import { WoltlabHtmlEmbed } from "./plugins/ckeditor5-woltlab-html-embed";
-import { WoltlabImage } from "./plugins/ckeditor5-woltlab-image";
-import { WoltlabMagicParagraph } from "./plugins/ckeditor5-woltlab-magic-paragraph";
-import { WoltlabMedia } from "./plugins/ckeditor5-woltlab-media";
-import { WoltlabMention } from "./plugins/ckeditor5-woltlab-mention";
-import { WoltlabMetacode } from "./plugins/ckeditor5-woltlab-metacode";
-import { WoltlabSmiley } from "./plugins/ckeditor5-woltlab-smiley";
-import { WoltlabSpoiler } from "./plugins/ckeditor5-woltlab-spoiler";
-import { WoltlabToolbarGroup } from "./plugins/ckeditor5-woltlab-toolbar-group";
-import { WoltlabUpload } from "./plugins/ckeditor5-woltlab-upload";
+import * as WoltlabAttachment from "./plugins/ckeditor5-woltlab-attachment";
+import * as WoltlabAutosave from "./plugins/ckeditor5-woltlab-autosave";
+import * as WoltlabBbcode from "./plugins/ckeditor5-woltlab-bbcode";
+import * as WoltlabBlockQuote from "./plugins/ckeditor5-woltlab-block-quote";
+import * as WoltlabCode from "./plugins/ckeditor5-woltlab-code";
+import * as WoltlabCodeBlock from "./plugins/ckeditor5-woltlab-code-block";
+import * as WoltlabHtmlEmbed from "./plugins/ckeditor5-woltlab-html-embed";
+import * as WoltlabImage from "./plugins/ckeditor5-woltlab-image";
+import * as WoltlabMagicParagraph from "./plugins/ckeditor5-woltlab-magic-paragraph";
+import * as WoltlabMedia from "./plugins/ckeditor5-woltlab-media";
+import * as WoltlabMention from "./plugins/ckeditor5-woltlab-mention";
+import * as WoltlabMetacode from "./plugins/ckeditor5-woltlab-metacode";
+import * as WoltlabSmiley from "./plugins/ckeditor5-woltlab-smiley";
+import * as WoltlabSpoiler from "./plugins/ckeditor5-woltlab-spoiler";
+import * as WoltlabToolbarGroup from "./plugins/ckeditor5-woltlab-toolbar-group";
+import * as WoltlabUpload from "./plugins/ckeditor5-woltlab-upload";
 
 import type { EditorConfig } from "@ckeditor/ckeditor5-core";
 
@@ -113,22 +113,22 @@ const defaultConfig: EditorConfig = {
     TableToolbar,
 
     // WoltLab
-    WoltlabAttachment,
-    WoltlabAutosave,
-    WoltlabBlockQuote,
-    WoltlabBbcode,
-    WoltlabCode,
-    WoltlabCodeBlock,
-    WoltlabHtmlEmbed,
-    WoltlabImage,
-    WoltlabMagicParagraph,
-    WoltlabMedia,
-    WoltlabMention,
-    WoltlabMetacode,
-    WoltlabSmiley,
-    WoltlabSpoiler,
-    WoltlabToolbarGroup,
-    WoltlabUpload,
+    WoltlabAttachment.WoltlabAttachment,
+    WoltlabAutosave.WoltlabAutosave,
+    WoltlabBlockQuote.WoltlabBlockQuote,
+    WoltlabBbcode.WoltlabBbcode,
+    WoltlabCode.WoltlabCode,
+    WoltlabCodeBlock.WoltlabCodeBlock,
+    WoltlabHtmlEmbed.WoltlabHtmlEmbed,
+    WoltlabImage.WoltlabImage,
+    WoltlabMagicParagraph.WoltlabMagicParagraph,
+    WoltlabMedia.WoltlabMedia,
+    WoltlabMention.WoltlabMention,
+    WoltlabMetacode.WoltlabMetacode,
+    WoltlabSmiley.WoltlabSmiley,
+    WoltlabSpoiler.WoltlabSpoiler,
+    WoltlabToolbarGroup.WoltlabToolbarGroup,
+    WoltlabUpload.WoltlabUpload,
   ],
 };
 
@@ -222,3 +222,23 @@ export * as Undo from "@ckeditor/ckeditor5-undo";
 export * as Upload from "@ckeditor/ckeditor5-upload";
 export * as Utils from "@ckeditor/ckeditor5-utils";
 export * as Widget from "@ckeditor/ckeditor5-widget";
+
+//export Woltlab CkEditor Plugins
+export const Plugins = {
+    WoltlabAttachment : WoltlabAttachment,
+    WoltlabAutosave: WoltlabAutosave,
+    WoltlabBbcode: WoltlabBbcode,
+    WoltlabBlockQuote: WoltlabBlockQuote,
+    WoltlabCode: WoltlabCode,
+    WoltlabCodeBlock: WoltlabCodeBlock,
+    WoltlabHtmlEmbed: WoltlabHtmlEmbed,
+    WoltlabImage: WoltlabImage,
+    WoltlabMagicParagraph: WoltlabMagicParagraph,
+    WoltlabMedia: WoltlabMedia,
+    WoltlabMention: WoltlabMention,
+    WoltlabMetacode: WoltlabMetacode,
+    WoltlabSmiley: WoltlabSmiley,
+    WoltlabSpoiler: WoltlabSpoiler,
+    WoltlabToolbarGroup: WoltlabToolbarGroup,
+    WoltlabUpload: WoltlabUpload
+}
