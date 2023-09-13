@@ -26,7 +26,10 @@ module.exports = (_env, argv) => {
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "ckeditor5.bundle.js",
-      library: "CKEditor5",
+      library: {
+        name: "ckeditor5-bundle",
+        type: "amd",
+      },
       //libraryTarget: 'amd',
     },
 
