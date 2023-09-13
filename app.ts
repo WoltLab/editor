@@ -190,7 +190,7 @@ export async function create(
   return editor;
 }
 
-//export CKEditor5;
+//export CKEditor5 modules
 export * as Alignment from "@ckeditor/ckeditor5-alignment";
 export * as Autosave from "@ckeditor/ckeditor5-autosave";
 export * as BasicStyles from "@ckeditor/ckeditor5-basic-styles";
@@ -223,7 +223,7 @@ export * as Upload from "@ckeditor/ckeditor5-upload";
 export * as Utils from "@ckeditor/ckeditor5-utils";
 export * as Widget from "@ckeditor/ckeditor5-widget";
 
-//export Woltlab CkEditor Plugins
+//export WoltLab CKEditor Plugins
 export const Plugins = {
     WoltlabAttachment : WoltlabAttachment,
     WoltlabAutosave: WoltlabAutosave,
