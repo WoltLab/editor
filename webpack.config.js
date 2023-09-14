@@ -27,7 +27,7 @@ module.exports = (_env, argv) => {
       path: path.resolve(__dirname, "dist"),
       filename: "ckeditor5.bundle.js",
       library: {
-        name: "ckeditor5-bundle",
+        name: "@woltlab/editor",
         type: "amd",
       },
       //libraryTarget: 'amd',
