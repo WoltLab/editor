@@ -5,6 +5,4 @@
  * @since 6.0
  */
 
-import { create, modules as CKEditor5 } from "./app";
-
-export { create, CKEditor5 };
+export { create, modules as CKEditor5 } from "./app";
