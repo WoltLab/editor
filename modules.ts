@@ -7,6 +7,7 @@ export * as Clipboard from "@ckeditor/ckeditor5-clipboard";
 export * as CodeBlock from "@ckeditor/ckeditor5-code-block";
 export * as Core from "@ckeditor/ckeditor5-core";
 export * as Editor from "@ckeditor/ckeditor5-editor-classic";
+export * as Engine from "@ckeditor/ckeditor5-engine";
 export * as Enter from "@ckeditor/ckeditor5-enter";
 export * as Essentials from "@ckeditor/ckeditor5-essentials";
 export * as Font from "@ckeditor/ckeditor5-font";
