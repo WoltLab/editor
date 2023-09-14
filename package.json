@@ -32,20 +32,20 @@
     "@ckeditor/ckeditor5-ui": "^39.0.2",
     "@ckeditor/ckeditor5-undo": "^39.0.2",
     "@ckeditor/ckeditor5-utils": "^39.0.2",
-    "@ckeditor/ckeditor5-widget": "^39.0.2",
-    "css-loader": "^6.8.1",
-    "postcss-loader": "^7.3.3",
-    "raw-loader": "^4.0.2",
-    "style-loader": "^3.3.3",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+    "@ckeditor/ckeditor5-widget": "^39.0.2"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-inspector": "^4.1.0",
+    "css-loader": "^6.8.1",
     "mini-css-extract-plugin": "^2.7.6",
     "postcss-hover-media-feature": "^1.0.2",
+    "postcss-loader": "^7.3.3",
     "prettier": "^3.0.3",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^3.3.3",
     "ts-loader": "^9.4.4",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "webpack-cli": "^5.1.4",
+    "webpack": "^5.88.2"
   }
 }
