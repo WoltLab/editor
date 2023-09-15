@@ -20,7 +20,7 @@ module.exports = (_env, argv) => {
 
   const config = {
     // https://webpack.js.org/configuration/entry-context/
-    entry: "./app.ts",
+    entry: "./index.ts",
 
     // https://webpack.js.org/configuration/output/
     output: {
