@@ -173,5 +173,3 @@ export async function create(
 
   return editor;
 }
-
-export * as modules from "./modules";
