@@ -13,6 +13,9 @@ import {
   WoltlabMetacode,
   WoltlabMetacodeUpcast,
 } from "../../ckeditor5-woltlab-metacode";
+import type { NodeAttributes } from "@ckeditor/ckeditor5-engine/src/model/node";
+
+type MediaAlignment = "left" | "right" | "none";
 
 export class WoltlabMedia extends Plugin {
   static get pluginName() {
@@ -118,12 +121,17 @@ export class WoltlabMedia extends Plugin {
             ? eventData.attributes[1].toString()
             : "original";
 
+          const mediaAlignment = eventData.attributes[2]
+            ? (eventData.attributes[2] as MediaAlignment)
+            : "none";
+
           if (
             this.#upcastMedia(
               eventData,
               options.resolveMediaUrl,
               mediaId,
               mediaSize,
+              mediaAlignment,
             )
           ) {
             eventInfo.stop();
@@ -138,21 +146,28 @@ export class WoltlabMedia extends Plugin {
     resolveMediaUrl: ResolveMediaUrl,
     mediaId: number,
     mediaSize: string,
+    mediaAlignment: MediaAlignment,
   ): boolean {
     const { conversionApi, data } = eventData;
     const { consumable, writer } = conversionApi;
     const { viewItem } = data;
 
-    const image = writer.createElement("imageInline");
-    writer.setAttributes(
-      {
-        src: resolveMediaUrl(mediaId, mediaSize),
-        classList: "woltlabSuiteMedia",
-        mediaId,
-        mediaSize,
-      },
-      image,
-    );
+    const tagName = mediaAlignment !== "none" ? "imageBlock" : "imageInline";
+    const image = writer.createElement(tagName);
+
+    const attributes: NodeAttributes = {
+      src: resolveMediaUrl(mediaId, mediaSize),
+      classList: "woltlabSuiteMedia",
+      mediaId,
+      mediaSize,
+    };
+    if (mediaAlignment === "left") {
+      attributes.imageStyle = "sideLeft";
+    } else if (mediaAlignment === "right") {
+      attributes.imageStyle = "side";
+    }
+
+    writer.setAttributes(attributes, image);
 
     conversionApi.convertChildren(viewItem, image);
 
