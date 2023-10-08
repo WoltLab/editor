@@ -147,6 +147,7 @@ export class WoltlabMedia extends Plugin {
     writer.setAttributes(
       {
         src: resolveMediaUrl(mediaId, mediaSize),
+        classList: "woltlabSuiteMedia",
         mediaId,
         mediaSize,
       },
