@@ -7,7 +7,7 @@
     "@ckeditor/ckeditor5-alignment": "^39.0.2",
     "@ckeditor/ckeditor5-autosave": "^39.0.2",
     "@ckeditor/ckeditor5-basic-styles": "^39.0.2",
-    "@ckeditor/ckeditor5-block-quote": "^39.0.2",
+    "@ckeditor/ckeditor5-block-quote": "^40.0.0",
     "@ckeditor/ckeditor5-code-block": "^39.0.2",
     "@ckeditor/ckeditor5-editor-classic": "^39.0.2",
     "@ckeditor/ckeditor5-engine": "^39.0.2",
