@@ -22,7 +22,7 @@
     "@ckeditor/ckeditor5-link": "^39.0.2",
     "@ckeditor/ckeditor5-list": "^39.0.2",
     "@ckeditor/ckeditor5-mention": "^39.0.2",
-    "@ckeditor/ckeditor5-paragraph": "^39.0.2",
+    "@ckeditor/ckeditor5-paragraph": "^40.0.0",
     "@ckeditor/ckeditor5-paste-from-office": "^39.0.2",
     "@ckeditor/ckeditor5-remove-format": "^39.0.2",
     "@ckeditor/ckeditor5-table": "^39.0.2",
