@@ -25,6 +25,13 @@ export class WoltlabMetacode extends Plugin {
   }
 
   init() {
+    this.editor.data.htmlProcessor.domConverter.inlineObjectElements.push(
+      "woltlab-metacode",
+    );
+    this.editor.editing.view.domConverter.inlineObjectElements.push(
+      "woltlab-metacode",
+    );
+
     this.#setupConversion();
   }
 
