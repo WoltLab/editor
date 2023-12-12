@@ -159,6 +159,7 @@ export class WoltlabMedia extends Plugin {
       src: resolveMediaUrl(mediaId, mediaSize),
       classList: "woltlabSuiteMedia",
       mediaId,
+      "data-width": mediaSize,
       mediaSize,
     };
     if (mediaAlignment === "left") {
