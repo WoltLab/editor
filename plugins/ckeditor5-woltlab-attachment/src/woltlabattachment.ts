@@ -122,6 +122,7 @@ export class WoltlabAttachment extends Plugin {
         if (
           floatBehavior !== "left" &&
           floatBehavior !== "right" &&
+          floatBehavior !== "center" &&
           floatBehavior !== "none"
         ) {
           floatBehavior = "none";
@@ -197,6 +198,8 @@ export class WoltlabAttachment extends Plugin {
     } else if (floatBehavior === "right") {
       model = "imageBlock";
       attributes.imageStyle = "side";
+    } else if (floatBehavior === "center") {
+      model = "imageBlock";
     }
 
     const image = writer.createElement(model);
@@ -217,7 +220,7 @@ export class WoltlabAttachment extends Plugin {
 
 export default WoltlabAttachment;
 
-type FloatBehavior = "left" | "none" | "right";
+type FloatBehavior = "left" | "none" | "right" | "center";
 
 type ResolveAttachmentUrl = (
   attachmentId: number,
