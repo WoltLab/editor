@@ -12,7 +12,15 @@
  */
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
-import type { DowncastInsertEvent, Element } from "@ckeditor/ckeditor5-engine";
+import type {
+  DocumentSelection,
+  DowncastAttributeEvent,
+  DowncastConversionApi,
+  DowncastInsertEvent,
+  Element,
+  Item,
+  Selection,
+} from "@ckeditor/ckeditor5-engine";
 
 export class WoltlabImage extends Plugin {
   static get pluginName() {
@@ -23,29 +31,32 @@ export class WoltlabImage extends Plugin {
     const { conversion } = this.editor;
 
     const imageTypes = ["imageBlock", "imageInline"] as const;
+
     for (const imageType of imageTypes) {
+      conversion.for("dataDowncast").attributeToAttribute({
+        model: {
+          name: imageType,
+          key: "data-width",
+        },
+        view: "data-width",
+      });
+      conversion.for("upcast").attributeToAttribute({
+        view: {
+          name: imageType === "imageBlock" ? "figure" : "img",
+          key: "data-width",
+        },
+        model: "data-width",
+      });
+
       conversion.for("dataDowncast").add((dispatcher) => {
-        dispatcher.on<DowncastInsertEvent>(
-          `insert:${imageType}`,
+        dispatcher.on<DowncastAttributeEvent>(
+          `attribute:resizedWidth:${imageType}`,
           (_evt, data, conversionApi) => {
-            const { item } = data;
-            if (!item.is("element")) {
-              return;
-            }
-
-            const width = item.getAttribute("width");
-            if (typeof width !== "string") {
-              return;
-            }
-
-            const { mapper, writer } = conversionApi;
-
-            const viewElement = mapper.toViewElement(item);
-            if (viewElement === undefined) {
-              return;
-            }
-
-            writer.setAttribute("data-width", width, viewElement);
+            this.#setResizeWidth(
+              data.item,
+              data.attributeNewValue,
+              conversionApi,
+            );
           },
           { priority: "lowest" },
         );
@@ -88,8 +99,42 @@ export class WoltlabImage extends Plugin {
             }
           },
         );
+
+        dispatcher.on<DowncastAttributeEvent>(
+          `attribute:resizedWidth:${imageType}`,
+          (_evt, data, conversionApi) => {
+            this.#setResizeWidth(
+              data.item,
+              data.attributeNewValue,
+              conversionApi,
+            );
+          },
+          { priority: "lowest" },
+        );
       });
     }
+  }
+
+  #setResizeWidth(
+    item: Item | Selection | DocumentSelection,
+    width: unknown,
+    conversionApi: DowncastConversionApi,
+  ) {
+    if (!item.is("element")) {
+      return;
+    }
+    if (typeof width !== "string") {
+      return;
+    }
+
+    const { mapper, writer } = conversionApi;
+
+    const viewElement = mapper.toViewElement(item);
+    if (viewElement === undefined) {
+      return;
+    }
+
+    writer.setAttribute("data-width", width, viewElement);
   }
 }
 

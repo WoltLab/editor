@@ -188,6 +188,7 @@ export class WoltlabAttachment extends Plugin {
     let attributes: Record<string, unknown> = {
       attachmentId,
       src: resolveAttachUrl(attachmentId, isThumbnail),
+      "data-width": width,
       width,
     };
 
