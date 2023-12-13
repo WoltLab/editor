@@ -12,15 +12,15 @@
  */
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
-import {
+import type {
   DocumentSelection,
+  DowncastAttributeEvent,
   DowncastConversionApi,
   DowncastInsertEvent,
   Element,
-  type Item,
+  Item,
   Selection,
 } from "@ckeditor/ckeditor5-engine";
-import { DowncastAttributeEvent } from "@ckeditor/ckeditor5-engine/src/conversion/downcastdispatcher";
 
 export class WoltlabImage extends Plugin {
   static get pluginName() {
