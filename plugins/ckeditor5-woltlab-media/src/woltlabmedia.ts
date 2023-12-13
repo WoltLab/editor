@@ -15,7 +15,7 @@ import {
 } from "../../ckeditor5-woltlab-metacode";
 import type { NodeAttributes } from "@ckeditor/ckeditor5-engine/src/model/node";
 
-type MediaAlignment = "left" | "right" | "none";
+type MediaAlignment = "left" | "right" | "none" | "center";
 
 export class WoltlabMedia extends Plugin {
   static get pluginName() {
