@@ -125,6 +125,10 @@ export class WoltlabMedia extends Plugin {
             ? (eventData.attributes[2] as MediaAlignment)
             : "none";
 
+          const imageSize = eventData.attributes[3]
+            ? `${eventData.attributes[3].toString()}px`
+            : "auto";
+
           if (
             this.#upcastMedia(
               eventData,
@@ -132,6 +136,7 @@ export class WoltlabMedia extends Plugin {
               mediaId,
               mediaSize,
               mediaAlignment,
+              imageSize,
             )
           ) {
             eventInfo.stop();
@@ -147,6 +152,7 @@ export class WoltlabMedia extends Plugin {
     mediaId: number,
     mediaSize: string,
     mediaAlignment: MediaAlignment,
+    imageSize: string,
   ): boolean {
     const { conversionApi, data } = eventData;
     const { consumable, writer } = conversionApi;
@@ -159,8 +165,8 @@ export class WoltlabMedia extends Plugin {
       src: resolveMediaUrl(mediaId, mediaSize),
       classList: "woltlabSuiteMedia",
       mediaId,
-      "data-width": mediaSize,
       mediaSize,
+      resizedWidth: imageSize,
     };
     if (mediaAlignment === "left") {
       attributes.imageStyle = "sideLeft";
