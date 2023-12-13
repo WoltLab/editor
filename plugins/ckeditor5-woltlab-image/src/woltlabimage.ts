@@ -49,7 +49,7 @@ export class WoltlabImage extends Plugin {
       });
 
       conversion.for("dataDowncast").add((dispatcher) => {
-        return dispatcher.on<DowncastAttributeEvent>(
+        dispatcher.on<DowncastAttributeEvent>(
           `attribute:resizedWidth:${imageType}`,
           (_evt, data, conversionApi) => {
             this.#setResizeWidth(
