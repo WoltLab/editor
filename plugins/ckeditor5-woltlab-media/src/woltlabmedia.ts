@@ -83,6 +83,9 @@ export class WoltlabMedia extends Plugin {
               if (img.is("element", "figure")) {
                 img = img.getChild(0);
               }
+              if (img.is("element", "a")) {
+                img = img.getChild(0);
+              }
 
               if (!img.is("element", "img")) {
                 return;
