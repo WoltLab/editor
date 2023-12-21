@@ -80,7 +80,7 @@ export class WoltlabMedia extends Plugin {
 
               const viewWriter = conversionApi.writer;
               let img = conversionApi.mapper.toViewElement(data.item);
-              let figure = null;
+              let figure = undefined;
               if (img.is("element", "figure")) {
                 figure = img;
                 img = img.getChild(0);
