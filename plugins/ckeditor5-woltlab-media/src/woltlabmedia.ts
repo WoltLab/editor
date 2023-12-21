@@ -80,7 +80,9 @@ export class WoltlabMedia extends Plugin {
 
               const viewWriter = conversionApi.writer;
               let img = conversionApi.mapper.toViewElement(data.item);
+              let figure = null;
               if (img.is("element", "figure")) {
+                figure = img;
                 img = img.getChild(0);
               }
               if (img.is("element", "a")) {
@@ -93,8 +95,14 @@ export class WoltlabMedia extends Plugin {
 
               if (data.attributeNewValue !== null) {
                 viewWriter.setAttribute(view, data.attributeNewValue, img);
+                if (figure) {
+                  viewWriter.setAttribute(view, data.attributeNewValue, figure);
+                }
               } else {
                 viewWriter.removeAttribute(view, img);
+                if (figure) {
+                  viewWriter.removeAttribute(view, figure);
+                }
               }
             },
           );

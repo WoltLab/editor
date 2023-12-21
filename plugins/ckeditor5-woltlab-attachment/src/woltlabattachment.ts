@@ -34,11 +34,14 @@ export class WoltlabAttachment extends Plugin {
     const imageTypes = ["imageBlock", "imageInline"];
     imageTypes.forEach((imageType) => {
       schema.extend(imageType, {
-        allowAttributes: ["attachmentId"],
+        allowAttributes: ["attachmentId", "data-width"],
       });
     });
 
-    const attributeMapping = new Map([["attachmentId", "data-attachment-id"]]);
+    const attributeMapping = new Map([
+      ["attachmentId", "data-attachment-id"],
+      ["data-width", "data-width"],
+    ]);
 
     Array.from(attributeMapping.entries()).forEach(([model, view]) => {
       conversion.for("upcast").attributeToAttribute({
@@ -57,7 +60,9 @@ export class WoltlabAttachment extends Plugin {
 
               const viewWriter = conversionApi.writer;
               let img = conversionApi.mapper.toViewElement(data.item);
+              let figure = null;
               if (img.is("element", "figure")) {
+                figure = img;
                 img = img.getChild(0);
               }
               if (img.is("element", "a")) {
@@ -71,8 +76,14 @@ export class WoltlabAttachment extends Plugin {
               if (data.attributeNewValue !== null) {
                 viewWriter.setAttribute(view, data.attributeNewValue, img);
                 viewWriter.addClass("woltlabAttachment", img);
+                if (figure) {
+                  viewWriter.setAttribute(view, data.attributeNewValue, figure);
+                }
               } else {
                 viewWriter.removeAttribute(view, img);
+                if (figure) {
+                  viewWriter.removeAttribute(view, figure);
+                }
               }
             },
           );
