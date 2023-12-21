@@ -95,12 +95,12 @@ export class WoltlabMedia extends Plugin {
 
               if (data.attributeNewValue !== null) {
                 viewWriter.setAttribute(view, data.attributeNewValue, img);
-                if (figure) {
+                if (figure !== undefined) {
                   viewWriter.setAttribute(view, data.attributeNewValue, figure);
                 }
               } else {
                 viewWriter.removeAttribute(view, img);
-                if (figure) {
+                if (figure !== undefined) {
                   viewWriter.removeAttribute(view, figure);
                 }
               }
