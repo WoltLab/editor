@@ -19,6 +19,10 @@ export class WoltlabFontSize extends Plugin {
   }
 
   init() {
+    if (!this.editor.plugins.has("FontSize")) {
+      return;
+    }
+
     const fontSizes = this.editor.config
       .get("fontSize")!
       .options!.map((size) => {
