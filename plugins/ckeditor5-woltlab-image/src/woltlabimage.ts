@@ -21,10 +21,15 @@ import type {
   Item,
   Selection,
 } from "@ckeditor/ckeditor5-engine";
+import { ImageUtils } from "@ckeditor/ckeditor5-image";
 
 export class WoltlabImage extends Plugin {
   static get pluginName() {
     return "WoltlabImage";
+  }
+
+  static get requires() {
+    return [ImageUtils] as const;
   }
 
   init() {
@@ -133,8 +138,13 @@ export class WoltlabImage extends Plugin {
     if (viewElement === undefined) {
       return;
     }
+    const imageUtils = this.editor.plugins.get("ImageUtils");
 
-    writer.setAttribute("data-width", width, viewElement);
+    writer.setAttribute(
+      "data-width",
+      width,
+      imageUtils.findViewImgElement(viewElement)!,
+    );
   }
 }
 

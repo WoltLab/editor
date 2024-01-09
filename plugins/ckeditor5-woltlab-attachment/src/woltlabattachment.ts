@@ -8,7 +8,7 @@
  */
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
-import { Image } from "@ckeditor/ckeditor5-image";
+import { Image, ImageUtils } from "@ckeditor/ckeditor5-image";
 import type {
   WoltlabMetacode,
   WoltlabMetacodeUpcast,
@@ -20,7 +20,7 @@ export class WoltlabAttachment extends Plugin {
   }
 
   static get requires() {
-    return [Image] as const;
+    return [Image, ImageUtils] as const;
   }
 
   init() {
@@ -42,6 +42,7 @@ export class WoltlabAttachment extends Plugin {
       ["attachmentId", "data-attachment-id"],
       ["data-width", "data-width"],
     ]);
+    const imageUtils = this.editor.plugins.get("ImageUtils");
 
     Array.from(attributeMapping.entries()).forEach(([model, view]) => {
       conversion.for("upcast").attributeToAttribute({
@@ -59,31 +60,15 @@ export class WoltlabAttachment extends Plugin {
               }
 
               const viewWriter = conversionApi.writer;
-              let img = conversionApi.mapper.toViewElement(data.item);
-              let figure = undefined;
-              if (img.is("element", "figure")) {
-                figure = img;
-                img = img.getChild(0);
-              }
-              if (img.is("element", "a")) {
-                img = img.getChild(0);
-              }
-
-              if (!img.is("element", "img")) {
-                return;
-              }
+              const img = imageUtils.findViewImgElement(
+                conversionApi.mapper.toViewElement(data.item),
+              );
 
               if (data.attributeNewValue !== null) {
                 viewWriter.setAttribute(view, data.attributeNewValue, img);
                 viewWriter.addClass("woltlabAttachment", img);
-                if (figure !== undefined) {
-                  viewWriter.setAttribute(view, data.attributeNewValue, figure);
-                }
               } else {
                 viewWriter.removeAttribute(view, img);
-                if (figure !== undefined) {
-                  viewWriter.removeAttribute(view, figure);
-                }
               }
             },
           );
