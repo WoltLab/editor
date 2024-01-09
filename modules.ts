@@ -47,3 +47,4 @@ export * as WoltlabSmiley from "./plugins/ckeditor5-woltlab-smiley/src";
 export * as WoltlabSpoiler from "./plugins/ckeditor5-woltlab-spoiler/src";
 export * as WoltlabToolbarGroup from "./plugins/ckeditor5-woltlab-toolbar-group/src";
 export * as WoltlabUpload from "./plugins/ckeditor5-woltlab-upload/src";
+export * as WoltlabFontSize from "./plugins/ckeditor5-woltlab-font-size/src";
