@@ -1,6 +1,6 @@
 /**
- * Creates an "upcast" converter that converts the font size from the view to the model.
- * The converter finds the closest font size from the given list of font sizes.
+ * Creates an "upcast" converter that converts the font size from the model to view.
+ * Converts the given font size to px and finds the closest font size from the given list of font sizes.
  *
  * @author Olaf Braun
  * @copyright 2001-2024 WoltLab GmbH
