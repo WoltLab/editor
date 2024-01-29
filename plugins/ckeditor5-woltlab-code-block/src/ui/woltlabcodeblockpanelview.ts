@@ -21,7 +21,7 @@ import {
   LabeledFieldView,
   type ListDropdownButtonDefinition,
   type ListDropdownItemDefinition,
-  Model,
+  ViewModel,
   submitHandler,
   View,
   ViewCollection,
@@ -35,7 +35,7 @@ import {
 
 import WoltlabCodeBlockFormRowView from "./woltlabcodeblockformrowview";
 
-import type { DropdownView } from "@ckeditor/ckeditor5-ui";
+import type { DropdownView, FocusableView } from "@ckeditor/ckeditor5-ui";
 
 type CodeBlockLanguageDefinition = ReturnType<
   typeof getNormalizedAndLocalizedLanguageDefinitions
@@ -49,7 +49,7 @@ export class WoltlabCodeBlockPanelView extends View {
   readonly #fileView: InputTextView;
   readonly focusTracker: FocusTracker;
   readonly keystrokes: KeystrokeHandler;
-  readonly #focusables: ViewCollection<View>;
+  readonly #focusables: ViewCollection<FocusableView>;
   readonly #focusCycler: FocusCycler;
   declare imageURLInputValue: string;
   declare file: string;
@@ -179,7 +179,7 @@ export class WoltlabCodeBlockPanelView extends View {
     });
 
     dropdown.on("execute", (evt) => {
-      this.highlighter = (evt.source as Model)._codeBlockLanguage as string;
+      this.highlighter = (evt.source as ViewModel)._codeBlockLanguage as string;
     });
 
     addListToDropdown(dropdown, groupDefinitions);
@@ -235,7 +235,7 @@ export class WoltlabCodeBlockPanelView extends View {
     for (const languageDef of normalizedLanguageDefs) {
       const definition: ListDropdownItemDefinition = {
         type: "button",
-        model: new Model({
+        model: new ViewModel({
           _codeBlockLanguage: languageDef.language,
           label: languageDef.label,
           withText: true,

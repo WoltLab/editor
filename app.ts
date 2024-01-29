@@ -5,6 +5,7 @@
  * @since 6.0
  */
 
+import { ImageInsertConfig } from "@ckeditor/ckeditor5-image/src/imageconfig";
 import {
   Alignment,
   Autosave,
@@ -81,6 +82,7 @@ const defaultConfig: Core.EditorConfig = {
     HorizontalLine.HorizontalLine,
     Image.Image,
     Image.ImageInsertUI,
+    Image.ImageInsertViaUrl,
     Image.ImageToolbar,
     Image.ImageResizeEditing,
     Image.ImageResizeHandles,
@@ -121,9 +123,14 @@ export async function create(
 
   const removePlugins = configuration.removePlugins || [];
   if (!removePlugins.includes("Image")) {
+    const integrations: ImageInsertConfig["integrations"] = ["url"];
+    if (!removePlugins.includes("WoltlabAttachment")) {
+      integrations.unshift("upload");
+    }
+
     configuration.image = {
       insert: {
-        integrations: ["insertImageViaUrl"],
+        integrations,
         type: "inline",
       },
       toolbar: [

@@ -11,6 +11,7 @@ import { Editor, icons } from "@ckeditor/ckeditor5-core";
 import {
   ButtonView,
   createLabeledInputText,
+  FocusableView,
   FocusCycler,
   InputTextView,
   LabeledFieldView,
@@ -33,7 +34,7 @@ export class WoltlabBlockQuotePanelView extends View {
   readonly #link: InputTextView;
   readonly focusTracker: FocusTracker;
   readonly keystrokes: KeystrokeHandler;
-  readonly #focusables: ViewCollection<View>;
+  readonly #focusables: ViewCollection<FocusableView>;
   readonly #focusCycler: FocusCycler;
   declare author: string;
   declare link: string;
