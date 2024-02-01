@@ -66,7 +66,9 @@ export class WoltlabAttachment extends Plugin {
 
               if (data.attributeNewValue !== null) {
                 viewWriter.setAttribute(view, data.attributeNewValue, img);
-                viewWriter.addClass("woltlabAttachment", img);
+                if (model === "attachmentId") {
+                  viewWriter.addClass("woltlabAttachment", img);
+                }
               } else {
                 viewWriter.removeAttribute(view, img);
               }

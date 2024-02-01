@@ -9,11 +9,7 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import { Image } from "@ckeditor/ckeditor5-image";
-import {
-  WoltlabMetacode,
-  WoltlabMetacodeUpcast,
-} from "../../ckeditor5-woltlab-metacode";
-import type { NodeAttributes } from "@ckeditor/ckeditor5-engine/src/model/node";
+import { WoltlabMetacode } from "../../ckeditor5-woltlab-metacode";
 
 type MediaAlignment = "left" | "right" | "none" | "center";
 
@@ -108,48 +104,6 @@ export class WoltlabMedia extends Plugin {
         });
       });
     });
-  }
-
-  #upcastMedia(
-    eventData: WoltlabMetacodeUpcast,
-    resolveMediaUrl: ResolveMediaUrl,
-    mediaId: number,
-    mediaSize: string,
-    mediaAlignment: MediaAlignment,
-    imageSize: string,
-  ): boolean {
-    const { conversionApi, data } = eventData;
-    const { consumable, writer } = conversionApi;
-    const { viewItem } = data;
-
-    const tagName = mediaAlignment !== "none" ? "imageBlock" : "imageInline";
-    const image = writer.createElement(tagName);
-
-    const attributes: NodeAttributes = {
-      src: resolveMediaUrl(mediaId, mediaSize),
-      classList: "woltlabSuiteMedia",
-      mediaId,
-      mediaSize,
-      resizedWidth: imageSize,
-    };
-    if (mediaAlignment === "left") {
-      attributes.imageStyle = "sideLeft";
-    } else if (mediaAlignment === "right") {
-      attributes.imageStyle = "side";
-    }
-
-    writer.setAttributes(attributes, image);
-
-    conversionApi.convertChildren(viewItem, image);
-
-    if (!conversionApi.safeInsert(image, data.modelCursor)) {
-      return false;
-    }
-
-    consumable.consume(viewItem, { name: true });
-    conversionApi.updateConversionResult(image, data);
-
-    return true;
   }
 }
 
