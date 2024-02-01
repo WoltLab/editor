@@ -9,10 +9,6 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import { Image, ImageUtils } from "@ckeditor/ckeditor5-image";
-import type {
-  WoltlabMetacode,
-  WoltlabMetacodeUpcast,
-} from "../../ckeditor5-woltlab-metacode/";
 
 export class WoltlabAttachment extends Plugin {
   static get pluginName() {
@@ -34,14 +30,25 @@ export class WoltlabAttachment extends Plugin {
     const imageTypes = ["imageBlock", "imageInline"];
     imageTypes.forEach((imageType) => {
       schema.extend(imageType, {
-        allowAttributes: ["attachmentId", "data-width"],
+        allowAttributes: ["attachmentId"],
+      });
+
+      conversion.attributeToAttribute({
+        model: {
+          key: "classList",
+          values: ["woltlabAttachment"],
+        },
+        view: {
+          woltlabAttachment: {
+            name: "img",
+            key: "class",
+            value: "woltlabAttachment",
+          },
+        },
       });
     });
 
-    const attributeMapping = new Map([
-      ["attachmentId", "data-attachment-id"],
-      ["data-width", "data-width"],
-    ]);
+    const attributeMapping = new Map([["attachmentId", "data-attachment-id"]]);
     const imageUtils = this.editor.plugins.get("ImageUtils");
 
     Array.from(attributeMapping.entries()).forEach(([model, view]) => {
@@ -66,9 +73,7 @@ export class WoltlabAttachment extends Plugin {
 
               if (data.attributeNewValue !== null) {
                 viewWriter.setAttribute(view, data.attributeNewValue, img);
-                if (model === "attachmentId") {
-                  viewWriter.addClass("woltlabAttachment", img);
-                }
+                viewWriter.addClass("woltlabAttachment", img);
               } else {
                 viewWriter.removeAttribute(view, img);
               }
@@ -89,149 +94,13 @@ export class WoltlabAttachment extends Plugin {
           );
         });
       });
-
-    this.#setupAttachUpcast();
-  }
-
-  #setupAttachUpcast(): void {
-    const options = this.editor.config.get(
-      "woltlabAttachment",
-    ) as WoltlabAttachmentConfig;
-
-    const woltlabMetacode = this.editor.plugins.get(
-      "WoltlabMetacode",
-    ) as WoltlabMetacode;
-    woltlabMetacode.on(
-      "upcast",
-      (eventInfo, eventData: WoltlabMetacodeUpcast) => {
-        if (eventData.name !== "attach") {
-          return;
-        }
-
-        const attachmentId = parseInt(eventData.attributes[0].toString());
-        if (Number.isNaN(attachmentId)) {
-          return;
-        }
-
-        if (!options.inlineImageIds.includes(attachmentId)) {
-          return;
-        }
-
-        let floatBehavior = eventData.attributes[1]
-          ? eventData.attributes[1].toString()
-          : "none";
-        if (
-          floatBehavior !== "left" &&
-          floatBehavior !== "right" &&
-          floatBehavior !== "center" &&
-          floatBehavior !== "none"
-        ) {
-          floatBehavior = "none";
-        }
-
-        let isThumbnail = eventData.attributes[2] as unknown;
-        let width = "auto";
-        if (typeof isThumbnail !== "boolean") {
-          if (
-            typeof isThumbnail === "string" ||
-            typeof isThumbnail === "number"
-          ) {
-            if (isThumbnail === "true") {
-              isThumbnail = true;
-            } else if (isThumbnail === "false") {
-              isThumbnail = false;
-            } else {
-              isThumbnail = parseInt(isThumbnail.toString());
-              if (Number.isNaN(isThumbnail)) {
-                isThumbnail = false;
-              } else {
-                if (isThumbnail === 0) {
-                  isThumbnail = false;
-                } else {
-                  width = `${isThumbnail}px`;
-                  isThumbnail = false;
-                }
-              }
-            }
-          } else {
-            isThumbnail = false;
-          }
-        }
-
-        if (
-          this.#upcastAttachment(
-            eventData,
-            options.resolveAttachmentUrl,
-            attachmentId,
-            floatBehavior as FloatBehavior,
-            isThumbnail as boolean,
-            width,
-          )
-        ) {
-          eventInfo.stop();
-        }
-      },
-    );
-  }
-
-  #upcastAttachment(
-    eventData: WoltlabMetacodeUpcast,
-    resolveAttachUrl: ResolveAttachmentUrl,
-    attachmentId: number,
-    floatBehavior: FloatBehavior,
-    isThumbnail: boolean,
-    width: string,
-  ): boolean {
-    const { conversionApi, data } = eventData;
-    const { consumable, writer } = conversionApi;
-    const { viewItem } = data;
-
-    let model = "imageInline";
-    let attributes: Record<string, unknown> = {
-      attachmentId,
-      src: resolveAttachUrl(attachmentId, isThumbnail),
-      "data-width": width,
-      width,
-    };
-
-    if (floatBehavior === "left") {
-      model = "imageBlock";
-      attributes.imageStyle = "sideLeft";
-    } else if (floatBehavior === "right") {
-      model = "imageBlock";
-      attributes.imageStyle = "side";
-    } else if (floatBehavior === "center") {
-      model = "imageBlock";
-    }
-
-    const image = writer.createElement(model);
-    writer.setAttributes(attributes, image);
-
-    conversionApi.convertChildren(viewItem, image);
-
-    if (!conversionApi.safeInsert(image, data.modelCursor)) {
-      return false;
-    }
-
-    consumable.consume(viewItem, { name: true });
-    conversionApi.updateConversionResult(image, data);
-
-    return true;
   }
 }
 
 export default WoltlabAttachment;
 
-type FloatBehavior = "left" | "none" | "right" | "center";
-
-type ResolveAttachmentUrl = (
-  attachmentId: number,
-  isThumbnail: boolean,
-) => string;
-
 type WoltlabAttachmentConfig = {
   inlineImageIds: number[];
-  resolveAttachmentUrl: ResolveAttachmentUrl;
 };
 
 declare module "@ckeditor/ckeditor5-core" {
