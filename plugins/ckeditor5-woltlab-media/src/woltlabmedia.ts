@@ -28,7 +28,6 @@ export class WoltlabMedia extends Plugin {
 
   init() {
     this.#setupImageElement();
-    this.#setupWsmUpcast();
   }
 
   #setupImageElement(): void {
@@ -109,52 +108,6 @@ export class WoltlabMedia extends Plugin {
         });
       });
     });
-  }
-
-  #setupWsmUpcast(): void {
-    const options = this.editor.config.get(
-      "woltlabMedia",
-    ) as WoltlabMediaConfig;
-
-    const woltlabMetacode = this.editor.plugins.get(
-      "WoltlabMetacode",
-    ) as WoltlabMetacode;
-    woltlabMetacode.on(
-      "upcast",
-      (eventInfo, eventData: WoltlabMetacodeUpcast) => {
-        if (eventData.name === "wsm") {
-          const mediaId = parseInt(eventData.attributes[0].toString());
-          if (Number.isNaN(mediaId)) {
-            return;
-          }
-
-          const mediaSize = eventData.attributes[1]
-            ? eventData.attributes[1].toString()
-            : "original";
-
-          const mediaAlignment = eventData.attributes[2]
-            ? (eventData.attributes[2] as MediaAlignment)
-            : "none";
-
-          const imageSize = eventData.attributes[3]
-            ? `${eventData.attributes[3].toString()}px`
-            : "auto";
-
-          if (
-            this.#upcastMedia(
-              eventData,
-              options.resolveMediaUrl,
-              mediaId,
-              mediaSize,
-              mediaAlignment,
-              imageSize,
-            )
-          ) {
-            eventInfo.stop();
-          }
-        }
-      },
-    );
   }
 
   #upcastMedia(
