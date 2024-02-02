@@ -11,8 +11,6 @@ import { Plugin } from "@ckeditor/ckeditor5-core";
 import { Image, ImageUtils } from "@ckeditor/ckeditor5-image";
 import { WoltlabMetacode } from "../../ckeditor5-woltlab-metacode";
 
-type MediaAlignment = "left" | "right" | "none" | "center";
-
 export class WoltlabMedia extends Plugin {
   static get pluginName() {
     return "WoltlabMedia";
@@ -93,15 +91,3 @@ export class WoltlabMedia extends Plugin {
 }
 
 export default WoltlabMedia;
-
-type ResolveMediaUrl = (mediaId: number, mediaSize: string) => string;
-
-type WoltlabMediaConfig = {
-  resolveMediaUrl: ResolveMediaUrl;
-};
-
-declare module "@ckeditor/ckeditor5-core" {
-  interface EditorConfig {
-    woltlabMedia?: WoltlabMediaConfig;
-  }
-}
