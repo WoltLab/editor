@@ -73,7 +73,7 @@ export class WoltlabMedia extends Plugin {
               }
 
               const viewWriter = conversionApi.writer;
-              let img = imageUtils.findViewImgElement(
+              const img = imageUtils.findViewImgElement(
                 conversionApi.mapper.toViewElement(data.item),
               );
 
