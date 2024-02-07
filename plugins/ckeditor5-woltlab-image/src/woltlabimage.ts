@@ -11,7 +11,7 @@
  * @since 6.0
  */
 
-import { Command, Plugin } from "@ckeditor/ckeditor5-core";
+import { Plugin } from "@ckeditor/ckeditor5-core";
 import type {
   DocumentSelection,
   DowncastAttributeEvent,
@@ -22,7 +22,6 @@ import type {
   Selection,
 } from "@ckeditor/ckeditor5-engine";
 import { ImageUtils } from "@ckeditor/ckeditor5-image";
-import { ObservableSetEvent } from "@ckeditor/ckeditor5-utils";
 
 export class WoltlabImage extends Plugin {
   static get pluginName() {
@@ -34,10 +33,6 @@ export class WoltlabImage extends Plugin {
   }
 
   init() {
-    this.#decorateCommand(this.editor.commands.get("uploadImage")!);
-    this.#decorateCommand(this.editor.commands.get("insertImage")!);
-    this.#decorateCommand(this.editor.commands.get("replaceImageSource")!);
-
     const { conversion } = this.editor;
 
     const imageTypes = ["imageBlock", "imageInline"] as const;
@@ -149,39 +144,6 @@ export class WoltlabImage extends Plugin {
       "data-width",
       width,
       imageUtils.findViewImgElement(viewElement)!,
-    );
-  }
-
-  #decorateCommand(command: Command) {
-    const imageUtils: ImageUtils = this.editor.plugins.get("ImageUtils");
-    command.on<ObservableSetEvent<boolean>>(
-      "set:isEnabled",
-      (evt, _, value) => {
-        if (!value) {
-          return;
-        }
-        const selection = this.editor.model.document.selection;
-        const element = imageUtils.getClosestSelectedImageElement(selection);
-        if (!element) {
-          return;
-        }
-        evt.return = !(this.#isAttachment(element) || this.#isMedia(element));
-      },
-      { priority: "high" },
-    );
-  }
-
-  #isAttachment(element: Element): boolean {
-    return (
-      element.getAttribute("classList") === "woltlabAttachment" ||
-      element.hasAttribute("attachmentId")
-    );
-  }
-
-  #isMedia(element: Element): boolean {
-    return (
-      element.getAttribute("classList") === "woltlabSuiteMedia" ||
-      element.hasAttribute("mediaId")
     );
   }
 }
