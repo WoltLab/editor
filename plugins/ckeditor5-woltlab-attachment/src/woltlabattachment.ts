@@ -98,13 +98,3 @@ export class WoltlabAttachment extends Plugin {
 }
 
 export default WoltlabAttachment;
-
-type WoltlabAttachmentConfig = {
-  inlineImageIds: number[];
-};
-
-declare module "@ckeditor/ckeditor5-core" {
-  interface EditorConfig {
-    woltlabAttachment?: WoltlabAttachmentConfig;
-  }
-}
