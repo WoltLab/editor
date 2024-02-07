@@ -35,20 +35,20 @@ export class WoltlabMedia extends Plugin {
       schema.extend(imageType, {
         allowAttributes: ["mediaId", "mediaSize"],
       });
-    });
 
-    conversion.attributeToAttribute({
-      model: {
-        key: "classList",
-        values: ["woltlabSuiteMedia"],
-      },
-      view: {
-        woltlabSuiteMedia: {
-          name: "img",
-          key: "class",
-          value: "woltlabSuiteMedia",
+      conversion.attributeToAttribute({
+        model: {
+          key: "classList",
+          values: ["woltlabSuiteMedia"],
         },
-      },
+        view: {
+          woltlabSuiteMedia: {
+            name: imageType === "imageBlock" ? "figure" : "img",
+            key: "class",
+            value: "woltlabSuiteMedia",
+          },
+        },
+      });
     });
 
     const attributeMapping = new Map([

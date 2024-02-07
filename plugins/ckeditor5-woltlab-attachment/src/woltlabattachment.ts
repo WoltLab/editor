@@ -40,7 +40,7 @@ export class WoltlabAttachment extends Plugin {
         },
         view: {
           woltlabAttachment: {
-            name: "img",
+            name: imageType === "imageBlock" ? "figure" : "img",
             key: "class",
             value: "woltlabAttachment",
           },
