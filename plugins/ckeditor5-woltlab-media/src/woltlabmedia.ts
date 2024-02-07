@@ -1,5 +1,5 @@
 /**
- * Uploads files dropped onto the editor as an attachment.
+ * Uploads files dropped onto the editor to the media system.
  *
  * @author Alexander Ebert
  * @copyright 2001-2023 WoltLab GmbH
@@ -9,46 +9,52 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import { Image, ImageUtils } from "@ckeditor/ckeditor5-image";
+import { WoltlabMetacode } from "../../ckeditor5-woltlab-metacode";
 
-export class WoltlabAttachment extends Plugin {
+export class WoltlabMedia extends Plugin {
   static get pluginName() {
-    return "WoltlabAttachment";
+    return "WoltlabMedia";
   }
 
   static get requires() {
-    return [Image, ImageUtils] as const;
+    return [Image, WoltlabMetacode, ImageUtils] as const;
   }
 
   init() {
-    const { conversion, model, plugins } = this.editor;
+    this.#setupImageElement();
+  }
+
+  #setupImageElement(): void {
+    const { conversion, model } = this.editor;
 
     // We need to register a custom attribute to keep track of
-    // images that have been uploaded as attachment. This will
-    // make it possible to recognize images and remove them from
-    // the editor when deleting an attachment.
+    // images that have been uploaded as media..
     const { schema } = model;
     const imageTypes = ["imageBlock", "imageInline"];
     imageTypes.forEach((imageType) => {
       schema.extend(imageType, {
-        allowAttributes: ["attachmentId"],
+        allowAttributes: ["mediaId", "mediaSize"],
       });
 
       conversion.attributeToAttribute({
         model: {
           key: "classList",
-          values: ["woltlabAttachment"],
+          values: ["woltlabSuiteMedia"],
         },
         view: {
-          woltlabAttachment: {
+          woltlabSuiteMedia: {
             name: imageType === "imageBlock" ? "figure" : "img",
             key: "class",
-            value: "woltlabAttachment",
+            value: "woltlabSuiteMedia",
           },
         },
       });
     });
 
-    const attributeMapping = new Map([["attachmentId", "data-attachment-id"]]);
+    const attributeMapping = new Map([
+      ["mediaId", "data-media-id"],
+      ["mediaSize", "data-media-size"],
+    ]);
     const imageUtils = this.editor.plugins.get("ImageUtils");
 
     Array.from(attributeMapping.entries()).forEach(([model, view]) => {
@@ -73,7 +79,6 @@ export class WoltlabAttachment extends Plugin {
 
               if (data.attributeNewValue !== null) {
                 viewWriter.setAttribute(view, data.attributeNewValue, img);
-                viewWriter.addClass("woltlabAttachment", img);
               } else {
                 viewWriter.removeAttribute(view, img);
               }
@@ -82,19 +87,7 @@ export class WoltlabAttachment extends Plugin {
         });
       });
     });
-
-    plugins
-      .get("ImageUploadEditing")
-      .on("uploadComplete", (_evt, { data, imageElement }) => {
-        model.change((writer) => {
-          writer.setAttribute(
-            "attachmentId",
-            data["data-attachment-id"],
-            imageElement,
-          );
-        });
-      });
   }
 }
 
-export default WoltlabAttachment;
+export default WoltlabMedia;

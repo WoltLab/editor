@@ -36,6 +36,7 @@ export class WoltlabImage extends Plugin {
     const { conversion } = this.editor;
 
     const imageTypes = ["imageBlock", "imageInline"] as const;
+    const imageUtils = this.editor.plugins.get("ImageUtils");
 
     for (const imageType of imageTypes) {
       conversion.for("dataDowncast").attributeToAttribute({
@@ -88,7 +89,9 @@ export class WoltlabImage extends Plugin {
               return;
             }
 
-            const img = domConverter.viewToDom(viewElement);
+            const img = domConverter.viewToDom(
+              imageUtils.findViewImgElement(viewElement)!,
+            );
             if (!(img instanceof HTMLImageElement)) {
               return;
             }
