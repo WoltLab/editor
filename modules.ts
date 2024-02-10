@@ -33,6 +33,7 @@ export * as Utils from "@ckeditor/ckeditor5-utils";
 export * as Widget from "@ckeditor/ckeditor5-widget";
 
 export * as WoltlabAttachment from "./plugins/ckeditor5-woltlab-attachment/src";
+export * as WoltlabAutoLink from "./plugins/ckeditor5-woltlab-autolink/src";
 export * as WoltlabAutosave from "./plugins/ckeditor5-woltlab-autosave/src";
 export * as WoltlabBbcode from "./plugins/ckeditor5-woltlab-bbcode/src";
 export * as WoltlabBlockQuote from "./plugins/ckeditor5-woltlab-block-quote/src";

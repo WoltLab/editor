@@ -31,6 +31,7 @@ import {
   Table,
   Undo,
   WoltlabAttachment,
+  WoltlabAutoLink,
   WoltlabAutosave,
   WoltlabBbcode,
   WoltlabBlockQuote,
@@ -97,6 +98,7 @@ const defaultConfig: Core.EditorConfig = {
 
     // WoltLab
     WoltlabAttachment.WoltlabAttachment,
+    WoltlabAutoLink.WoltlabAutoLink,
     WoltlabAutosave.WoltlabAutosave,
     WoltlabBlockQuote.WoltlabBlockQuote,
     WoltlabBbcode.WoltlabBbcode,
@@ -171,14 +173,6 @@ export async function create(
     element,
     configuration,
   );
-
-  // Unconditionally disable the `AutoLink` plugin which interferes with our
-  // own link detection and all creates potentially invalid links.
-  // See https://github.com/ckeditor/ckeditor5/issues/14497
-  if (editor.plugins.has(Link.AutoLink)) {
-    const autoLink = editor.plugins.get(Link.AutoLink);
-    autoLink.forceDisabled("app.ts");
-  }
 
   return editor;
 }
