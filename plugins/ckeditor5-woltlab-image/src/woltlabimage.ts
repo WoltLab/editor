@@ -155,9 +155,9 @@ export class WoltlabImage extends Plugin {
     );
   }
 
-  #decorateCommand(command: Command) {
+  #decorateCommand(command: Command | undefined) {
     const imageUtils: ImageUtils = this.editor.plugins.get("ImageUtils");
-    command.on<ObservableSetEvent<boolean>>(
+    command?.on<ObservableSetEvent<boolean>>(
       "set:isEnabled",
       (evt, _, value) => {
         if (!value) {
