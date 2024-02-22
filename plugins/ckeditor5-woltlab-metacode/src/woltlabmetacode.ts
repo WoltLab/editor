@@ -84,7 +84,7 @@ export class WoltlabMetacode extends Plugin {
           if (ancestors[ancestors.length - 1].name === "$root") {
             isBlockElement = true;
           } else if (parent.name === "blockQuote") {
-            // $text nodes only allowed on $block nodes
+            // Text nodes may only appear inside block nodes.
             isBlockElement = true;
           } else {
             for (const child of viewItem.getChildren()) {
