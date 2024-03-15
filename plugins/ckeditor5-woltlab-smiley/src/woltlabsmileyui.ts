@@ -11,8 +11,13 @@ import {
   TextWatcher,
   TextWatcherMatchedEvent,
 } from "@ckeditor/ckeditor5-typing";
-import { Collection, PositionOptions, Rect } from "@ckeditor/ckeditor5-utils";
-import { Marker } from "@ckeditor/ckeditor5-engine";
+import {
+  Collection,
+  keyCodes,
+  PositionOptions,
+  Rect,
+} from "@ckeditor/ckeditor5-utils";
+import { Marker, ViewDocumentKeyDownEvent } from "@ckeditor/ckeditor5-engine";
 import MentionsView from "@ckeditor/ckeditor5-mention/src/ui/mentionsview";
 import { Mention } from "@ckeditor/ckeditor5-mention";
 import { MentionFeedObjectItem } from "@ckeditor/ckeditor5-mention/src/mentionconfig";
@@ -23,6 +28,15 @@ import WoltlabSmileyCommand from "./woltlabsmileycommand";
 const PATTERN = new RegExp(/:[a-z0-9_]+$/);
 const MARKER_NAME = "smiley";
 const VERTICAL_SPACING = 3;
+
+// Dropdown commit key codes.
+const CommitKeyCodes = [keyCodes.enter, keyCodes.tab];
+const HandledKeyCodes = [
+  keyCodes.arrowup,
+  keyCodes.arrowdown,
+  keyCodes.esc,
+  ...CommitKeyCodes,
+];
 
 export class WoltlabSmileyUi extends Plugin {
   #balloon: ContextualBalloon | undefined;
@@ -63,6 +77,33 @@ export class WoltlabSmileyUi extends Plugin {
   public init(): void {
     this.#balloon = this.editor.plugins.get(ContextualBalloon);
     this.editor.commands.add("smiley", new WoltlabSmileyCommand(this.editor));
+
+    this.editor.editing.view.document.on<ViewDocumentKeyDownEvent>(
+      "keydown",
+      (evt, data) => {
+        if (isHandledKey(data.keyCode) && this.#isUIVisible) {
+          data.preventDefault();
+          evt.stop(); // Required for Enter key overriding.
+
+          if (data.keyCode == keyCodes.arrowdown) {
+            this.#smileyView.selectNext();
+          }
+
+          if (data.keyCode == keyCodes.arrowup) {
+            this.#smileyView.selectPrevious();
+          }
+
+          if (CommitKeyCodes.includes(data.keyCode)) {
+            this.#smileyView.executeSelected();
+          }
+
+          if (data.keyCode == keyCodes.esc) {
+            this.#hideBalloon();
+          }
+        }
+      },
+      { priority: "highest" },
+    );
 
     this.#registerTextWatcher();
 
@@ -120,9 +161,7 @@ export class WoltlabSmileyUi extends Plugin {
     mentionsView.on("execute", (evt, data) => {
       const editor = this.editor;
       const model = editor.model;
-
       const item = data.item;
-      const marker = data.marker;
 
       const mentionMarker = editor.model.markers.get(MARKER_NAME);
 
@@ -401,6 +440,10 @@ function getBalloonPanelPositions(
     positions.caret_nw,
     positions.caret_ne,
   ];
+}
+
+function isHandledKey(keyCode: number): boolean {
+  return HandledKeyCodes.includes(keyCode);
 }
 
 export type WoltlabSmileyItem = {
