@@ -41,7 +41,7 @@ const HandledKeyCodes = [
 export class WoltlabSmileyUi extends Plugin {
   #balloon: ContextualBalloon | undefined;
   readonly #smileyView: MentionsView;
-  private _items = new Collection<{
+  #items = new Collection<{
     item: MentionFeedObjectItem;
     marker: string;
   }>();
@@ -132,7 +132,7 @@ export class WoltlabSmileyUi extends Plugin {
    */
   #createSmileyView(): MentionsView {
     const mentionsView = new MentionsView(this.editor.locale);
-    mentionsView.items.bindTo(this._items).using((data) => {
+    mentionsView.items.bindTo(this.#items).using((data) => {
       const { item, marker } = data;
 
       if (mentionsView.items.length >= 10) {
@@ -224,14 +224,14 @@ export class WoltlabSmileyUi extends Plugin {
         });
       }
 
-      this._items.clear();
+      this.#items.clear();
       const emojis = editor.config.get("woltlabSmileys") || [];
       emojis
         .filter((emoji) => {
           return emoji.code.startsWith(smileyCode);
         })
         .forEach((emoji) => {
-          this._items.add({
+          this.#items.add({
             item: {
               id: emoji.code,
               text: emoji.html,
@@ -240,7 +240,7 @@ export class WoltlabSmileyUi extends Plugin {
           });
         });
 
-      if (this._items.length) {
+      if (this.#items.length) {
         this.#showBalloon();
       } else {
         this.#hideBalloon();
