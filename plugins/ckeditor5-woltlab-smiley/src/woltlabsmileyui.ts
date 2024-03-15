@@ -13,6 +13,7 @@ import {
 } from "@ckeditor/ckeditor5-typing";
 import {
   Collection,
+  env,
   keyCodes,
   PositionOptions,
   Rect,
@@ -25,7 +26,6 @@ import MentionListItemView from "@ckeditor/ckeditor5-mention/src/ui/mentionlisti
 import DomWrapperView from "@ckeditor/ckeditor5-mention/src/ui/domwrapperview";
 import WoltlabSmileyCommand from "./woltlabsmileycommand";
 
-const PATTERN = new RegExp(/:[a-z0-9_]+$/);
 const MARKER_NAME = "smiley";
 const VERTICAL_SPACING = 3;
 
@@ -200,12 +200,13 @@ export class WoltlabSmileyUi extends Plugin {
     });
     watcher.on<TextWatcherMatchedEvent>("matched", (evt, data) => {
       const position = getLastPosition(data.text)!;
-      const smileyCode = data.text.substring(position).match(PATTERN)![0];
+      const smileyCode = data.text.substring(position).match(getRegexExp())![0];
       const start = data.range.start.getShiftedBy(position);
       const markerRange = editor.model.createRange(
         start,
         start.getShiftedBy(1),
       );
+      console.log(smileyCode);
 
       if (checkIfMarkerExists(editor)) {
         // Update marker position
@@ -231,6 +232,7 @@ export class WoltlabSmileyUi extends Plugin {
           return emoji.code.startsWith(smileyCode);
         })
         .forEach((emoji) => {
+          console.log(emoji);
           this._items.add({
             item: {
               id: emoji.code,
@@ -345,7 +347,7 @@ export class WoltlabSmileyUi extends Plugin {
 
 function getLastPosition(text: string): number | undefined {
   const lastIndex = text.lastIndexOf(":");
-  if (lastIndex <= 0 || !text.substring(lastIndex - 1).match(PATTERN)) {
+  if (lastIndex === -1 || !text.substring(lastIndex - 1).match(getRegexExp())) {
     return undefined;
   }
 
@@ -365,7 +367,7 @@ function getBalloonPanelPositions(
 ): PositionOptions["positions"] {
   const positions: Record<string, PositionOptions["positions"][0]> = {
     // Positions the panel to the southeast of the caret rectangle.
-    "caret_se": (targetRect: Rect) => {
+    caret_se: (targetRect: Rect) => {
       return {
         top: targetRect.bottom + VERTICAL_SPACING,
         left: targetRect.right,
@@ -377,7 +379,7 @@ function getBalloonPanelPositions(
     },
 
     // Positions the panel to the northeast of the caret rectangle.
-    "caret_ne": (targetRect: Rect, balloonRect: Rect) => {
+    caret_ne: (targetRect: Rect, balloonRect: Rect) => {
       return {
         top: targetRect.top - balloonRect.height - VERTICAL_SPACING,
         left: targetRect.right,
@@ -389,7 +391,7 @@ function getBalloonPanelPositions(
     },
 
     // Positions the panel to the southwest of the caret rectangle.
-    "caret_sw": (targetRect: Rect, balloonRect: Rect) => {
+    caret_sw: (targetRect: Rect, balloonRect: Rect) => {
       return {
         top: targetRect.bottom + VERTICAL_SPACING,
         left: targetRect.right - balloonRect.width,
@@ -401,7 +403,7 @@ function getBalloonPanelPositions(
     },
 
     // Positions the panel to the northwest of the caret rect.
-    "caret_nw": (targetRect: Rect, balloonRect: Rect) => {
+    caret_nw: (targetRect: Rect, balloonRect: Rect) => {
       return {
         top: targetRect.top - balloonRect.height - VERTICAL_SPACING,
         left: targetRect.right - balloonRect.width,
@@ -415,23 +417,34 @@ function getBalloonPanelPositions(
 
   // Returns only the last position if it was matched to prevent the panel from jumping after the first match.
   if (Object.prototype.hasOwnProperty.call(positions, preferredPosition!)) {
-    return [
-      positions[preferredPosition!],
-    ];
+    return [positions[preferredPosition!]];
   }
 
   // By default, return all position callbacks ordered depending on the UI language direction.
-  return uiLanguageDirection !== "rtl" ? [
-    positions.caret_se,
-    positions.caret_sw,
-    positions.caret_ne,
-    positions.caret_nw,
-  ] : [
-    positions.caret_sw,
-    positions.caret_se,
-    positions.caret_nw,
-    positions.caret_ne,
-  ];
+  return uiLanguageDirection !== "rtl"
+    ? [
+        positions.caret_se,
+        positions.caret_sw,
+        positions.caret_ne,
+        positions.caret_nw,
+      ]
+    : [
+        positions.caret_sw,
+        positions.caret_se,
+        positions.caret_nw,
+        positions.caret_ne,
+      ];
+}
+
+/**
+ * {@link module:mention/mentionui#createRegExp()}
+ */
+export function getRegexExp(): RegExp {
+  const openAfterCharacters = env.features.isRegExpUnicodePropertySupported
+    ? "\\p{Ps}\\p{Pi}\"'"
+    : "\\(\\[{\"'";
+  const pattern = `(?:^|[ ${openAfterCharacters}])(:)([a-z_]+)$`;
+  return new RegExp(pattern, "u");
 }
 
 function isHandledKey(keyCode: number): boolean {
