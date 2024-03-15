@@ -163,11 +163,11 @@ export class WoltlabSmileyUi extends Plugin {
       const model = editor.model;
       const item = data.item;
 
-      const mentionMarker = editor.model.markers.get(MARKER_NAME);
+      const smileyMarker = editor.model.markers.get(MARKER_NAME);
 
       // Create a range on matched text.
       const end = model.createPositionAt(model.document.selection.focus!);
-      const start = model.createPositionAt(mentionMarker!.getStart());
+      const start = model.createPositionAt(smileyMarker!.getStart());
       const range = model.createRange(start, end);
 
       this.#hideBalloon();
@@ -196,24 +196,16 @@ export class WoltlabSmileyUi extends Plugin {
   #registerTextWatcher() {
     const editor = this.editor;
     const watcher = new TextWatcher(editor.model, (text: string) => {
-      const position = getLastPosition(text);
-      if (position === undefined) {
-        return false;
-      }
-
-      return text.substring(position).match(PATTERN);
+      return getLastPosition(text) !== undefined;
     });
     watcher.on<TextWatcherMatchedEvent>("matched", (evt, data) => {
-      const position = getLastPosition(data.text);
-      const smileyCode = data.text.substring(position!).match(PATTERN)![0];
-      const selection = editor.model.document.selection;
-      const focus = selection.focus;
-      const markerPosition = editor.model.createPositionAt(
-        focus!.parent,
-        position!,
+      const position = getLastPosition(data.text)!;
+      const smileyCode = data.text.substring(position).match(PATTERN)![0];
+      const start = data.range.start.getShiftedBy(position);
+      const markerRange = editor.model.createRange(
+        start,
+        start.getShiftedBy(1),
       );
-      const end = markerPosition.getShiftedBy(1);
-      const markerRange = editor.model.createRange(markerPosition, end);
 
       if (checkIfMarkerExists(editor)) {
         // Update marker position
@@ -353,7 +345,7 @@ export class WoltlabSmileyUi extends Plugin {
 
 function getLastPosition(text: string): number | undefined {
   const lastIndex = text.lastIndexOf(":");
-  if (lastIndex === -1 || !text.substring(lastIndex - 1).match(PATTERN)) {
+  if (lastIndex <= 0 || !text.substring(lastIndex - 1).match(PATTERN)) {
     return undefined;
   }
 
