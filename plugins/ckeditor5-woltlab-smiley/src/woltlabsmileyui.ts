@@ -18,6 +18,7 @@ import { Mention } from "@ckeditor/ckeditor5-mention";
 import { MentionFeedObjectItem } from "@ckeditor/ckeditor5-mention/src/mentionconfig";
 import MentionListItemView from "@ckeditor/ckeditor5-mention/src/ui/mentionlistitemview";
 import DomWrapperView from "@ckeditor/ckeditor5-mention/src/ui/domwrapperview";
+import WoltlabSmileyCommand from "./woltlabsmileycommand";
 
 const PATTERN = new RegExp(/:[a-z0-9_]+$/);
 const MARKER_NAME = "smiley";
@@ -61,6 +62,7 @@ export class WoltlabSmileyUi extends Plugin {
    */
   public init(): void {
     this.#balloon = this.editor.plugins.get(ContextualBalloon);
+    this.editor.commands.add("smiley", new WoltlabSmileyCommand(this.editor));
 
     this.#registerTextWatcher();
 
@@ -98,7 +100,7 @@ export class WoltlabSmileyUi extends Plugin {
 
       const listItemView = new MentionListItemView(this.editor.locale);
 
-      const view = this._renderItem(item);
+      const view = this.#renderItem(item);
       view.delegate("execute").to(listItemView);
 
       listItemView.children.add(view);
@@ -130,7 +132,12 @@ export class WoltlabSmileyUi extends Plugin {
       const range = model.createRange(start, end);
 
       this.#hideBalloon();
-      //TODO execute command
+
+      editor.execute("smiley", {
+        smiley: item,
+        html: item.text,
+        range,
+      });
 
       editor.editing.view.focus();
     });
@@ -138,7 +145,7 @@ export class WoltlabSmileyUi extends Plugin {
     return mentionsView;
   }
 
-  private _renderItem(item: MentionFeedObjectItem): DomWrapperView {
+  #renderItem(item: MentionFeedObjectItem): DomWrapperView {
     const editor = this.editor;
     const span = document.createElement("span");
     span.classList.add("ckeditor5__mention", "ckeditor5__smiley");
@@ -211,6 +218,8 @@ export class WoltlabSmileyUi extends Plugin {
     watcher.on("unmatched", () => {
       this.#hideBalloon();
     });
+    const command = editor.commands.get("smiley")!;
+    watcher.bind("isEnabled").to(command);
   }
 
   #hideBalloon() {
