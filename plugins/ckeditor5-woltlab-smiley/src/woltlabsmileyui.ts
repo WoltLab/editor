@@ -206,7 +206,6 @@ export class WoltlabSmileyUi extends Plugin {
         start,
         start.getShiftedBy(1),
       );
-      console.log(smileyCode);
 
       if (checkIfMarkerExists(editor)) {
         // Update marker position
@@ -226,13 +225,12 @@ export class WoltlabSmileyUi extends Plugin {
       }
 
       this._items.clear();
-      const emojis = editor.config.get("woltlabSmileys")!;
+      const emojis = editor.config.get("woltlabSmileys") || [];
       emojis
         .filter((emoji) => {
           return emoji.code.startsWith(smileyCode);
         })
         .forEach((emoji) => {
-          console.log(emoji);
           this._items.add({
             item: {
               id: emoji.code,
