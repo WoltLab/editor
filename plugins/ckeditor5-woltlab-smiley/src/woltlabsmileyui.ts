@@ -20,7 +20,6 @@ import {
 } from "@ckeditor/ckeditor5-utils";
 import { Marker, ViewDocumentKeyDownEvent } from "@ckeditor/ckeditor5-engine";
 import MentionsView from "@ckeditor/ckeditor5-mention/src/ui/mentionsview";
-import { Mention } from "@ckeditor/ckeditor5-mention";
 import { MentionFeedObjectItem } from "@ckeditor/ckeditor5-mention/src/mentionconfig";
 import MentionListItemView from "@ckeditor/ckeditor5-mention/src/ui/mentionlistitemview";
 import DomWrapperView from "@ckeditor/ckeditor5-mention/src/ui/domwrapperview";
@@ -64,7 +63,7 @@ export class WoltlabSmileyUi extends Plugin {
    * @inheritDoc
    */
   public static get requires() {
-    return [ContextualBalloon, Mention] as const;
+    return [ContextualBalloon] as const;
   }
 
   get #isUIVisible(): boolean {
