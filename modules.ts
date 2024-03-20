@@ -17,6 +17,7 @@ export * as HorizontalLine from "@ckeditor/ckeditor5-horizontal-line";
 export * as HtmlEmbed from "@ckeditor/ckeditor5-html-embed";
 export * as Image from "@ckeditor/ckeditor5-image";
 export * as Indent from "@ckeditor/ckeditor5-indent";
+export * as Language from "@ckeditor/ckeditor5-language";
 export * as Link from "@ckeditor/ckeditor5-link";
 export * as List from "@ckeditor/ckeditor5-list";
 export * as Mention from "@ckeditor/ckeditor5-mention";
