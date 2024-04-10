@@ -19,10 +19,12 @@ import {
   Rect,
 } from "@ckeditor/ckeditor5-utils";
 import { Marker, ViewDocumentKeyDownEvent } from "@ckeditor/ckeditor5-engine";
-import MentionsView from "@ckeditor/ckeditor5-mention/src/ui/mentionsview";
-import { MentionFeedObjectItem } from "@ckeditor/ckeditor5-mention/src/mentionconfig";
-import MentionListItemView from "@ckeditor/ckeditor5-mention/src/ui/mentionlistitemview";
-import DomWrapperView from "@ckeditor/ckeditor5-mention/src/ui/domwrapperview";
+import {
+  DomWrapperView,
+  MentionFeedObjectItem,
+  MentionListItemView,
+  MentionsView,
+} from "@ckeditor/ckeditor5-mention/";
 import WoltlabSmileyCommand from "./woltlabsmileycommand";
 
 const MARKER_NAME = "smiley";
