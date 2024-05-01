@@ -36,7 +36,7 @@
     "@ckeditor/ckeditor5-dev-translations": "^39.5.1",
     "@ckeditor/ckeditor5-dev-utils": "^39.5.1",
     "@ckeditor/ckeditor5-inspector": "^4.1.0",
-    "css-loader": "^6.9.1",
+    "css-loader": "^7.1.1",
     "mini-css-extract-plugin": "^2.7.7",
     "postcss-hover-media-feature": "^1.0.2",
     "postcss-loader": "^8.0.0",
