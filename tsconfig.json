@@ -7,6 +7,6 @@
     "strict": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "newLine": "lf",
-  },
+    "newLine": "lf"
+  }
 }
