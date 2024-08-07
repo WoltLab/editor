@@ -17,6 +17,7 @@ export * as HorizontalLine from "@ckeditor/ckeditor5-horizontal-line";
 export * as HtmlEmbed from "@ckeditor/ckeditor5-html-embed";
 export * as Image from "@ckeditor/ckeditor5-image";
 export * as Indent from "@ckeditor/ckeditor5-indent";
+export * as Language from "@ckeditor/ckeditor5-language";
 export * as Link from "@ckeditor/ckeditor5-link";
 export * as List from "@ckeditor/ckeditor5-list";
 export * as Mention from "@ckeditor/ckeditor5-mention";
@@ -33,6 +34,7 @@ export * as Utils from "@ckeditor/ckeditor5-utils";
 export * as Widget from "@ckeditor/ckeditor5-widget";
 
 export * as WoltlabAttachment from "./plugins/ckeditor5-woltlab-attachment/src";
+export * as WoltlabAutoLink from "./plugins/ckeditor5-woltlab-autolink/src";
 export * as WoltlabAutosave from "./plugins/ckeditor5-woltlab-autosave/src";
 export * as WoltlabBbcode from "./plugins/ckeditor5-woltlab-bbcode/src";
 export * as WoltlabBlockQuote from "./plugins/ckeditor5-woltlab-block-quote/src";

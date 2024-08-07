@@ -76,11 +76,15 @@ export class WoltlabMetacode extends Plugin {
             this.#serializedAttributesToString(attributes);
           const openingTag = writer.createText(`[${name}${attributeString}]`);
           const closingTag = writer.createText(`[/${name}]`);
+          const parent = modelCursor.parent;
 
           // Check if the BBCode appears to be a block element.
           let isBlockElement = false;
           const ancestors = modelCursor.getAncestors();
           if (ancestors[ancestors.length - 1].name === "$root") {
+            isBlockElement = true;
+          } else if (parent.name === "blockQuote") {
+            // Text nodes may only appear inside block nodes.
             isBlockElement = true;
           } else {
             for (const child of viewItem.getChildren()) {
