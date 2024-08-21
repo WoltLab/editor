@@ -77,7 +77,7 @@ export class WoltlabImage extends Plugin {
         dispatcher.on<DowncastInsertEvent>(
           `insert:${imageType}`,
           (_evt, { item }, conversionApi) => {
-            const { mapper, writer } = conversionApi;
+            const { mapper } = conversionApi;
             const { domConverter } = this.editor.editing.view;
 
             const container = mapper.toViewElement(item as Element);
@@ -102,7 +102,13 @@ export class WoltlabImage extends Plugin {
             }
 
             const setMaxWidth = () => {
-              writer.setStyle("max-width", `${img.naturalWidth}px`, container);
+              this.editor.editing.view.change((writer) => {
+                writer.setStyle(
+                  "max-width",
+                  `${img.naturalWidth}px`,
+                  container,
+                );
+              });
             };
 
             if (img.complete && img.naturalHeight !== 0) {
