@@ -150,7 +150,7 @@ export class WoltlabCodeBlock extends Plugin {
             view.file = "";
             view.highlighter = "";
             view.line = "";
-            view.insertButtonLabel = t("Insert");
+            view.insertButtonLabel = t("MENU_BAR_MENU_INSERT");
           }
         }
       });
