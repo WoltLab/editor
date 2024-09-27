@@ -48,6 +48,7 @@ import {
   WoltlabSpoiler,
   WoltlabToolbarGroup,
   WoltlabUpload,
+  WoltlabEmoji,
 } from "./modules";
 
 const defaultConfig: Core.EditorConfig = {
@@ -116,6 +117,7 @@ const defaultConfig: Core.EditorConfig = {
     WoltlabToolbarGroup.WoltlabToolbarGroup,
     WoltlabUpload.WoltlabUpload,
     WoltlabFontSize.WoltlabFontSize,
+    WoltlabEmoji.WoltlabEmoji,
   ],
 };
 
