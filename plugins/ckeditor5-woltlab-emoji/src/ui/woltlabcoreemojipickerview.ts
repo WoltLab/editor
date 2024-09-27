@@ -13,16 +13,22 @@ import "../../theme/woltlabemoji.css";
 export class WoltlabCoreEmojiPickerView extends View implements FocusableView {
   constructor(locale: Locale) {
     super(locale);
+
+    const bind = this.bindTemplate;
+
     this.setTemplate({
       tag: "woltlab-core-emoji-picker",
       attributes: {
         class: ["ck", "ck-woltlab-core-emoji-picker"],
       },
+      on: {
+        "emoji-click": bind.to("emoji-click"),
+      },
     });
   }
 
   focus(): void {
-    this.element!.focus();
+    this.element?.focus();
   }
 }
 

@@ -10,6 +10,8 @@ import { Typing } from "@ckeditor/ckeditor5-typing";
 import { createDropdown } from "@ckeditor/ckeditor5-ui";
 import emojiIcon from "../theme/icons/smile.svg";
 import WoltlabCoreEmojiPickerView from "./ui/woltlabcoreemojipickerview";
+import { EventInfo } from "@ckeditor/ckeditor5-utils";
+import { EmojiClickEvent } from "emoji-picker-element/shared";
 
 export class WoltlabEmoji extends Plugin {
   static get pluginName() {
@@ -33,11 +35,29 @@ export class WoltlabEmoji extends Plugin {
       });
       dropdownView.bind("isEnabled").to(inputCommand);
 
-      const customElementView = new WoltlabCoreEmojiPickerView(locale);
-      dropdownView.panelView.children.add(customElementView);
+      const emojiPickerView = new WoltlabCoreEmojiPickerView(locale);
+      this.listenTo(
+        emojiPickerView,
+        "emoji-click",
+        this.#emojiClicked.bind(this),
+      );
+
+      dropdownView.panelView.children.add(emojiPickerView);
 
       return dropdownView;
     });
+  }
+
+  #emojiClicked(evt: EventInfo, emojiClickData: EmojiClickEvent) {
+    const editor = this.editor;
+
+    if ("unicode" in emojiClickData.detail) {
+      editor.execute("input", { text: emojiClickData.detail.unicode });
+    } else {
+      // TODO custom emoji
+    }
+
+    editor.editing.view.focus();
   }
 }
 
