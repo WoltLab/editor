@@ -12,6 +12,7 @@ import type { DowncastInsertEvent } from "@ckeditor/ckeditor5-engine";
 import { Image } from "@ckeditor/ckeditor5-image";
 
 import "../theme/woltlabsmiley.css";
+import { toWidget } from "@ckeditor/ckeditor5-widget";
 
 export class WoltlabSmiley extends Plugin {
   static get pluginName() {
@@ -69,13 +70,20 @@ export class WoltlabSmiley extends Plugin {
           consumable.consume(item, "insert");
 
           const image = writer.createEmptyElement("img");
+          const container = writer.createContainerElement(
+            "span",
+            { class: "image-inline" },
+            image,
+          );
           writer.setAttribute("translate", "no", image);
           const position = mapper.toViewPosition(
             this.editor.model.createPositionBefore(item),
           );
-          writer.insert(position, image);
+          toWidget(container, writer);
 
-          mapper.bindElements(item, image);
+          writer.insert(position, container);
+
+          mapper.bindElements(item, container);
         },
         { priority: "high" },
       );
