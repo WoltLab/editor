@@ -9,8 +9,12 @@ import { View, FocusableView } from "@ckeditor/ckeditor5-ui";
 import { Locale } from "@ckeditor/ckeditor5-utils";
 
 import "../../theme/woltlabemoji.css";
+import { Picker } from "emoji-picker-element";
 
-export class WoltlabCoreEmojiPickerView extends View implements FocusableView {
+export class WoltlabCoreEmojiPickerView
+  extends View<Picker>
+  implements FocusableView
+{
   constructor(locale: Locale) {
     super(locale);
 
@@ -25,6 +29,14 @@ export class WoltlabCoreEmojiPickerView extends View implements FocusableView {
         "emoji-click": bind.to("emoji-click"),
       },
     });
+  }
+
+  public getDatabase() {
+    if (!this.isRendered) {
+      this.render();
+    }
+
+    return this.element?.database;
   }
 
   focus(): void {

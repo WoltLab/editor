@@ -11,9 +11,12 @@ import { createDropdown } from "@ckeditor/ckeditor5-ui";
 import emojiIcon from "../theme/icons/smile.svg";
 import WoltlabCoreEmojiPickerView from "./ui/woltlabcoreemojipickerview";
 import { EventInfo } from "@ckeditor/ckeditor5-utils";
+import { Database } from "emoji-picker-element";
 import { EmojiClickEvent } from "emoji-picker-element/shared";
 
 export class WoltlabEmoji extends Plugin {
+  #database?: Database = undefined;
+
   static get pluginName() {
     return "WoltlabEmoji";
   }
@@ -42,6 +45,8 @@ export class WoltlabEmoji extends Plugin {
         this.#emojiClicked.bind(this),
       );
 
+      this.#registerDatabase(emojiPickerView.getDatabase()!);
+
       dropdownView.panelView.children.add(emojiPickerView);
 
       return dropdownView;
@@ -58,6 +63,16 @@ export class WoltlabEmoji extends Plugin {
     }
 
     editor.editing.view.focus();
+  }
+
+  #registerDatabase(database: Database) {
+    if (this.#database !== undefined) {
+      return;
+    }
+
+    this.#database = database;
+
+    // TODO register keydown event listener
   }
 }
 
