@@ -310,6 +310,8 @@ export class WoltlabEmoji extends Plugin {
     watcher.on("unmatched", () => {
       this.#hideBalloon();
     });
+    const command = editor.commands.get("input")!;
+    watcher.bind("isEnabled").to(command);
   }
 
   #hideBalloon() {
