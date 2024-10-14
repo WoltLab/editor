@@ -8,7 +8,7 @@
  */
 
 import { Command, Editor } from "@ckeditor/ckeditor5-core";
-import { Range } from "@ckeditor/ckeditor5-engine";
+import { Range, Node } from "@ckeditor/ckeditor5-engine";
 
 export default class WoltlabSmileyCommand extends Command {
   /**
@@ -53,9 +53,26 @@ export default class WoltlabSmileyCommand extends Command {
       const modelFragment = this.editor.data.toModel(viewFragment);
 
       const smileyRange = model.insertContent(modelFragment, range);
-      writer.setSelection(
-        model.insertContent(writer.createText(" "), smileyRange.end).end,
-      );
+
+      // If a smiley is inserted at the beginning of a paragraph, `smileyRange`
+      // is not the range of the smiley, but the entire paragraph in which the smiley was inserted.
+      let element: Node = smileyRange.getContainedElement()!;
+      if (element.is("element", "paragraph")) {
+        element = element.getChild(0)!;
+      }
+
+      writer.setSelection(element, "after");
+
+      // Don't add a white space if the smiley is followed by a white space.
+      const nodeAfter = element.nextSibling;
+      const isFollowedByWhiteSpace =
+        nodeAfter && nodeAfter.is("$text") && nodeAfter.data.startsWith(" ");
+
+      if (!isFollowedByWhiteSpace) {
+        writer.setSelection(
+          model.insertContent(writer.createText(" "), element, "after").end,
+        );
+      }
     });
   }
 }
