@@ -172,8 +172,6 @@ export class WoltlabEmoji extends Plugin {
 
     if ("unicode" in emojiClickData.detail) {
       editor.execute("input", { text: emojiClickData.detail.unicode });
-    } else {
-      // TODO custom emoji
     }
 
     editor.editing.view.focus();
