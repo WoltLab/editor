@@ -2,14 +2,19 @@
  * @author    Olaf Braun
  * @copyright 2001-2024 WoltLab GmbH
  * @license   LGPL-2.1-or-later
- * @since     6.1
+ * @since     6.2
  */
 
 import { Editor, Plugin } from "@ckeditor/ckeditor5-core";
-import { clickOutsideHandler, ContextualBalloon } from "@ckeditor/ckeditor5-ui";
+import {
+  clickOutsideHandler,
+  ContextualBalloon,
+  createDropdown,
+} from "@ckeditor/ckeditor5-ui";
 import {
   TextWatcher,
   TextWatcherMatchedEvent,
+  Typing,
 } from "@ckeditor/ckeditor5-typing";
 import {
   Collection,
@@ -17,6 +22,7 @@ import {
   keyCodes,
   PositionOptions,
   Rect,
+  EventInfo,
 } from "@ckeditor/ckeditor5-utils";
 import { Marker, ViewDocumentKeyDownEvent } from "@ckeditor/ckeditor5-engine";
 import {
@@ -25,9 +31,12 @@ import {
   MentionListItemView,
   MentionsView,
 } from "@ckeditor/ckeditor5-mention/";
-import WoltlabSmileyCommand from "./woltlabsmileycommand";
+import { Picker } from "emoji-picker-element";
+import emojiIcon from "../theme/icons/smile.svg";
+import WoltlabCoreEmojiPickerView from "./ui/woltlabcoreemojipickerview";
+import { EmojiClickEvent } from "emoji-picker-element/shared";
 
-const MARKER_NAME = "smiley";
+const MARKER_NAME = "emoji";
 const VERTICAL_SPACING = 3;
 
 // Dropdown commit key codes.
@@ -39,45 +48,75 @@ const HandledKeyCodes = [
   ...CommitKeyCodes,
 ];
 
-export class WoltlabSmileyUi extends Plugin {
+export class WoltlabEmoji extends Plugin {
+  #emojiPicker?: Picker = undefined;
   #balloon: ContextualBalloon | undefined;
-  readonly #smileyView: MentionsView;
+  readonly #emojiView: MentionsView;
   #items = new Collection<{
     item: MentionFeedObjectItem;
     marker: string;
   }>();
+
   /**
    * @inheritDoc
    */
   constructor(editor: Editor) {
     super(editor);
-    this.#smileyView = this.#createSmileyView();
+    this.#emojiView = this.#createEmojiView();
   }
 
   /**
    * @inheritDoc
    */
   public static get pluginName() {
-    return "WoltlabSmileyUI" as const;
+    return "WoltlabEmoji" as const;
   }
 
   /**
    * @inheritDoc
    */
   public static get requires() {
-    return [ContextualBalloon] as const;
+    return [Typing, ContextualBalloon] as const;
   }
 
   get #isUIVisible(): boolean {
-    return this.#balloon!.visibleView === this.#smileyView;
+    return this.#balloon!.visibleView === this.#emojiView;
   }
 
   /**
    * @inheritDoc
    */
   public init(): void {
+    const editor = this.editor;
+    const inputCommand = editor.commands.get("input")!;
+
+    editor.ui.componentFactory.add("WoltlabEmoji", (locale) => {
+      const dropdownView = createDropdown(locale);
+      dropdownView.buttonView.set({
+        label: editor.t("Emoji"),
+        icon: emojiIcon,
+        tooltip: true,
+      });
+      dropdownView.bind("isEnabled").to(inputCommand);
+
+      const emojiPickerView = new WoltlabCoreEmojiPickerView(locale);
+      this.listenTo(
+        emojiPickerView,
+        "emoji-click",
+        this.#emojiClicked.bind(this),
+      );
+
+      if (!emojiPickerView.isRendered) {
+        emojiPickerView.render();
+      }
+      this.#registerEmojiPicker(emojiPickerView.element!);
+
+      dropdownView.panelView.children.add(emojiPickerView);
+
+      return dropdownView;
+    });
+
     this.#balloon = this.editor.plugins.get(ContextualBalloon);
-    this.editor.commands.add("smiley", new WoltlabSmileyCommand(this.editor));
 
     this.editor.editing.view.document.on<ViewDocumentKeyDownEvent>(
       "keydown",
@@ -87,15 +126,15 @@ export class WoltlabSmileyUi extends Plugin {
           evt.stop(); // Required for Enter key overriding.
 
           if (data.keyCode == keyCodes.arrowdown) {
-            this.#smileyView.selectNext();
+            this.#emojiView.selectNext();
           }
 
           if (data.keyCode == keyCodes.arrowup) {
-            this.#smileyView.selectPrevious();
+            this.#emojiView.selectPrevious();
           }
 
           if (CommitKeyCodes.includes(data.keyCode)) {
-            this.#smileyView.executeSelected();
+            this.#emojiView.executeSelected();
           }
 
           if (data.keyCode == keyCodes.esc) {
@@ -109,7 +148,7 @@ export class WoltlabSmileyUi extends Plugin {
     this.#registerTextWatcher();
 
     clickOutsideHandler({
-      emitter: this.#smileyView,
+      emitter: this.#emojiView,
       activator: () => this.#isUIVisible,
       contextElements: () => [this.#balloon!.view.element!],
       callback: () => this.#hideBalloon(),
@@ -125,13 +164,31 @@ export class WoltlabSmileyUi extends Plugin {
   public override destroy(): void {
     super.destroy();
 
-    this.#smileyView?.destroy();
+    this.#emojiView?.destroy();
+  }
+
+  #emojiClicked(evt: EventInfo, emojiClickData: EmojiClickEvent) {
+    const editor = this.editor;
+
+    if ("unicode" in emojiClickData.detail) {
+      editor.execute("input", { text: emojiClickData.detail.unicode });
+    }
+
+    editor.editing.view.focus();
+  }
+
+  #registerEmojiPicker(emojiPicker: Picker) {
+    if (this.#emojiPicker !== undefined) {
+      return;
+    }
+
+    this.#emojiPicker = emojiPicker;
   }
 
   /**
    * {@link module:mention/mentionui#_createMentionView()
    */
-  #createSmileyView(): MentionsView {
+  #createEmojiView(): MentionsView {
     const mentionsView = new MentionsView(this.editor.locale);
     mentionsView.items.bindTo(this.#items).using((data) => {
       const { item, marker } = data;
@@ -164,20 +221,16 @@ export class WoltlabSmileyUi extends Plugin {
       const model = editor.model;
       const item = data.item;
 
-      const smileyMarker = editor.model.markers.get(MARKER_NAME);
+      const emojiMarker = editor.model.markers.get(MARKER_NAME);
 
       // Create a range on matched text.
       const end = model.createPositionAt(model.document.selection.focus!);
-      const start = model.createPositionAt(smileyMarker!.getStart());
+      const start = model.createPositionAt(emojiMarker!.getStart());
       const range = model.createRange(start, end);
 
       this.#hideBalloon();
 
-      editor.execute("smiley", {
-        smiley: item,
-        html: item.text,
-        range,
-      });
+      this.editor.execute("insertText", { text: item.text, range: range });
 
       editor.editing.view.focus();
     });
@@ -188,7 +241,7 @@ export class WoltlabSmileyUi extends Plugin {
   #renderItem(item: MentionFeedObjectItem): DomWrapperView {
     const editor = this.editor;
     const span = document.createElement("span");
-    span.classList.add("ckeditor5__mention", "ckeditor5__smiley");
+    span.classList.add("ckeditor5__mention", "ckeditor5__emoji");
     span.innerHTML = `${item.text} ${item.id}`;
 
     return new DomWrapperView(editor.locale, span);
@@ -201,7 +254,7 @@ export class WoltlabSmileyUi extends Plugin {
     });
     watcher.on<TextWatcherMatchedEvent>("matched", (evt, data) => {
       const position = getLastPosition(data.text)!;
-      const smileyCode = data.text.substring(position).match(getRegexExp())![0];
+      const emojiCode = data.text.substring(position).match(getRegexExp())![0];
       const start = data.range.start.getShiftedBy(position);
       const markerRange = editor.model.createRange(
         start,
@@ -226,37 +279,42 @@ export class WoltlabSmileyUi extends Plugin {
       }
 
       this.#items.clear();
-      const emojis = editor.config.get("woltlabSmileys") || [];
-      emojis
-        .filter((emoji) => {
-          return emoji.code.startsWith(smileyCode);
-        })
-        .forEach((emoji) => {
-          this.#items.add({
-            item: {
-              id: emoji.code,
-              text: emoji.html,
-            },
-            marker: MARKER_NAME,
-          });
-        });
 
-      if (this.#items.length) {
-        this.#showBalloon();
-      } else {
-        this.#hideBalloon();
-      }
+      this.#emojiPicker?.database
+        .getEmojiBySearchQuery(emojiCode.substring(1))
+        .then((emojis) => {
+          emojis.forEach((emoji) => {
+            if (!("unicode" in emoji)) {
+              return;
+            }
+
+            this.#items.add({
+              item: {
+                id: emoji.annotation,
+                text: emoji.unicode,
+              },
+              marker: MARKER_NAME,
+            });
+          });
+        })
+        .finally(() => {
+          if (this.#items.length) {
+            this.#showBalloon();
+          } else {
+            this.#hideBalloon();
+          }
+        });
     });
     watcher.on("unmatched", () => {
       this.#hideBalloon();
     });
-    const command = editor.commands.get("smiley")!;
+    const command = editor.commands.get("input")!;
     watcher.bind("isEnabled").to(command);
   }
 
   #hideBalloon() {
-    if (this.#balloon!.hasView(this.#smileyView)) {
-      this.#balloon!.remove(this.#smileyView);
+    if (this.#balloon!.hasView(this.#emojiView)) {
+      this.#balloon!.remove(this.#emojiView);
     }
 
     if (checkIfMarkerExists(this.editor)) {
@@ -276,21 +334,21 @@ export class WoltlabSmileyUi extends Plugin {
 
     if (this.#isUIVisible) {
       this.#balloon!.updatePosition(
-        this._getBalloonPanelPositionData(marker, this.#smileyView.position),
+        this._getBalloonPanelPositionData(marker, this.#emojiView.position),
       );
     } else {
       this.#balloon!.add({
-        view: this.#smileyView,
+        view: this.#emojiView,
         position: this._getBalloonPanelPositionData(
           marker,
-          this.#smileyView.position,
+          this.#emojiView.position,
         ),
         singleViewMode: true,
       });
     }
 
-    this.#smileyView.position = this.#balloon!.view.position;
-    this.#smileyView.selectFirst();
+    this.#emojiView.position = this.#balloon!.view.position;
+    this.#emojiView.selectFirst();
   }
 
   /**
@@ -448,15 +506,4 @@ export function getRegexExp(): RegExp {
 
 function isHandledKey(keyCode: number): boolean {
   return HandledKeyCodes.includes(keyCode);
-}
-
-export type WoltlabSmileyItem = {
-  code: string;
-  html: string;
-};
-
-declare module "@ckeditor/ckeditor5-core" {
-  interface EditorConfig {
-    woltlabSmileys?: WoltlabSmileyItem[];
-  }
 }

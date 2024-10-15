@@ -6,5 +6,3 @@
  */
 
 export { WoltlabSmiley } from "./woltlabsmiley";
-export { WoltlabSmileyItem } from "./woltlabsmileyui";
-export { default as WoltlabSmileyCommand } from "./woltlabsmileycommand";
