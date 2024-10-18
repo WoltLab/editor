@@ -5,7 +5,7 @@
  * @since     6.2
  */
 import { Plugin, Editor } from "@ckeditor/ckeditor5-core";
-import { Database, Picker } from "emoji-picker-element";
+import { Database } from "emoji-picker-element";
 import { Typing } from "@ckeditor/ckeditor5-typing";
 import { createDropdown } from "@ckeditor/ckeditor5-ui";
 
@@ -15,8 +15,6 @@ import { EventInfo } from "@ckeditor/ckeditor5-utils";
 import { EmojiClickEvent } from "emoji-picker-element/shared";
 
 export class WoltlabEmoji extends Plugin {
-  #emojiPicker?: Picker = undefined;
-
   constructor(editor: Editor) {
     super(editor);
   }
@@ -53,7 +51,6 @@ export class WoltlabEmoji extends Plugin {
       if (!emojiPickerView.isRendered) {
         emojiPickerView.render();
       }
-      this.#registerEmojiPicker(emojiPickerView.element!);
 
       dropdownView.panelView.children.add(emojiPickerView);
 
@@ -69,14 +66,6 @@ export class WoltlabEmoji extends Plugin {
     }
 
     editor.editing.view.focus();
-  }
-
-  #registerEmojiPicker(emojiPicker: Picker) {
-    if (this.#emojiPicker !== undefined) {
-      return;
-    }
-
-    this.#emojiPicker = emojiPicker;
   }
 }
 
