@@ -63,7 +63,9 @@ export default class WoltlabSmileyCommand extends Command {
         nodeAfter = element!.nextSibling;
       }
 
-      writer.setSelection(element!, "after");
+      if (element) {
+        writer.setSelection(element, "after");
+      }
 
       // Don't add a white space if the smiley is followed by a white space.
       const isFollowedByWhiteSpace =
