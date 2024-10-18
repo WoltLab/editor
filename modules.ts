@@ -40,6 +40,7 @@ export * as WoltlabBbcode from "./plugins/ckeditor5-woltlab-bbcode/src";
 export * as WoltlabBlockQuote from "./plugins/ckeditor5-woltlab-block-quote/src";
 export * as WoltlabCode from "./plugins/ckeditor5-woltlab-code/src";
 export * as WoltlabCodeBlock from "./plugins/ckeditor5-woltlab-code-block/src";
+export * as WoltlabEmoji from "./plugins/ckeditor5-woltlab-emoji/src";
 export * as WoltlabHtmlEmbed from "./plugins/ckeditor5-woltlab-html-embed/src";
 export * as WoltlabImage from "./plugins/ckeditor5-woltlab-image/src";
 export * as WoltlabMagicParagraph from "./plugins/ckeditor5-woltlab-magic-paragraph/src";

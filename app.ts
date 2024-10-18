@@ -38,6 +38,7 @@ import {
   WoltlabCode,
   WoltlabCodeBlock,
   WoltlabFontSize,
+  WoltlabEmoji,
   WoltlabHtmlEmbed,
   WoltlabImage,
   WoltlabMagicParagraph,
@@ -116,6 +117,7 @@ const defaultConfig: Core.EditorConfig = {
     WoltlabToolbarGroup.WoltlabToolbarGroup,
     WoltlabUpload.WoltlabUpload,
     WoltlabFontSize.WoltlabFontSize,
+    WoltlabEmoji.WoltlabEmoji,
   ],
 };
 
