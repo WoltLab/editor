@@ -70,7 +70,7 @@ export class WoltlabEmoji extends Plugin {
 }
 
 export type WoltlabEmojiConfig = {
-  getDatabase(): Database;
+  database: Database;
 };
 
 declare module "@ckeditor/ckeditor5-core" {
