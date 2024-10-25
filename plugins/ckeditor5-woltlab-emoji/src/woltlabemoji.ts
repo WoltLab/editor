@@ -4,7 +4,7 @@
  * @license   LGPL-2.1-or-later
  * @since     6.2
  */
-import { Plugin, Editor } from "@ckeditor/ckeditor5-core";
+import { Plugin } from "@ckeditor/ckeditor5-core";
 import { Database } from "emoji-picker-element";
 import { Typing } from "@ckeditor/ckeditor5-typing";
 import { createDropdown } from "@ckeditor/ckeditor5-ui";
@@ -15,10 +15,6 @@ import { EventInfo } from "@ckeditor/ckeditor5-utils";
 import { EmojiClickEvent } from "emoji-picker-element/shared";
 
 export class WoltlabEmoji extends Plugin {
-  constructor(editor: Editor) {
-    super(editor);
-  }
-
   public static get pluginName() {
     return "WoltlabEmoji" as const;
   }
