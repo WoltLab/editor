@@ -65,7 +65,7 @@ export class WoltlabSmileyUi extends Plugin {
    * @inheritDoc
    */
   public static get requires() {
-    return [ContextualBalloon] as const;
+    return [ContextualBalloon, "WoltlabEmoji"] as const;
   }
 
   get #isUIVisible(): boolean {
@@ -226,8 +226,10 @@ export class WoltlabSmileyUi extends Plugin {
       }
 
       this.#items.clear();
-      const emojis = editor.config.get("woltlabSmileys") || [];
-      emojis
+      const woltlabSmileys = editor.config.get("woltlabSmileys") || [];
+      const emojisDatabase = editor.config.get("woltlabEmojis")!.database;
+
+      woltlabSmileys
         .filter((emoji) => {
           return emoji.code.startsWith(smileyCode);
         })
@@ -241,11 +243,30 @@ export class WoltlabSmileyUi extends Plugin {
           });
         });
 
-      if (this.#items.length) {
-        this.#showBalloon();
-      } else {
-        this.#hideBalloon();
-      }
+      emojisDatabase
+        .getEmojiBySearchQuery(smileyCode)
+        .then((emojis) => {
+          emojis.forEach((emoji) => {
+            if (!("unicode" in emoji)) {
+              return;
+            }
+
+            this.#items.add({
+              item: {
+                id: emoji.annotation,
+                text: emoji.unicode,
+              },
+              marker: MARKER_NAME,
+            });
+          });
+        })
+        .finally(() => {
+          if (this.#items.length) {
+            this.#showBalloon();
+          } else {
+            this.#hideBalloon();
+          }
+        });
     });
     watcher.on("unmatched", () => {
       this.#hideBalloon();

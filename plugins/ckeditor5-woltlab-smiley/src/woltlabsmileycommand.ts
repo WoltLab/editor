@@ -56,21 +56,26 @@ export default class WoltlabSmileyCommand extends Command {
 
       // If a smiley is inserted at the beginning of a paragraph, `smileyRange`
       // is not the range of the smiley, but the entire paragraph in which the smiley was inserted.
-      let element: Node = smileyRange.getContainedElement()!;
-      if (element.is("element", "paragraph")) {
+      let element: Node | null = smileyRange.getContainedElement();
+      let nodeAfter: Node | null = smileyRange.end.nodeAfter;
+      if (element && element.is("element", "paragraph")) {
         element = element.getChild(0)!;
+        nodeAfter = element!.nextSibling;
       }
 
-      writer.setSelection(element, "after");
+      writer.setSelection(smileyRange.end);
 
       // Don't add a white space if the smiley is followed by a white space.
-      const nodeAfter = element.nextSibling;
       const isFollowedByWhiteSpace =
         nodeAfter && nodeAfter.is("$text") && nodeAfter.data.startsWith(" ");
 
       if (!isFollowedByWhiteSpace) {
         writer.setSelection(
-          model.insertContent(writer.createText(" "), element, "after").end,
+          model.insertContent(
+            writer.createText(" "),
+            element ? element : range!.start.getShiftedBy(smileyText.length),
+            "after",
+          ).end,
         );
       }
     });
