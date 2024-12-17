@@ -463,7 +463,7 @@ export function getRegexExp(): RegExp {
   const openAfterCharacters = env.features.isRegExpUnicodePropertySupported
     ? "\\p{Ps}\\p{Pi}\"'"
     : "\\(\\[{\"'";
-  const pattern = `(?:^|[ ${openAfterCharacters}])(:)([a-z]+(?:_[a-z]+)*)$`;
+  const pattern = `(?:^|[ ${openAfterCharacters}])(:)([a-z][a-z0-9]*(?:_[a-z0-9]+)*)$`;
   return new RegExp(pattern, "u");
 }
 
