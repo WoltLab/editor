@@ -65,7 +65,7 @@ export class WoltlabSmileyUi extends Plugin {
    * @inheritDoc
    */
   public static get requires() {
-    return [ContextualBalloon, "WoltlabEmoji"] as const;
+    return [ContextualBalloon] as const;
   }
 
   get #isUIVisible(): boolean {
@@ -227,7 +227,6 @@ export class WoltlabSmileyUi extends Plugin {
 
       this.#items.clear();
       const woltlabSmileys = editor.config.get("woltlabSmileys") || [];
-      const emojisDatabase = editor.config.get("woltlabEmojis")!.database;
 
       woltlabSmileys
         .filter((emoji) => {
@@ -241,31 +240,6 @@ export class WoltlabSmileyUi extends Plugin {
             },
             marker: MARKER_NAME,
           });
-        });
-
-      emojisDatabase
-        .getEmojiBySearchQuery(smileyCode)
-        .then((emojis) => {
-          emojis.forEach((emoji) => {
-            if (!("unicode" in emoji)) {
-              return;
-            }
-
-            this.#items.add({
-              item: {
-                id: emoji.annotation,
-                text: emoji.unicode,
-              },
-              marker: MARKER_NAME,
-            });
-          });
-        })
-        .finally(() => {
-          if (this.#items.length) {
-            this.#showBalloon();
-          } else {
-            this.#hideBalloon();
-          }
         });
     });
     watcher.on("unmatched", () => {
