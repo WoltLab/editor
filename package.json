@@ -39,7 +39,7 @@
     "@ckeditor/ckeditor5-inspector": "^4.1.0",
     "css-loader": "^7.1.2",
     "mini-css-extract-plugin": "^2.9.2",
-    "postcss-hover-media-feature": "^1.0.2",
+    "@woltlab/postcss-hover-media-feature": "git+https://github.com/WoltLab/postcss-hover-media-feature.git#0e7f5f68efb093a6b98b62964637d8bdac9142de",
     "postcss-loader": "^8.1.1",
     "prettier": "^3.5.3",
     "raw-loader": "^4.0.2",
