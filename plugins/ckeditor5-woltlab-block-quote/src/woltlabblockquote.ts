@@ -8,8 +8,9 @@
  * @since 6.0
  */
 
-import { icons, Plugin } from "@ckeditor/ckeditor5-core";
+import { Plugin } from "@ckeditor/ckeditor5-core";
 import { Element as CKEditorElement } from "@ckeditor/ckeditor5-engine";
+import { IconQuote } from "@ckeditor/ckeditor5-icons";
 import { createDropdown, SplitButtonView } from "@ckeditor/ckeditor5-ui";
 import { first } from "@ckeditor/ckeditor5-utils";
 import { WoltlabBlockQuotePanelView } from "./ui/woltlabblockquotepanelview";
@@ -69,7 +70,7 @@ export class WoltlabBlockQuote extends Plugin {
       splitButtonView.set({
         label: t("Block quote"),
         tooltip: true,
-        icon: icons.quote,
+        icon: IconQuote,
         isToggleable: true,
       });
 

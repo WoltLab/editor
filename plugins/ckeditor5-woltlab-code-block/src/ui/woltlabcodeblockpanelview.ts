@@ -8,7 +8,8 @@
  */
 
 import { getNormalizedAndLocalizedLanguageDefinitions } from "@ckeditor/ckeditor5-code-block/src/utils";
-import { Editor, icons } from "@ckeditor/ckeditor5-core";
+import { Editor } from "@ckeditor/ckeditor5-core";
+import { IconCancel, IconCheck } from "@ckeditor/ckeditor5-icons";
 import {
   addListToDropdown,
   ButtonView,
@@ -258,7 +259,7 @@ export class WoltlabCodeBlockPanelView extends View {
 
     buttonView.set({
       label: t("MENU_BAR_MENU_INSERT"),
-      icon: icons.check,
+      icon: IconCheck,
       class: "ck-button-save",
       type: "submit",
       withText: true,
@@ -274,7 +275,7 @@ export class WoltlabCodeBlockPanelView extends View {
 
     buttonView.set({
       label: t("Cancel"),
-      icon: icons.cancel,
+      icon: IconCancel,
       class: "ck-button-cancel",
       withText: true,
     });

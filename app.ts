@@ -20,6 +20,7 @@ import {
   Highlight,
   HorizontalLine,
   HtmlEmbed,
+  Icons,
   Image,
   Indent,
   Link,
@@ -150,7 +151,7 @@ export async function create(
           {
             name: "sideLeft",
             title: "Left aligned image",
-            icon: Core.icons.objectLeft,
+            icon: Icons.IconObjectLeft,
             modelElements: ["imageBlock"],
             className: "image-style-side-left",
           },
