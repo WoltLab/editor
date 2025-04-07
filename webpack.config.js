@@ -16,7 +16,7 @@ module.exports = (_env, argv) => {
     },
     minify: true,
   });
-  postcssOptions.plugins.push(require("postcss-hover-media-feature"));
+  postcssOptions.plugins.push(require("@woltlab/postcss-hover-media-feature"));
 
   const config = {
     // https://webpack.js.org/configuration/entry-context/

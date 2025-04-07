@@ -24,7 +24,7 @@ import {
   MentionFeedObjectItem,
   MentionListItemView,
   MentionsView,
-} from "@ckeditor/ckeditor5-mention/";
+} from "@ckeditor/ckeditor5-mention";
 import WoltlabSmileyCommand from "./woltlabsmileycommand";
 
 const MARKER_NAME = "smiley";

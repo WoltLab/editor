@@ -7,7 +7,8 @@
  * @since 6.0
  */
 
-import { Editor, icons } from "@ckeditor/ckeditor5-core";
+import { Editor } from "@ckeditor/ckeditor5-core";
+import { IconCancel, IconCheck } from "@ckeditor/ckeditor5-icons";
 import {
   ButtonView,
   createLabeledInputText,
@@ -169,7 +170,7 @@ export class WoltlabBlockQuotePanelView extends View {
 
     buttonView.set({
       label: t("MENU_BAR_MENU_INSERT"),
-      icon: icons.check,
+      icon: IconCheck,
       class: "ck-button-save",
       type: "submit",
       withText: true,
@@ -185,7 +186,7 @@ export class WoltlabBlockQuotePanelView extends View {
 
     buttonView.set({
       label: t("Cancel"),
-      icon: icons.cancel,
+      icon: IconCancel,
       class: "ck-button-cancel",
       withText: true,
     });
