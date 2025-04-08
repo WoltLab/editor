@@ -13,6 +13,7 @@ import { Image } from "@ckeditor/ckeditor5-image";
 
 import "../theme/woltlabsmiley.css";
 import { toWidget } from "@ckeditor/ckeditor5-widget";
+import WoltlabSmileyMention from "./woltlabsmileymention";
 
 export class WoltlabSmiley extends Plugin {
   static get pluginName() {
@@ -20,7 +21,7 @@ export class WoltlabSmiley extends Plugin {
   }
 
   static get requires() {
-    return [Image] as const;
+    return [Image, WoltlabSmileyMention] as const;
   }
 
   init() {
