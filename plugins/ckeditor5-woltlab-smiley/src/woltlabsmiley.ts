@@ -10,10 +10,10 @@
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import type { DowncastInsertEvent } from "@ckeditor/ckeditor5-engine";
 import { Image } from "@ckeditor/ckeditor5-image";
-import { WoltlabSmileyUi } from "./woltlabsmileyui";
 
 import "../theme/woltlabsmiley.css";
 import { toWidget } from "@ckeditor/ckeditor5-widget";
+import WoltlabSmileyMention from "./woltlabsmileymention";
 
 export class WoltlabSmiley extends Plugin {
   static get pluginName() {
@@ -21,7 +21,7 @@ export class WoltlabSmiley extends Plugin {
   }
 
   static get requires() {
-    return [Image, WoltlabSmileyUi] as const;
+    return [Image, WoltlabSmileyMention] as const;
   }
 
   init() {

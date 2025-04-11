@@ -1,6 +1,0 @@
-{
-  "author": "WoltLab GmbH",
-  "license": "LGPL-2.1-or-later",
-  "main": "src/index.ts",
-  "private": true
-}

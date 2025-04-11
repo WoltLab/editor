@@ -31,6 +31,7 @@ import {
   RemoveFormat,
   Table,
   Undo,
+  Emoji,
   WoltlabAttachment,
   WoltlabAutoLink,
   WoltlabAutosave,
@@ -39,7 +40,6 @@ import {
   WoltlabCode,
   WoltlabCodeBlock,
   WoltlabFontSize,
-  WoltlabEmoji,
   WoltlabHtmlEmbed,
   WoltlabImage,
   WoltlabMagicParagraph,
@@ -62,6 +62,7 @@ const defaultConfig: Core.EditorConfig = {
     Paragraph.Paragraph,
     PasteFromOffice.PasteFromOffice,
     Undo.Undo,
+    Emoji.Emoji,
 
     // Formatting
     Alignment.Alignment,
@@ -118,7 +119,6 @@ const defaultConfig: Core.EditorConfig = {
     WoltlabToolbarGroup.WoltlabToolbarGroup,
     WoltlabUpload.WoltlabUpload,
     WoltlabFontSize.WoltlabFontSize,
-    WoltlabEmoji.WoltlabEmoji,
   ],
 };
 

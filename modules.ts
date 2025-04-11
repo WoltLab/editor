@@ -33,6 +33,7 @@ export * as Undo from "@ckeditor/ckeditor5-undo";
 export * as Upload from "@ckeditor/ckeditor5-upload";
 export * as Utils from "@ckeditor/ckeditor5-utils";
 export * as Widget from "@ckeditor/ckeditor5-widget";
+export * as Emoji from "@ckeditor/ckeditor5-emoji";
 
 export * as WoltlabAttachment from "./plugins/ckeditor5-woltlab-attachment/src";
 export * as WoltlabAutoLink from "./plugins/ckeditor5-woltlab-autolink/src";
@@ -41,7 +42,6 @@ export * as WoltlabBbcode from "./plugins/ckeditor5-woltlab-bbcode/src";
 export * as WoltlabBlockQuote from "./plugins/ckeditor5-woltlab-block-quote/src";
 export * as WoltlabCode from "./plugins/ckeditor5-woltlab-code/src";
 export * as WoltlabCodeBlock from "./plugins/ckeditor5-woltlab-code-block/src";
-export * as WoltlabEmoji from "./plugins/ckeditor5-woltlab-emoji/src";
 export * as WoltlabHtmlEmbed from "./plugins/ckeditor5-woltlab-html-embed/src";
 export * as WoltlabImage from "./plugins/ckeditor5-woltlab-image/src";
 export * as WoltlabMagicParagraph from "./plugins/ckeditor5-woltlab-magic-paragraph/src";
