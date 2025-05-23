@@ -17,6 +17,7 @@ import { enablePlaceholder } from "@ckeditor/ckeditor5-engine";
 import { ButtonView } from "@ckeditor/ckeditor5-ui";
 import "../theme/woltlabspoiler.css";
 import WoltlabSpoilerCommand from "./woltlabspoilercommand";
+import { IconError, IconWarning } from "@ckeditor/ckeditor5-icons";
 
 export class WoltlabSpoilerEditing extends Plugin {
   static get pluginName() {
@@ -48,10 +49,11 @@ export class WoltlabSpoilerEditing extends Plugin {
       buttonView.set({
         label: t("Spoiler"),
         tooltip: true,
-        withText: true,
+        // This is a placeholder for our FontAwesome icon, do not remove this.
+        icon: IconWarning,
       });
 
-      buttonView.labelView.setTemplate({
+      buttonView.iconView.setTemplate({
         tag: "fa-icon",
         attributes: {
           name: "eye-slash",
