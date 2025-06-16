@@ -11,6 +11,7 @@
 import { Command, Plugin } from "@ckeditor/ckeditor5-core";
 import { ButtonView, ComponentFactory } from "@ckeditor/ckeditor5-ui";
 import WoltlabBbcodeCommand from "./woltlabbbcodecommand";
+import { IconWarning } from "@ckeditor/ckeditor5-icons";
 
 export class WoltlabBbcode extends Plugin {
   static get pluginName() {
@@ -47,9 +48,11 @@ export class WoltlabBbcode extends Plugin {
       const button = new ButtonView();
       button.label = label;
       button.tooltip = true;
-      button.withText = true;
 
       if (icon) {
+        // This is a placeholder for our FontAwesome icon, do not remove this.
+        button.icon = IconWarning;
+
         if (icon.includes(";")) {
           const [iconName, useSolid] = icon.split(";", 2);
           let attributes: Record<string, string> = {
@@ -59,18 +62,20 @@ export class WoltlabBbcode extends Plugin {
             attributes.solid = "true";
           }
 
-          button.labelView.setTemplate({
+          button.iconView.setTemplate({
             tag: "fa-icon",
             attributes,
           });
         } else {
-          button.labelView.setTemplate({
+          button.iconView.setTemplate({
             tag: "img",
             attributes: {
               src: icon,
             },
           });
         }
+      } else {
+        button.withText = true;
       }
 
       button.bind("isEnabled").to(command, "isEnabled");
