@@ -11,7 +11,7 @@
 import { getNormalizedAndLocalizedLanguageDefinitions } from "@ckeditor/ckeditor5-code-block/src/utils";
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import {
-  Element as CKEditorElement,
+  ModelElement,
   type UpcastElementEvent,
   type DowncastAttributeEvent,
   type DowncastInsertEvent,
@@ -264,7 +264,7 @@ export class WoltlabCodeBlock extends Plugin {
         );
         writer.insert(targetViewPosition, pre);
 
-        mapper.bindElements(data.item as CKEditorElement, code);
+        mapper.bindElements(data.item as ModelElement, code);
       },
       { priority: "high" },
     );
@@ -301,7 +301,7 @@ export class WoltlabCodeBlock extends Plugin {
         });
 
         writer.insert(targetViewPosition, pre);
-        mapper.bindElements(data.item as CKEditorElement, pre);
+        mapper.bindElements(data.item as ModelElement, pre);
       },
       { priority: "high" },
     );
@@ -331,9 +331,7 @@ export class WoltlabCodeBlock extends Plugin {
         (_evt, data, conversionApi) => {
           const { mapper } = conversionApi;
 
-          const viewElement = mapper.toViewElement(
-            data.item as CKEditorElement,
-          );
+          const viewElement = mapper.toViewElement(data.item as ModelElement);
           if (viewElement === undefined) {
             return;
           }
@@ -390,7 +388,7 @@ export class WoltlabCodeBlock extends Plugin {
     }
   }
 
-  #getActiveCodeBlock(): CKEditorElement | null {
+  #getActiveCodeBlock(): ModelElement | null {
     const selection = this.editor.model.document.selection;
     const firstBlock = first(selection.getSelectedBlocks())!;
     const isCodeBlock = !!(firstBlock && firstBlock.is("element", "codeBlock"));

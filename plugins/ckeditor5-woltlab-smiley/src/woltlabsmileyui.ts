@@ -13,14 +13,14 @@ import {
 } from "@ckeditor/ckeditor5-typing";
 import {
   Collection,
+  DomOptimalPositionOptions,
   env,
   keyCodes,
-  PositionOptions,
   Rect,
 } from "@ckeditor/ckeditor5-utils";
 import { Marker, ViewDocumentKeyDownEvent } from "@ckeditor/ckeditor5-engine";
 import {
-  DomWrapperView,
+  MentionDomWrapperView,
   MentionFeedObjectItem,
   MentionListItemView,
   MentionsView,
@@ -185,13 +185,13 @@ export class WoltlabSmileyUi extends Plugin {
     return mentionsView;
   }
 
-  #renderItem(item: MentionFeedObjectItem): DomWrapperView {
+  #renderItem(item: MentionFeedObjectItem): MentionDomWrapperView {
     const editor = this.editor;
     const span = document.createElement("span");
     span.classList.add("ckeditor5__mention", "ckeditor5__smiley");
     span.innerHTML = `${item.text} ${item.id}`;
 
-    return new DomWrapperView(editor.locale, span);
+    return new MentionDomWrapperView(editor.locale, span);
   }
 
   #registerTextWatcher() {
@@ -299,7 +299,7 @@ export class WoltlabSmileyUi extends Plugin {
   private _getBalloonPanelPositionData(
     mentionMarker: Marker,
     preferredPosition: MentionsView["position"],
-  ): Partial<PositionOptions> {
+  ): Partial<DomOptimalPositionOptions> {
     const editor = this.editor;
     const editing = editor.editing;
     const domConverter = editing.view.domConverter;
@@ -363,8 +363,8 @@ function checkIfMarkerExists(editor: Editor): boolean {
 function getBalloonPanelPositions(
   preferredPosition: string | undefined,
   uiLanguageDirection: string,
-): PositionOptions["positions"] {
-  const positions: Record<string, PositionOptions["positions"][0]> = {
+): DomOptimalPositionOptions["positions"] {
+  const positions: Record<string, DomOptimalPositionOptions["positions"][0]> = {
     // Positions the panel to the southeast of the caret rectangle.
     caret_se: (targetRect: Rect) => {
       return {

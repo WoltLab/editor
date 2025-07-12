@@ -8,7 +8,7 @@
  */
 
 import { Command, Editor } from "@ckeditor/ckeditor5-core";
-import { Range, Node } from "@ckeditor/ckeditor5-engine";
+import { ModelNode, ModelRange } from "@ckeditor/ckeditor5-engine";
 
 export default class WoltlabSmileyCommand extends Command {
   /**
@@ -27,7 +27,7 @@ export default class WoltlabSmileyCommand extends Command {
   public override execute(options: {
     smiley: string | { id: string; [key: string]: unknown };
     html?: string;
-    range?: Range;
+    range?: ModelRange;
   }): void {
     const model = this.editor.model;
     const document = model.document;
@@ -56,7 +56,7 @@ export default class WoltlabSmileyCommand extends Command {
 
       // If a smiley is inserted at the beginning of a paragraph, `smileyRange`
       // is not the range of the smiley, but the entire paragraph in which the smiley was inserted.
-      let element: Node = smileyRange.getContainedElement()!;
+      let element: ModelNode = smileyRange.getContainedElement()!;
       if (element.is("element", "paragraph")) {
         element = element.getChild(0)!;
       }
