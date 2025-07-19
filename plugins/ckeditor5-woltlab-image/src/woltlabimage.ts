@@ -13,13 +13,13 @@
 
 import { Command, Plugin } from "@ckeditor/ckeditor5-core";
 import type {
-  DocumentSelection,
   DowncastAttributeEvent,
   DowncastConversionApi,
   DowncastInsertEvent,
-  Element,
-  Item,
-  Selection,
+  ModelDocumentSelection,
+  ModelElement,
+  ModelItem,
+  ModelSelection,
 } from "@ckeditor/ckeditor5-engine";
 import { ImageUtils } from "@ckeditor/ckeditor5-image";
 import { ObservableSetEvent } from "@ckeditor/ckeditor5-utils";
@@ -80,7 +80,7 @@ export class WoltlabImage extends Plugin {
             const { mapper } = conversionApi;
             const { domConverter } = this.editor.editing.view;
 
-            const container = mapper.toViewElement(item as Element);
+            const container = mapper.toViewElement(item as ModelElement);
             if (
               !container ||
               !container.is("containerElement") ||
@@ -135,7 +135,7 @@ export class WoltlabImage extends Plugin {
   }
 
   #setResizeWidth(
-    item: Item | Selection | DocumentSelection,
+    item: ModelItem | ModelSelection | ModelDocumentSelection,
     width: unknown,
     conversionApi: DowncastConversionApi,
   ) {
@@ -180,14 +180,14 @@ export class WoltlabImage extends Plugin {
     );
   }
 
-  #isAttachment(element: Element): boolean {
+  #isAttachment(element: ModelElement): boolean {
     return (
       element.getAttribute("classList") === "woltlabAttachment" ||
       element.hasAttribute("attachmentId")
     );
   }
 
-  #isMedia(element: Element): boolean {
+  #isMedia(element: ModelElement): boolean {
     return (
       element.getAttribute("classList") === "woltlabSuiteMedia" ||
       element.hasAttribute("mediaId")

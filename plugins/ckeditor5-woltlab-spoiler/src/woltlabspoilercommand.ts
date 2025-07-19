@@ -8,10 +8,14 @@
  */
 
 import { Command } from "@ckeditor/ckeditor5-core";
-import { Element, Range } from "@ckeditor/ckeditor5-engine";
+import { ModelElement, ModelRange } from "@ckeditor/ckeditor5-engine";
 import { first } from "@ckeditor/ckeditor5-utils";
 
-import type { Position, Schema, Writer } from "@ckeditor/ckeditor5-engine";
+import type {
+  ModelPosition,
+  ModelSchema,
+  ModelWriter,
+} from "@ckeditor/ckeditor5-engine";
 
 export class WoltlabSpoilerCommand extends Command {
   override execute() {
@@ -41,7 +45,7 @@ export class WoltlabSpoilerCommand extends Command {
     this.isEnabled = this.#getIsEnabled();
   }
 
-  #removeSpoiler(writer: Writer, blocks: Element[]): void {
+  #removeSpoiler(writer: ModelWriter, blocks: ModelElement[]): void {
     for (const block of blocks) {
       const spoilerContent = this.#findSpoilerContent(block);
       if (spoilerContent === null) {
@@ -64,7 +68,10 @@ export class WoltlabSpoilerCommand extends Command {
       }
 
       const spoiler = spoilerContent.parent;
-      if (!(spoiler instanceof Element) || !spoiler.is("element", "spoiler")) {
+      if (
+        !(spoiler instanceof ModelElement) ||
+        !spoiler.is("element", "spoiler")
+      ) {
         throw new Error(
           "Invalid structure, expected a `<spoiler>` as the parent of a `<spoilerContent>`",
           {
@@ -81,8 +88,8 @@ export class WoltlabSpoilerCommand extends Command {
     }
   }
 
-  #applySpoiler(writer: Writer, blocks: Element[]) {
-    const spoilersToMerge: Element[] = [];
+  #applySpoiler(writer: ModelWriter, blocks: ModelElement[]) {
+    const spoilersToMerge: ModelElement[] = [];
 
     this.#getRangesOfBlockGroups(writer, blocks)
       .reverse()
@@ -93,14 +100,16 @@ export class WoltlabSpoilerCommand extends Command {
           spoilerContent = this.#wrapInSpoiler(writer, groupRange);
         }
 
-        spoilersToMerge.push(spoilerContent.parent as Element);
+        spoilersToMerge.push(spoilerContent.parent as ModelElement);
       });
 
     spoilersToMerge.reverse().reduce((currentSpoiler, nextSpoiler) => {
       if (currentSpoiler.nextSibling === nextSpoiler) {
-        const currentSpoilerContent = currentSpoiler.getChild(1) as Element;
+        const currentSpoilerContent = currentSpoiler.getChild(
+          1,
+        ) as ModelElement;
 
-        const nextSpoilerContent = nextSpoiler.getChild(1) as Element;
+        const nextSpoilerContent = nextSpoiler.getChild(1) as ModelElement;
         writer.move(
           writer.createRangeIn(nextSpoilerContent),
           writer.createPositionAt(currentSpoilerContent, "end"),
@@ -115,10 +124,13 @@ export class WoltlabSpoilerCommand extends Command {
     });
   }
 
-  #getRangesOfBlockGroups(writer: Writer, blocks: Element[]): Range[] {
-    let startPosition: Position | null = null;
+  #getRangesOfBlockGroups(
+    writer: ModelWriter,
+    blocks: ModelElement[],
+  ): ModelRange[] {
+    let startPosition: ModelPosition | null = null;
     let i = 0;
-    const ranges: Range[] = [];
+    const ranges: ModelRange[] = [];
 
     while (i < blocks.length) {
       const block = blocks[i];
@@ -166,8 +178,10 @@ export class WoltlabSpoilerCommand extends Command {
     return !!(firstBlock && this.#findSpoilerContent(firstBlock));
   }
 
-  #findSpoilerContent(elementOrPosition: Element | Position): Element | null {
-    if (!(elementOrPosition.parent instanceof Element)) {
+  #findSpoilerContent(
+    elementOrPosition: ModelElement | ModelPosition,
+  ): ModelElement | null {
+    if (!(elementOrPosition.parent instanceof ModelElement)) {
       return null;
     }
 
@@ -178,9 +192,9 @@ export class WoltlabSpoilerCommand extends Command {
     return this.#findSpoilerContent(elementOrPosition.parent);
   }
 
-  #canBeSpoiler(schema: Schema, block: Element): boolean {
+  #canBeSpoiler(schema: ModelSchema, block: ModelElement): boolean {
     const isSpoilerAllowed = schema.checkChild(
-      block.parent as Element,
+      block.parent as ModelElement,
       "spoiler",
     );
     const isBlockAllowedInSpoiler = schema.checkChild("spoilerContent", block);
@@ -188,7 +202,7 @@ export class WoltlabSpoilerCommand extends Command {
     return isSpoilerAllowed && isBlockAllowedInSpoiler;
   }
 
-  #wrapInSpoiler(writer: Writer, content: Range): Element {
+  #wrapInSpoiler(writer: ModelWriter, content: ModelRange): ModelElement {
     const spoilerContent = writer.createElement("spoilerContent");
     writer.wrap(content, spoilerContent);
 

@@ -13,7 +13,7 @@
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import { toWidget, toWidgetEditable, Widget } from "@ckeditor/ckeditor5-widget";
 
-import { enablePlaceholder } from "@ckeditor/ckeditor5-engine";
+import { enableViewPlaceholder } from "@ckeditor/ckeditor5-engine";
 import { ButtonView } from "@ckeditor/ckeditor5-ui";
 import "../theme/woltlabspoiler.css";
 import WoltlabSpoilerCommand from "./woltlabspoilercommand";
@@ -248,7 +248,7 @@ export class WoltlabSpoilerEditing extends Plugin {
 
           div.placeholder = t("Type your title");
 
-          enablePlaceholder({
+          enableViewPlaceholder({
             view: this.editor.editing.view,
             element: div,
             keepOnFocus: true,

@@ -13,7 +13,7 @@
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import {
   ClickObserver,
-  type Element,
+  type ModelElement,
   type ViewContainerElement,
   type ViewDocumentClickEvent,
 } from "@ckeditor/ckeditor5-engine";
@@ -150,7 +150,7 @@ export class WoltlabMagicParagraph extends Plugin {
     const { mapper } = this.editor.editing;
 
     // Check if the adjacent element is already paragraph.
-    let paragraph: Element | undefined = undefined;
+    let paragraph: ModelElement | undefined = undefined;
     if (element.previousSibling && element.previousSibling.is("element", "p")) {
       paragraph = mapper.toModelElement(element.previousSibling);
     } else {
@@ -175,7 +175,7 @@ export class WoltlabMagicParagraph extends Plugin {
     const { mapper } = this.editor.editing;
 
     // Check if the adjacent element is already paragraph.
-    let paragraph: Element | undefined = undefined;
+    let paragraph: ModelElement | undefined = undefined;
     if (element.nextSibling && element.nextSibling.is("element", "p")) {
       paragraph = mapper.toModelElement(element.nextSibling);
     } else {

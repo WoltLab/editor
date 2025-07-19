@@ -9,7 +9,7 @@
  */
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
-import { Element as CKEditorElement } from "@ckeditor/ckeditor5-engine";
+import { ModelElement } from "@ckeditor/ckeditor5-engine";
 import { IconQuote } from "@ckeditor/ckeditor5-icons";
 import { createDropdown, SplitButtonView } from "@ckeditor/ckeditor5-ui";
 import { first } from "@ckeditor/ckeditor5-utils";
@@ -273,20 +273,20 @@ export class WoltlabBlockQuote extends Plugin {
     }
   }
 
-  #getActiveBlockQuote(): CKEditorElement | null {
+  #getActiveBlockQuote(): ModelElement | null {
     const selection = this.editor.model.document.selection;
     const firstBlock = first(selection.getSelectedBlocks())!;
 
     return this.#findBlockQuoteParent(firstBlock);
   }
 
-  #findBlockQuoteParent(element: CKEditorElement): CKEditorElement | null {
+  #findBlockQuoteParent(element: ModelElement): ModelElement | null {
     if (element.is("element", "blockQuote")) {
       return element;
     }
 
     if (element.parent && !element.parent.is("element", "$root")) {
-      return this.#findBlockQuoteParent(element.parent as CKEditorElement);
+      return this.#findBlockQuoteParent(element.parent as ModelElement);
     }
 
     return null;
