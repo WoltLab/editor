@@ -19,9 +19,9 @@ import {
 import {
   MentionFeed,
   MentionFeedObjectItem,
-  ItemRenderer,
+  MentionItemRenderer,
 } from "@ckeditor/ckeditor5-mention";
-import { SkinToneId } from "@ckeditor/ckeditor5-emoji/src/emojiconfig";
+import { EmojiSkinToneId } from "@ckeditor/ckeditor5-emoji";
 import { LocaleTranslate } from "@ckeditor/ckeditor5-utils";
 import { WoltlabSmileyCommand } from "./index";
 
@@ -34,7 +34,7 @@ export class WoltlabSmileyMention extends Plugin {
   declare public emojiRepositoryPlugin: EmojiRepository;
   declare private _isEmojiRepositoryAvailable: boolean;
   declare private _emojiDropdownLimit: number;
-  private readonly _skinTone: SkinToneId;
+  private readonly _skinTone: EmojiSkinToneId;
 
   constructor(editor: Editor) {
     super(editor);
@@ -83,7 +83,7 @@ export class WoltlabSmileyMention extends Plugin {
     this.editor.config.set("mention.feeds", mentionFeedsConfigs);
   }
 
-  private _customItemRendererFactory(t: LocaleTranslate): ItemRenderer {
+  private _customItemRendererFactory(t: LocaleTranslate): MentionItemRenderer {
     return (item: SmileyFeedObjectItem) => {
       const itemElement = document.createElement("button");
 
