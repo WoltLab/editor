@@ -106,6 +106,18 @@ export class WoltlabBlockQuote extends Plugin {
         dropdownView.isOpen = false;
       });
 
+      dropdownView.on("remove", () => {
+        const quote = this.#getActiveBlockQuote();
+        if (quote !== null) {
+          editor.model.change((writer) => {
+            writer.remove(quote!);
+          });
+        }
+
+        editor.editing.view.focus();
+        dropdownView.isOpen = false;
+      });
+
       dropdownView.bind("isEnabled").to(command!);
 
       const view = new WoltlabBlockQuotePanelView(editor);
@@ -124,11 +136,13 @@ export class WoltlabBlockQuote extends Plugin {
             view.author = "";
             view.link = "";
           }
+
+          view.hasActiveQuote(blockQuote !== null);
         }
       });
 
       dropdownView.panelView.children.add(view);
-      view.delegate("submit", "cancel").to(dropdownView);
+      view.delegate("submit", "cancel", "remove").to(dropdownView);
 
       return dropdownView;
     });

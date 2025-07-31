@@ -8,7 +8,11 @@
  */
 
 import { Editor } from "@ckeditor/ckeditor5-core";
-import { IconCancel, IconCheck } from "@ckeditor/ckeditor5-icons";
+import {
+  IconCancel,
+  IconCheck,
+  IconRemoveComment,
+} from "@ckeditor/ckeditor5-icons";
 import {
   ButtonView,
   createLabeledInputText,
@@ -31,6 +35,7 @@ import WoltlabBlockQuoteFormRowView from "./woltlabblockquoteformrowview";
 export class WoltlabBlockQuotePanelView extends View {
   readonly #insertButtonView: ButtonView;
   readonly #cancelButtonView: ButtonView;
+  readonly #removeQuoteButtonView: ButtonView;
   readonly #author: InputTextView;
   readonly #link: InputTextView;
   readonly focusTracker: FocusTracker;
@@ -62,6 +67,7 @@ export class WoltlabBlockQuotePanelView extends View {
 
     this.#insertButtonView = this.#createInsertButton(locale);
     this.#cancelButtonView = this.#createCancelButton(locale);
+    this.#removeQuoteButtonView = this.#createRemoveQuoteButton(locale);
 
     this.#setupTemplate(locale, authorView, linkView);
   }
@@ -81,6 +87,7 @@ export class WoltlabBlockQuotePanelView extends View {
       this.#link,
       this.#insertButtonView,
       this.#cancelButtonView,
+      this.#removeQuoteButtonView,
     ];
 
     childViews.forEach((view) => {
@@ -120,6 +127,11 @@ export class WoltlabBlockQuotePanelView extends View {
 
   focus() {
     this.#focusCycler.focusFirst();
+  }
+
+  hasActiveQuote(hasActiveQuote: boolean): void {
+    this.#removeQuoteButtonView.set("isEnabled", hasActiveQuote);
+    this.#removeQuoteButtonView.set("isVisible", hasActiveQuote);
   }
 
   #createAuthorView(locale: Locale): LabeledFieldView {
@@ -196,6 +208,22 @@ export class WoltlabBlockQuotePanelView extends View {
     return buttonView;
   }
 
+  #createRemoveQuoteButton(locale: Locale): ButtonView {
+    const t = locale.t;
+    const buttonView = new ButtonView(locale);
+
+    buttonView.set({
+      label: t("Remove Quote"),
+      icon: IconRemoveComment,
+      class: "ck-button-extra",
+      withText: true,
+    });
+
+    buttonView.delegate("execute").to(this, "remove");
+
+    return buttonView;
+  }
+
   #setupTemplate(
     locale: Locale,
     authorView: LabeledFieldView,
@@ -214,7 +242,11 @@ export class WoltlabBlockQuotePanelView extends View {
         authorView,
         linkView,
         new WoltlabBlockQuoteFormRowView(locale, {
-          children: [this.#insertButtonView, this.#cancelButtonView],
+          children: [
+            this.#insertButtonView,
+            this.#cancelButtonView,
+            this.#removeQuoteButtonView,
+          ],
           class: "ck-woltlabblockquote-insert-form__action-row",
         }),
       ],
@@ -247,4 +279,10 @@ export default WoltlabBlockQuotePanelView;
  * Fired when the form view is canceled, e.g. by a click on {@link #cancelButtonView}.
  *
  * @event cancel
+ */
+
+/**
+ * Fired when the quote should be removed {@link #removeQuoteButtonView}.
+ *
+ * @event remove
  */
