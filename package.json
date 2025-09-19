@@ -1,4 +1,6 @@
 {
+  "name": "@woltlab/editor",
+  "version": "6.1.14",
   "scripts": {
     "build": "npx webpack --mode production",
     "dev": "npx webpack --mode development --watch"
