@@ -48,6 +48,7 @@ export * as WoltlabMagicParagraph from "./plugins/ckeditor5-woltlab-magic-paragr
 export * as WoltlabMedia from "./plugins/ckeditor5-woltlab-media/src";
 export * as WoltlabMention from "./plugins/ckeditor5-woltlab-mention/src";
 export * as WoltlabMetacode from "./plugins/ckeditor5-woltlab-metacode/src";
+export * as WoltlabPasteFromOffice from "./plugins/ckeditor5-woltlab-paste-from-office";
 export * as WoltlabSmiley from "./plugins/ckeditor5-woltlab-smiley/src";
 export * as WoltlabSpoiler from "./plugins/ckeditor5-woltlab-spoiler/src";
 export * as WoltlabToolbarGroup from "./plugins/ckeditor5-woltlab-toolbar-group/src";
