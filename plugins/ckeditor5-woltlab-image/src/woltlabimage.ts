@@ -12,6 +12,7 @@
  */
 
 import { Command, Plugin } from "@ckeditor/ckeditor5-core";
+import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 import type {
   DowncastAttributeEvent,
   DowncastConversionApi,
@@ -33,7 +34,18 @@ export class WoltlabImage extends Plugin {
     return [ImageUtils] as const;
   }
 
+  #maximumHeight: number | undefined = undefined;
+
   init() {
+    const classicEditor = this.editor.ui.editor;
+    if (!(classicEditor instanceof ClassicEditor)) {
+      throw new Error("The editor instance is not a `ClassicEditor`.");
+    }
+
+    this.#maximumHeight = this.#calculateMaximumHeight(
+      classicEditor.sourceElement,
+    );
+
     this.#decorateCommand(this.editor.commands.get("uploadImage")!);
     this.#decorateCommand(this.editor.commands.get("insertImage")!);
     this.#decorateCommand(this.editor.commands.get("replaceImageSource")!);
@@ -102,12 +114,14 @@ export class WoltlabImage extends Plugin {
             }
 
             const setMaxWidth = () => {
+              let maxWidth = img.naturalWidth;
+              if (this.#maximumHeight !== undefined) {
+                const aspectRatio = maxWidth / img.naturalHeight;
+                maxWidth = Math.round(aspectRatio * this.#maximumHeight);
+              }
+
               this.editor.editing.view.change((writer) => {
-                writer.setStyle(
-                  "max-width",
-                  `${img.naturalWidth}px`,
-                  container,
-                );
+                writer.setStyle("max-width", `${maxWidth}px`, container);
               });
             };
 
@@ -192,6 +206,37 @@ export class WoltlabImage extends Plugin {
       element.getAttribute("classList") === "woltlabSuiteMedia" ||
       element.hasAttribute("mediaId")
     );
+  }
+
+  /**
+   * Calculates the maximum height that images can take up in the current editor
+   * location. This is useful for areas that restrict the height, for example,
+   * in the signature.
+   */
+  #calculateMaximumHeight(
+    element: HTMLElement | undefined,
+  ): number | undefined {
+    if (element === undefined) {
+      throw new Error("Cannot access the editor’s source DOM element.");
+    }
+
+    const img = document.createElement("img");
+    // 1x1 pixel transparent PNG
+    img.src =
+      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+
+    // Hide and position the image absolutely to prevent layout shifts.
+    img.style.setProperty("position", "absolute", "important");
+    img.style.setProperty("visibility", "hidden", "important");
+
+    element.insertAdjacentElement("beforebegin", img);
+
+    const maxHeight = window.getComputedStyle(img).maxHeight;
+    if (!maxHeight.endsWith("px")) {
+      return undefined;
+    }
+
+    return parseInt(maxHeight);
   }
 }
 
