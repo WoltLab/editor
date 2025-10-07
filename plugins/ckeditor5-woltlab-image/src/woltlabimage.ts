@@ -232,6 +232,9 @@ export class WoltlabImage extends Plugin {
     element.insertAdjacentElement("beforebegin", img);
 
     const maxHeight = window.getComputedStyle(img).maxHeight;
+
+    img.remove();
+
     if (!maxHeight.endsWith("px")) {
       return undefined;
     }
