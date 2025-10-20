@@ -168,6 +168,11 @@ export class WoltlabSmileyMention extends Plugin {
       return result.slice(0, this._emojiDropdownLimit);
     }
 
+    const items = result.slice(0, this._emojiDropdownLimit - 1);
+    if (items.length === 0) {
+      return [];
+    }
+
     const actionItem: SmileyFeedObjectItem = {
       id:
         searchQuery.length > 1
@@ -175,7 +180,7 @@ export class WoltlabSmileyMention extends Plugin {
           : EMOJI_HINT_OPTION_ID,
     };
 
-    return [...result.slice(0, this._emojiDropdownLimit - 1), actionItem];
+    return [...items, actionItem];
   }
 
   #filterEmojis(searchQuery: string): Array<SmileyFeedObjectItem> {
