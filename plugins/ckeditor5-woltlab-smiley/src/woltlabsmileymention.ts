@@ -155,7 +155,7 @@ export class WoltlabSmileyMention extends Plugin {
     }
 
     // Do not show anything when a query starts with a marker character.
-    if (searchQuery.startsWith(EMOJI_MENTION_MARKER)) {
+    if (searchQuery === "" || searchQuery.startsWith(EMOJI_MENTION_MARKER)) {
       return [];
     }
 
@@ -207,6 +207,14 @@ export class WoltlabSmileyMention extends Plugin {
 
   #filterSmileys(searchQuery: string): Array<SmileyFeedObjectItem> {
     const woltlabSmileys = this.editor.config.get("woltlabSmileys") || [];
+
+    const searchQueryTokens = searchQuery.split(/\s/).filter(Boolean);
+
+    // Perform the search only if there is at least two non-white characters next to each other.
+    const shouldSearch = searchQueryTokens.some((token) => token.length >= 2);
+    if (!shouldSearch) {
+      return [];
+    }
 
     return woltlabSmileys
       .filter((emoji) => {
