@@ -1,4 +1,5 @@
 export * as Alignment from "@ckeditor/ckeditor5-alignment";
+export * as Autoformat from "@ckeditor/ckeditor5-autoformat";
 export * as Autosave from "@ckeditor/ckeditor5-autosave";
 export * as BasicStyles from "@ckeditor/ckeditor5-basic-styles";
 export * as BlockQuote from "@ckeditor/ckeditor5-block-quote";

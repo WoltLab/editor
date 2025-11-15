@@ -8,6 +8,7 @@
 import { ImageInsertConfig } from "@ckeditor/ckeditor5-image/src/imageconfig";
 import {
   Alignment,
+  Autoformat,
   Autosave,
   BasicStyles,
   BlockQuote,
@@ -67,6 +68,7 @@ const defaultConfig: Core.EditorConfig = {
 
     // Formatting
     Alignment.Alignment,
+    Autoformat.Autoformat,
     BasicStyles.Bold,
     BasicStyles.Code,
     Font.FontColor,
