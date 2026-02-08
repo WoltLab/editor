@@ -49,10 +49,19 @@ export class WoltlabCodeBlock extends Plugin {
 
   init() {
     const editor = this.editor;
+    const { schema } = editor.model;
     this.#command = editor.commands.get("codeBlock")!;
 
-    editor.model.schema.extend("codeBlock", {
+    schema.extend("codeBlock", {
       allowAttributes: ["file", "line"],
+    });
+    schema.addAttributeCheck((context, attributeName) => {
+      const parent = context.getItem(context.length - 2);
+      const isHighlighter = attributeName === "highlight";
+
+      if (isHighlighter && parent && parent.name == "codeBlock") {
+        return false;
+      }
     });
 
     this.#setupCodeBlock();
