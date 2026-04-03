@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
-import { existsSync } from "fs";
-import { mkdir, readdir, readFile, writeFile } from "fs/promises";
+import { access, mkdir, readdir, readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 
 function ckeditorTranslations() {
@@ -21,36 +20,64 @@ function ckeditorTranslations() {
       ];
 
       // Collect the translation directories that exist for these packages.
-      const translationDirs = packages
-        .map((pkg) =>
-          resolve("node_modules/@ckeditor", pkg, "dist/translations"),
+      const allDirs = packages.map((pkg) =>
+        resolve("node_modules/@ckeditor", pkg, "dist/translations"),
+      );
+      const translationDirs = (
+        await Promise.all(
+          allDirs.map((dir) =>
+            access(dir)
+              .then(() => dir)
+              .catch(() => null),
+          ),
         )
-        .filter((dir) => existsSync(dir));
+      ).filter(Boolean);
 
       // Determine available languages from the first directory.
       const languages = (await readdir(translationDirs[0]))
-        .filter((f) => f.endsWith(".umd.js") && f !== "en.umd.js")
-        .map((f) => f.replace(".umd.js", ""));
+        .filter((f) => f.endsWith(".js") && !f.endsWith(".umd.js") && !f.endsWith(".d.ts") && f !== "en.js")
+        .map((f) => f.replace(".js", ""));
 
       await mkdir(targetDir, { recursive: true });
 
-      // For each language, concatenate the translation files from all packages.
+      // For each language, merge dictionaries from all packages into a single IIFE.
       await Promise.all(
         languages.map(async (lang) => {
-          const parts = await Promise.all(
-            translationDirs.map(async (dir) => {
-              const file = resolve(dir, `${lang}.umd.js`);
-              if (existsSync(file)) {
-                return readFile(file, "utf-8");
-              }
-              return "";
-            }),
-          );
+          const dictionaries = [];
+          let getPluralForm = null;
 
-          await writeFile(
-            resolve(targetDir, `${lang}.js`),
-            parts.filter(Boolean).join("\n"),
-          );
+          for (const dir of translationDirs) {
+            const file = resolve(dir, `${lang}.js`);
+            let source;
+            try {
+              source = await readFile(file, "utf-8");
+            } catch {
+              continue;
+            }
+
+            // Extract the dictionary entries from:
+            // export default {"lang":{"dictionary":{...},getPluralForm(n){...}}}
+            const dictMatch = source.match(/"dictionary":\{(.+?)\},getPluralForm/);
+            if (dictMatch) {
+              dictionaries.push(dictMatch[1]);
+            }
+
+            if (getPluralForm === null) {
+              const pluralMatch = source.match(/getPluralForm(\([^)]*\)\{.+?\})/);
+              if (pluralMatch) {
+                getPluralForm = pluralMatch[1];
+              }
+            }
+          }
+
+          const merged =
+            `(e=>{` +
+            `const l=e['${lang}']||={dictionary:{},getPluralForm:null};` +
+            `Object.assign(l.dictionary,{${dictionaries.join(",")}});` +
+            `l.getPluralForm=${getPluralForm ? `function${getPluralForm}` : "null"};` +
+            `})(window.CKEDITOR_TRANSLATIONS||={});`;
+
+          await writeFile(resolve(targetDir, `${lang}.js`), merged);
         }),
       );
     },
