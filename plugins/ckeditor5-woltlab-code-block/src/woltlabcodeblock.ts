@@ -8,7 +8,7 @@
  * @since 6.0
  */
 
-import { getNormalizedAndLocalizedLanguageDefinitions } from "@ckeditor/ckeditor5-code-block/src/utils";
+import { _getNormalizedAndLocalizedCodeBlockLanguageDefinitions } from "@ckeditor/ckeditor5-code-block";
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import {
   ModelElement,
@@ -197,7 +197,7 @@ export class WoltlabCodeBlock extends Plugin {
   }
 
   #setupEditingDowncast(): void {
-    const localizedLanguageDefs = getNormalizedAndLocalizedLanguageDefinitions(
+    const localizedLanguageDefs = _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(
       this.editor,
     );
 
@@ -320,7 +320,7 @@ export class WoltlabCodeBlock extends Plugin {
   }
 
   #setupAttributeSummary(): void {
-    const localizedLanguageDefs = getNormalizedAndLocalizedLanguageDefinitions(
+    const localizedLanguageDefs = _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(
       this.editor,
     );
 
