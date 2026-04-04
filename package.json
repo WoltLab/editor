@@ -2,16 +2,13 @@
   "name": "@woltlab/editor",
   "version": "6.2.3",
   "scripts": {
-    "build": "npx vite build",
-    "dev": "npx webpack --mode development --watch"
+    "build": "npx vite build"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-build-tools": "^55.4.0",
-    "@ckeditor/ckeditor5-dev-translations": "^55.4.0",
     "@ckeditor/ckeditor5-dev-utils": "^55.4.0",
     "@ckeditor/ckeditor5-inspector": "^5.0.0",
     "@jetbrains/postcss-require-hover": "^0.2.0",
-    "@woltlab/postcss-hover-media-feature": "git+https://github.com/WoltLab/postcss-hover-media-feature.git#0e7f5f68efb093a6b98b62964637d8bdac9142de",
     "baseline-browser-mapping": "^2.10.0",
     "css-loader": "^7.1.4",
     "mini-css-extract-plugin": "^2.10.2",
@@ -22,9 +19,7 @@
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.7",
     "typescript": "^6.0.2",
-    "vite": "^8.0.3",
-    "webpack": "^5.105.4",
-    "webpack-cli": "^7.0.2"
+    "vite": "^8.0.3"
   },
   "dependencies": {
     "ckeditor5": "^48.0.0"
