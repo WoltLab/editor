@@ -35,7 +35,13 @@ function ckeditorTranslations() {
 
       // Determine available languages from the first directory.
       const languages = (await readdir(translationDirs[0]))
-        .filter((f) => f.endsWith(".js") && !f.endsWith(".umd.js") && !f.endsWith(".d.ts") && f !== "en.js")
+        .filter(
+          (f) =>
+            f.endsWith(".js") &&
+            !f.endsWith(".umd.js") &&
+            !f.endsWith(".d.ts") &&
+            f !== "en.js",
+        )
         .map((f) => f.replace(".js", ""));
 
       await mkdir(targetDir, { recursive: true });
@@ -57,13 +63,17 @@ function ckeditorTranslations() {
 
             // Extract the dictionary entries from:
             // export default {"lang":{"dictionary":{...},getPluralForm(n){...}}}
-            const dictMatch = source.match(/"dictionary":\{(.+?)\},getPluralForm/);
+            const dictMatch = source.match(
+              /"dictionary":\{(.+?)\},getPluralForm/,
+            );
             if (dictMatch) {
               dictionaries.push(dictMatch[1]);
             }
 
             if (getPluralForm === null) {
-              const pluralMatch = source.match(/getPluralForm(\([^)]*\)\{.+?\})/);
+              const pluralMatch = source.match(
+                /getPluralForm(\([^)]*\)\{.+?\})/,
+              );
               if (pluralMatch) {
                 getPluralForm = pluralMatch[1];
               }
@@ -92,6 +102,9 @@ export default defineConfig({
       formats: ["umd"],
       name: "ckeditor5",
     },
+  },
+  define: {
+    define: "undefined",
   },
   plugins: [ckeditorTranslations()],
 });
