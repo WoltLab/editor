@@ -28,7 +28,6 @@ import "@ckeditor/ckeditor5-basic-styles/dist/index.css";
 import "@ckeditor/ckeditor5-block-quote/dist/index.css";
 import "@ckeditor/ckeditor5-code-block/dist/index.css";
 import "@ckeditor/ckeditor5-editor-classic/dist/index.css";
-import "@ckeditor/ckeditor5-emoji/dist/index.css";
 import "@ckeditor/ckeditor5-essentials/dist/index.css";
 import "@ckeditor/ckeditor5-font/dist/index.css";
 import "@ckeditor/ckeditor5-heading/dist/index.css";
