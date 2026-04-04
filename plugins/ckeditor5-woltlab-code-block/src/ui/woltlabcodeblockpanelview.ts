@@ -7,7 +7,7 @@
  * @since 6.0
  */
 
-import { getNormalizedAndLocalizedLanguageDefinitions } from "@ckeditor/ckeditor5-code-block/src/utils";
+import { _getNormalizedAndLocalizedCodeBlockLanguageDefinitions } from "@ckeditor/ckeditor5-code-block";
 import { Editor } from "@ckeditor/ckeditor5-core";
 import { IconCancel, IconCheck } from "@ckeditor/ckeditor5-icons";
 import {
@@ -39,7 +39,7 @@ import WoltlabCodeBlockFormRowView from "./woltlabcodeblockformrowview";
 import type { DropdownView, FocusableView } from "@ckeditor/ckeditor5-ui";
 
 type CodeBlockLanguageDefinition = ReturnType<
-  typeof getNormalizedAndLocalizedLanguageDefinitions
+  typeof _getNormalizedAndLocalizedCodeBlockLanguageDefinitions
 >;
 
 export class WoltlabCodeBlockPanelView extends View {
@@ -73,7 +73,7 @@ export class WoltlabCodeBlockPanelView extends View {
     this.#focusCycler = this.#createFocusCycler();
 
     const normalizedLanguageDefs =
-      getNormalizedAndLocalizedLanguageDefinitions(editor);
+      _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(editor);
     this.#highlightersView = this.#createHighlighterDropdown(
       locale,
       normalizedLanguageDefs,

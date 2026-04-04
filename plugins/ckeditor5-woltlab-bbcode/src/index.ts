@@ -5,5 +5,5 @@
  * @since 6.0
  */
 
-export { WoltlabBbcode, WoltlabBbcodeConfig } from "./woltlabbbcode";
+export { WoltlabBbcode, type WoltlabBbcodeConfig } from "./woltlabbbcode";
 export { WoltlabBbcodeCommand } from "./woltlabbbcodecommand";

@@ -7,5 +7,5 @@
 
 export {
   WoltlabToolbarGroup,
-  WoltlabToolbarGroupConfig,
+  type WoltlabToolbarGroupConfig,
 } from "./woltlabtoolbargroup";

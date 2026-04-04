@@ -1,36 +1,97 @@
 /**
  * @author Alexander Ebert
- * @copyright 2001-2023 WoltLab GmbH
+ * @copyright 2001-2026 WoltLab GmbH
  * @license LGPL-2.1-or-later
- * @since 6.0
  */
 
-import { ImageInsertConfig } from "@ckeditor/ckeditor5-image/src/imageconfig";
+// These are the core styles of CKEditor5 that must be imported first and in
+// this exact order.
+import "@ckeditor/ckeditor5-ui/dist/index.css";
+import "@ckeditor/ckeditor5-clipboard/dist/index.css";
+import "@ckeditor/ckeditor5-core/dist/index.css";
+import "@ckeditor/ckeditor5-engine/dist/index.css";
+import "@ckeditor/ckeditor5-enter/dist/index.css";
+import "@ckeditor/ckeditor5-paragraph/dist/index.css";
+import "@ckeditor/ckeditor5-select-all/dist/index.css";
+import "@ckeditor/ckeditor5-typing/dist/index.css";
+import "@ckeditor/ckeditor5-undo/dist/index.css";
+import "@ckeditor/ckeditor5-upload/dist/index.css";
+import "@ckeditor/ckeditor5-utils/dist/index.css";
+import "@ckeditor/ckeditor5-watchdog/dist/index.css";
+import "@ckeditor/ckeditor5-widget/dist/index.css";
+
+// CSS of plugins of CKEditor come first to allow us to customize them with out
+// own plugins that are imported through the `modules.ts`.
+import "@ckeditor/ckeditor5-alignment/dist/index.css";
+import "@ckeditor/ckeditor5-autoformat/dist/index.css";
+import "@ckeditor/ckeditor5-autosave/dist/index.css";
+import "@ckeditor/ckeditor5-basic-styles/dist/index.css";
+import "@ckeditor/ckeditor5-block-quote/dist/index.css";
+import "@ckeditor/ckeditor5-code-block/dist/index.css";
+import "@ckeditor/ckeditor5-editor-classic/dist/index.css";
+import "@ckeditor/ckeditor5-emoji/dist/index.css";
+import "@ckeditor/ckeditor5-essentials/dist/index.css";
+import "@ckeditor/ckeditor5-font/dist/index.css";
+import "@ckeditor/ckeditor5-heading/dist/index.css";
+import "@ckeditor/ckeditor5-highlight/dist/index.css";
+import "@ckeditor/ckeditor5-horizontal-line/dist/index.css";
+import "@ckeditor/ckeditor5-html-embed/dist/index.css";
+import "@ckeditor/ckeditor5-icons/dist/index.css";
+import "@ckeditor/ckeditor5-image/dist/index.css";
+import "@ckeditor/ckeditor5-link/dist/index.css";
+import "@ckeditor/ckeditor5-list/dist/index.css";
+import "@ckeditor/ckeditor5-markdown-gfm/dist/index.css";
+import "@ckeditor/ckeditor5-mention/dist/index.css";
+import "@ckeditor/ckeditor5-paste-from-office/dist/index.css";
+import "@ckeditor/ckeditor5-remove-format/dist/index.css";
+import "@ckeditor/ckeditor5-restricted-editing/dist/index.css";
+import "@ckeditor/ckeditor5-style/dist/index.css";
+import "@ckeditor/ckeditor5-table/dist/index.css";
+
 import {
   Alignment,
   Autoformat,
   Autosave,
-  BasicStyles,
   BlockQuote,
+  Bold,
   ClassicEditor,
+  Code,
   CodeBlock,
-  Core,
+  EditorConfig,
   Essentials,
-  Font,
+  FontColor,
+  FontFamily,
+  FontSize,
   Heading,
   Highlight,
   HorizontalLine,
   HtmlEmbed,
-  Icons,
+  IconObjectLeft,
   Image,
+  ImageInsertConfig,
+  ImageInsertUI,
+  ImageInsertViaUrl,
+  ImageResizeEditing,
+  ImageResizeHandles,
+  ImageStyle,
+  ImageToolbar,
+  ImageUpload,
+  ImageUploadUI,
   Indent,
+  Italic,
   Link,
+  LinkImage,
   List,
   Mention,
   Paragraph,
   PasteFromOffice,
   RemoveFormat,
+  Strikethrough,
+  Subscript,
+  Superscript,
   Table,
+  TableToolbar,
+  Underline,
   Undo,
   Emoji,
   WoltlabAttachment,
@@ -54,54 +115,54 @@ import {
   WoltlabUpload,
 } from "./modules";
 
-const defaultConfig: Core.EditorConfig = {
+const defaultConfig: EditorConfig = {
   plugins: [
     // Internals
-    Autosave.Autosave,
-    Essentials.Essentials,
-    Indent.Indent,
-    Mention.Mention,
-    Paragraph.Paragraph,
-    PasteFromOffice.PasteFromOffice,
-    Undo.Undo,
-    Emoji.Emoji,
+    Autosave,
+    Essentials,
+    Indent,
+    Mention,
+    Paragraph,
+    PasteFromOffice,
+    Undo,
+    Emoji,
 
     // Formatting
-    Alignment.Alignment,
-    Autoformat.Autoformat,
-    BasicStyles.Bold,
-    BasicStyles.Code,
-    Font.FontColor,
-    Font.FontFamily,
-    Font.FontSize,
-    Heading.Heading,
-    Highlight.Highlight,
-    BasicStyles.Italic,
-    RemoveFormat.RemoveFormat,
-    BasicStyles.Strikethrough,
-    BasicStyles.Subscript,
-    BasicStyles.Superscript,
-    BasicStyles.Underline,
+    Alignment,
+    Autoformat,
+    Bold,
+    Code,
+    FontColor,
+    FontFamily,
+    FontSize,
+    Heading,
+    Highlight,
+    Italic,
+    RemoveFormat,
+    Strikethrough,
+    Subscript,
+    Superscript,
+    Underline,
 
     // Components
-    BlockQuote.BlockQuote,
-    CodeBlock.CodeBlock,
-    HtmlEmbed.HtmlEmbed,
-    HorizontalLine.HorizontalLine,
-    Image.Image,
-    Image.ImageInsertUI,
-    Image.ImageInsertViaUrl,
-    Image.ImageToolbar,
-    Image.ImageResizeEditing,
-    Image.ImageResizeHandles,
-    Image.ImageStyle,
-    Image.ImageUpload,
-    Image.ImageUploadUI,
-    Link.Link,
-    Link.LinkImage,
-    List.List,
-    Table.Table,
-    Table.TableToolbar,
+    BlockQuote,
+    CodeBlock,
+    HtmlEmbed,
+    HorizontalLine,
+    Image,
+    ImageInsertUI,
+    ImageInsertViaUrl,
+    ImageToolbar,
+    ImageResizeEditing,
+    ImageResizeHandles,
+    ImageStyle,
+    ImageUpload,
+    ImageUploadUI,
+    Link,
+    LinkImage,
+    List,
+    Table,
+    TableToolbar,
 
     // WoltLab
     WoltlabAttachment.WoltlabAttachment,
@@ -128,9 +189,10 @@ const defaultConfig: Core.EditorConfig = {
 
 export async function create(
   element: HTMLElement,
-  configuration: Core.EditorConfig,
-): Promise<ClassicEditor.ClassicEditor> {
+  configuration: EditorConfig,
+): Promise<ClassicEditor> {
   configuration = Object.assign(configuration, defaultConfig);
+  configuration.attachTo = element;
 
   const removePlugins = configuration.removePlugins || [];
   if (!removePlugins.includes("Image")) {
@@ -157,7 +219,7 @@ export async function create(
           {
             name: "sideLeft",
             title: "Left aligned image",
-            icon: Icons.IconObjectLeft,
+            icon: IconObjectLeft,
             modelElements: ["imageBlock"],
             className: "image-style-side-left",
           },
@@ -178,10 +240,7 @@ export async function create(
     };
   }
 
-  const editor = await ClassicEditor.ClassicEditor.create(
-    element,
-    configuration,
-  );
+  const editor = await ClassicEditor.create(configuration);
 
   return editor;
 }

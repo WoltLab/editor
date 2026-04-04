@@ -3,7 +3,7 @@
 "use strict";
 
 const path = require("path");
-const { styles } = require("@ckeditor/ckeditor5-dev-utils");
+const { styles } = require("@ckeditor/ckeditor5-dev-build-tools");
 const {
   CKEditorTranslationsPlugin,
 } = require("@ckeditor/ckeditor5-dev-translations");
