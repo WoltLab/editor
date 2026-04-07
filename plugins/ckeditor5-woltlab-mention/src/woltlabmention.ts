@@ -9,8 +9,7 @@
 
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import type { ViewText } from "@ckeditor/ckeditor5-engine";
-import { Mention } from "@ckeditor/ckeditor5-mention";
-import type { MentionAttribute } from "@ckeditor/ckeditor5-mention/src/mention";
+import { Mention, type MentionAttribute } from "@ckeditor/ckeditor5-mention";
 import {
   WoltlabMetacode,
   type WoltlabMetacodeUpcast,
