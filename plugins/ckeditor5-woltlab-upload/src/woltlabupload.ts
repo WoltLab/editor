@@ -15,7 +15,7 @@ import {
   WoltlabUploadResult,
 } from "./woltlabuploadadapter";
 
-import type { FileLoader } from "@ckeditor/ckeditor5-upload/src/filerepository";
+import type { FileLoader } from "ckeditor5";
 
 type ClipboardInputEventData = {
   dataTransfer: DataTransfer;
