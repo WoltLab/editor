@@ -244,3 +244,5 @@ export async function create(
 
   return editor;
 }
+
+export * as CKEditor5 from './modules';
