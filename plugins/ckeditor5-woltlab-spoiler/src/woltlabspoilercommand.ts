@@ -23,7 +23,10 @@ export class WoltlabSpoilerCommand extends Command {
     const { schema } = model;
     const { selection } = model.document;
 
-    const blocks = Array.from(selection.getSelectedBlocks());
+    const blocks = this.#promoteBlocks(
+      schema,
+      Array.from(selection.getSelectedBlocks()),
+    );
 
     model.change((writer) => {
       if (this.value) {
@@ -200,6 +203,42 @@ export class WoltlabSpoilerCommand extends Command {
     const isBlockAllowedInSpoiler = schema.checkChild("spoilerContent", block);
 
     return isSpoilerAllowed && isBlockAllowedInSpoiler;
+  }
+
+  #promoteBlocks(
+    schema: ModelSchema,
+    blocks: ModelElement[],
+  ): ModelElement[] {
+    const result: ModelElement[] = [];
+    const seen = new Set<ModelElement>();
+
+    for (const block of blocks) {
+      let current: ModelElement = block;
+
+      // Walk up from the block to find the highest ancestor that is still
+      // a valid child of `spoilerContent`. Stop before reaching the root
+      // or an existing `spoilerContent`.
+      while (
+        current.parent instanceof ModelElement &&
+        !current.parent.is("rootElement") &&
+        !current.parent.is("element", "spoilerContent")
+      ) {
+        const parent = current.parent;
+
+        if (schema.checkChild("spoilerContent", parent)) {
+          current = parent;
+        } else {
+          break;
+        }
+      }
+
+      if (!seen.has(current)) {
+        seen.add(current);
+        result.push(current);
+      }
+    }
+
+    return result;
   }
 
   #wrapInSpoiler(writer: ModelWriter, content: ModelRange): ModelElement {
