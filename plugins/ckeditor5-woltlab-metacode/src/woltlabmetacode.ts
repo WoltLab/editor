@@ -76,15 +76,11 @@ export class WoltlabMetacode extends Plugin {
             this.#serializedAttributesToString(attributes);
           const openingTag = writer.createText(`[${name}${attributeString}]`);
           const closingTag = writer.createText(`[/${name}]`);
-          const parent = modelCursor.parent;
 
           // Check if the BBCode appears to be a block element.
           let isBlockElement = false;
           const ancestors = modelCursor.getAncestors();
           if (ancestors[ancestors.length - 1].name === "$root") {
-            isBlockElement = true;
-          } else if (parent.name === "blockQuote") {
-            // Text nodes may only appear inside block nodes.
             isBlockElement = true;
           } else {
             for (const child of viewItem.getChildren()) {
@@ -109,6 +105,13 @@ export class WoltlabMetacode extends Plugin {
 
             data.modelCursor = writer.createPositionAfter(paragraph);
           } else {
+            if (modelCursor.parent.name === "blockQuote") {
+              // Text nodes may only appear inside block nodes.
+              const paragraph = writer.createElement("paragraph");
+              writer.insert(paragraph, modelCursor);
+              modelCursor = writer.createPositionAt(paragraph, "end");
+            }
+
             writer.insert(openingTag, modelCursor);
             modelCursor = modelCursor.getShiftedBy(openingTag.offsetSize);
 
