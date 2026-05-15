@@ -5,11 +5,11 @@
     "build": "npx vite build"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-build-tools": "^55.5.0",
-    "@ckeditor/ckeditor5-dev-utils": "^55.5.0",
+    "@ckeditor/ckeditor5-dev-build-tools": "^55.6.0",
+    "@ckeditor/ckeditor5-dev-utils": "^55.6.0",
     "@ckeditor/ckeditor5-inspector": "^5.0.0",
     "@jetbrains/postcss-require-hover": "^0.2.0",
-    "baseline-browser-mapping": "^2.10.20",
+    "baseline-browser-mapping": "^2.10.29",
     "css-loader": "^7.1.4",
     "mini-css-extract-plugin": "^2.10.2",
     "postcss-load-config": "^6.0.1",
@@ -19,9 +19,9 @@
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.7",
     "typescript": "^6.0.3",
-    "vite": "^8.0.9"
+    "vite": "^8.0.13"
   },
   "dependencies": {
-    "ckeditor5": "^48.0.1"
+    "ckeditor5": "^48.1.0"
   }
 }
