@@ -5,8 +5,8 @@
     "build": "npx vite build"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-build-tools": "^56.3.0",
-    "@ckeditor/ckeditor5-dev-utils": "^56.3.0",
+    "@ckeditor/ckeditor5-dev-build-tools": "^56.5.0",
+    "@ckeditor/ckeditor5-dev-utils": "^56.5.0",
     "@ckeditor/ckeditor5-inspector": "^5.0.2",
     "@jetbrains/postcss-require-hover": "^0.2.0",
     "baseline-browser-mapping": "^2.10.37",
