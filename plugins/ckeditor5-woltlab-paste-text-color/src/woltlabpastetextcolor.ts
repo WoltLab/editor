@@ -43,17 +43,20 @@ export class WoltlabPasteTextColor extends Plugin {
   }
 
   afterInit(): void {
-    // Reading computed styles once keeps pastes independent of stylesheet size.
-    this.#rememberEditorTextColors();
-
-    this.#colorSchemeObserver = new MutationObserver(() => {
-      // Keep the colors for both schemes; clipboard content may come from a
-      // tab that has not switched schemes yet.
+    // The editable DOM element is created after CKEditor initializes plugins.
+    this.listenTo(this.editor, "ready", () => {
+      // Reading computed styles once keeps pastes independent of stylesheet size.
       this.#rememberEditorTextColors();
-    });
-    this.#colorSchemeObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-color-scheme"],
+
+      this.#colorSchemeObserver = new MutationObserver(() => {
+        // Keep the colors for both schemes; clipboard content may come from a
+        // tab that has not switched schemes yet.
+        this.#rememberEditorTextColors();
+      });
+      this.#colorSchemeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-color-scheme"],
+      });
     });
   }
 
@@ -122,7 +125,7 @@ export class WoltlabPasteTextColor extends Plugin {
 
   #rememberEditorTextColors(): void {
     const editableElement = this.editor.ui.getEditableElement();
-    if (editableElement === null) {
+    if (editableElement === undefined) {
       return;
     }
 
