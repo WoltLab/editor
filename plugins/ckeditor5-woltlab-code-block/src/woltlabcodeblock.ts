@@ -159,7 +159,10 @@ export class WoltlabCodeBlock extends Plugin {
             view.file = "";
             view.highlighter = "";
             view.line = "";
-            view.insertButtonLabel = t("MENU_BAR_MENU_INSERT");
+            view.insertButtonLabel = t({
+              id: "MENU_BAR_MENU_INSERT",
+              string: "Insert",
+            });
           }
         }
       });
