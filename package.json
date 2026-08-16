@@ -1,15 +1,15 @@
 {
   "name": "@woltlab/editor",
-  "version": "6.2.3",
+  "version": "6.2.7",
   "scripts": {
     "build": "npx vite build"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-build-tools": "^58.0.0",
-    "@ckeditor/ckeditor5-dev-utils": "^58.0.0",
+    "@ckeditor/ckeditor5-dev-build-tools": "^59.1.0",
+    "@ckeditor/ckeditor5-dev-utils": "^59.1.0",
     "@ckeditor/ckeditor5-inspector": "^5.0.3",
     "@jetbrains/postcss-require-hover": "^0.2.0",
-    "baseline-browser-mapping": "^2.11.0",
+    "baseline-browser-mapping": "^2.11.14",
     "css-loader": "^7.1.4",
     "mini-css-extract-plugin": "^2.10.2",
     "postcss-load-config": "^6.0.1",
@@ -19,9 +19,9 @@
     "style-loader": "^4.0.0",
     "ts-loader": "^9.6.2",
     "typescript": "^7.0.2",
-    "vite": "^8.1.5"
+    "vite": "^8.2.1"
   },
   "dependencies": {
-    "ckeditor5": "^48.3.1"
+    "ckeditor5": "^48.4.0"
   }
 }
