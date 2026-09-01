@@ -10,7 +10,7 @@
     "@ckeditor/ckeditor5-inspector": "^5.0.3",
     "@jetbrains/postcss-require-hover": "^0.2.0",
     "baseline-browser-mapping": "^2.11.14",
-    "css-loader": "^7.1.4",
+    "css-loader": "^7.1.5",
     "mini-css-extract-plugin": "^2.10.2",
     "postcss-load-config": "^6.0.1",
     "postcss-loader": "^8.2.1",
