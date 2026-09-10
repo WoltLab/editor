@@ -209,9 +209,8 @@ export class WoltlabCodeBlock extends Plugin {
   }
 
   #setupEditingDowncast(): void {
-    const localizedLanguageDefs = _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(
-      this.editor,
-    );
+    const localizedLanguageDefs =
+      _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(this.editor);
 
     this.editor.editing.downcastDispatcher.on<DowncastInsertEvent>(
       "insert:codeBlock",
@@ -332,9 +331,8 @@ export class WoltlabCodeBlock extends Plugin {
   }
 
   #setupAttributeSummary(): void {
-    const localizedLanguageDefs = _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(
-      this.editor,
-    );
+    const localizedLanguageDefs =
+      _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(this.editor);
 
     const attributes = ["file", "line"];
     for (const attributeName of attributes) {

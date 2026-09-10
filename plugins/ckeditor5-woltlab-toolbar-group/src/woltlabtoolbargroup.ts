@@ -19,8 +19,7 @@ export class WoltlabToolbarGroup extends Plugin {
 
   init() {
     const options = this.editor.config.get("woltlabToolbarGroup") as
-      | WoltlabToolbarGroupConfig
-      | undefined;
+      WoltlabToolbarGroupConfig | undefined;
 
     if (!options) {
       return;

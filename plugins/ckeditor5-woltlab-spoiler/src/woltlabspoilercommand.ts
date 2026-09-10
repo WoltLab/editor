@@ -205,10 +205,7 @@ export class WoltlabSpoilerCommand extends Command {
     return isSpoilerAllowed && isBlockAllowedInSpoiler;
   }
 
-  #promoteBlocks(
-    schema: ModelSchema,
-    blocks: ModelElement[],
-  ): ModelElement[] {
+  #promoteBlocks(schema: ModelSchema, blocks: ModelElement[]): ModelElement[] {
     const result: ModelElement[] = [];
     const seen = new Set<ModelElement>();
 
