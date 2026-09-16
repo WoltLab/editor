@@ -9,19 +9,19 @@
     "@ckeditor/ckeditor5-dev-utils": "^62.0.0",
     "@ckeditor/ckeditor5-inspector": "^5.0.3",
     "@jetbrains/postcss-require-hover": "^0.2.0",
-    "baseline-browser-mapping": "^2.11.21",
+    "baseline-browser-mapping": "^2.11.24",
     "css-loader": "^7.1.5",
     "mini-css-extract-plugin": "^2.10.2",
     "postcss-load-config": "^6.0.1",
     "postcss-loader": "^8.2.1",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.7",
     "raw-loader": "^4.0.2",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.6.2",
     "typescript": "^7.0.2",
-    "vite": "^8.2.2"
+    "vite": "^8.3.0"
   },
   "dependencies": {
-    "ckeditor5": "^48.5.0"
+    "ckeditor5": "^48.5.1"
   }
 }
