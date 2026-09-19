@@ -105,7 +105,7 @@ export class WoltlabMetacode extends Plugin {
 
             data.modelCursor = writer.createPositionAfter(paragraph);
           } else {
-            if (modelCursor.parent.name === "blockQuote") {
+            if (!conversionApi.schema.checkChild(modelCursor, "$text")) {
               // Text nodes may only appear inside block nodes.
               const paragraph = writer.createElement("paragraph");
               writer.insert(paragraph, modelCursor);
