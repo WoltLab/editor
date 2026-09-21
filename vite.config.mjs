@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import { access, mkdir, readdir, readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
+import { pathToFileURL } from "url";
 
 function ckeditorTranslations() {
   return {
@@ -49,42 +50,47 @@ function ckeditorTranslations() {
       // For each language, merge dictionaries from all packages into a single IIFE.
       await Promise.all(
         languages.map(async (lang) => {
-          const dictionaries = [];
+          const dictionary = {};
           let getPluralForm = null;
 
           for (const dir of translationDirs) {
             const file = resolve(dir, `${lang}.js`);
-            let source;
             try {
-              source = await readFile(file, "utf-8");
+              await access(file);
             } catch {
               continue;
             }
 
-            // Extract the dictionary entries from:
-            // export default {"lang":{"dictionary":{...},getPluralForm(n){...}}}
-            const dictMatch = source.match(
-              /"dictionary":\{(.+?)\},getPluralForm/,
-            );
-            if (dictMatch) {
-              dictionaries.push(dictMatch[1]);
+            // Import the module instead of parsing its source, the
+            // serialization of the upstream files is not stable.
+            const translations = (await import(pathToFileURL(file).href))
+              .default[lang];
+            if (translations === undefined) {
+              throw new Error(`Missing the language key '${lang}' in ${file}`);
             }
 
-            if (getPluralForm === null) {
-              const pluralMatch = source.match(
-                /getPluralForm(\([^)]*\)\{.+?\})/,
-              );
-              if (pluralMatch) {
-                getPluralForm = pluralMatch[1];
-              }
+            Object.assign(dictionary, translations.dictionary);
+            getPluralForm ??= translations.getPluralForm ?? null;
+          }
+
+          if (Object.keys(dictionary).length === 0) {
+            throw new Error(`The merged dictionary for '${lang}' is empty.`);
+          }
+
+          // A method shorthand is not a valid expression on its own.
+          let pluralForm = "null";
+          if (getPluralForm !== null) {
+            pluralForm = String(getPluralForm);
+            if (pluralForm.startsWith("getPluralForm")) {
+              pluralForm = `function ${pluralForm}`;
             }
           }
 
           const merged =
             `(e=>{` +
             `const l=e['${lang}']||={dictionary:{},getPluralForm:null};` +
-            `Object.assign(l.dictionary,{${dictionaries.join(",")}});` +
-            `l.getPluralForm=${getPluralForm ? `function${getPluralForm}` : "null"};` +
+            `Object.assign(l.dictionary,${JSON.stringify(dictionary)});` +
+            `l.getPluralForm=${pluralForm};` +
             `})(window.CKEDITOR_TRANSLATIONS||={});`;
 
           await writeFile(resolve(targetDir, `${lang}.js`), merged);
