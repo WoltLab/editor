@@ -50,6 +50,8 @@ import "@ckeditor/ckeditor5-table/dist/index.css";
 // Restores the pre-v49 look, must come after the CSS of CKEditor.
 import "./legacy-styling-pre-49.css";
 
+import "./patches/rect";
+
 import {
   Alignment,
   Autoformat,
