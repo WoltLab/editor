@@ -15,8 +15,8 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-between;
-  padding: var(--ck-spacing-large);
-  row-gap: var(--ck-spacing-large);
+  padding: var(--ck-spacing-lg);
+  row-gap: var(--ck-spacing-lg);
 
   /* Ignore labels that work as fieldset legends */
   & > *:not(.ck-label) {

@@ -17,7 +17,6 @@ import "@ckeditor/ckeditor5-typing/dist/index.css";
 import "@ckeditor/ckeditor5-undo/dist/index.css";
 import "@ckeditor/ckeditor5-upload/dist/index.css";
 import "@ckeditor/ckeditor5-utils/dist/index.css";
-import "@ckeditor/ckeditor5-watchdog/dist/index.css";
 import "@ckeditor/ckeditor5-widget/dist/index.css";
 
 // CSS of plugins of CKEditor come first to allow us to customize them with out
@@ -47,6 +46,9 @@ import "@ckeditor/ckeditor5-remove-format/dist/index.css";
 import "@ckeditor/ckeditor5-restricted-editing/dist/index.css";
 import "@ckeditor/ckeditor5-style/dist/index.css";
 import "@ckeditor/ckeditor5-table/dist/index.css";
+
+// Restores the pre-v49 look, must come after the CSS of CKEditor.
+import "./legacy-styling-pre-49.css";
 
 import {
   Alignment,
