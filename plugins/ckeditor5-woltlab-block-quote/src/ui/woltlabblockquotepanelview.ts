@@ -181,7 +181,7 @@ export class WoltlabBlockQuotePanelView extends View {
     const buttonView = new ButtonView(locale);
 
     buttonView.set({
-      label: t("MENU_BAR_MENU_INSERT"),
+      label: t({ id: "MENU_BAR_MENU_INSERT", string: "Insert" }),
       icon: IconCheck,
       class: "ck-button-save",
       type: "submit",

@@ -36,7 +36,7 @@ export class WoltlabPasteFromOffice extends Plugin {
    * Pasting from the web version of Excel can sometimes prepend a block of CSS
    * in front of the table. This block is added as a plain text paragraph that
    * needs to be removed.
-   * 
+   *
    * This can be easily detected by checking if a paragraph followed by a table
    * is pasted and the paragraph contains certain strings that are unique to
    * MS office.
@@ -45,7 +45,7 @@ export class WoltlabPasteFromOffice extends Plugin {
     documentFragment: ModelDocumentFragment,
     model: Model,
   ): boolean {
-    let range = model.createRangeIn(documentFragment);
+    const range = model.createRangeIn(documentFragment);
     if (documentFragment.childCount !== 2) {
       return false;
     }

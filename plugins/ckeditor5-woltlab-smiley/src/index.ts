@@ -7,7 +7,7 @@
 
 export { WoltlabSmiley } from "./woltlabsmiley";
 export {
-  WoltlabSmileyItem,
+  type WoltlabSmileyItem,
   WoltlabSmileyMention,
 } from "./woltlabsmileymention";
 export { default as WoltlabSmileyCommand } from "./woltlabsmileycommand";

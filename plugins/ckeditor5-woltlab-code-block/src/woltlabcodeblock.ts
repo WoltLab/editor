@@ -8,7 +8,7 @@
  * @since 6.0
  */
 
-import { getNormalizedAndLocalizedLanguageDefinitions } from "@ckeditor/ckeditor5-code-block/src/utils";
+import { _getNormalizedAndLocalizedCodeBlockLanguageDefinitions } from "@ckeditor/ckeditor5-code-block";
 import { Plugin } from "@ckeditor/ckeditor5-core";
 import {
   ModelElement,
@@ -159,7 +159,10 @@ export class WoltlabCodeBlock extends Plugin {
             view.file = "";
             view.highlighter = "";
             view.line = "";
-            view.insertButtonLabel = t("MENU_BAR_MENU_INSERT");
+            view.insertButtonLabel = t({
+              id: "MENU_BAR_MENU_INSERT",
+              string: "Insert",
+            });
           }
         }
       });
@@ -206,9 +209,8 @@ export class WoltlabCodeBlock extends Plugin {
   }
 
   #setupEditingDowncast(): void {
-    const localizedLanguageDefs = getNormalizedAndLocalizedLanguageDefinitions(
-      this.editor,
-    );
+    const localizedLanguageDefs =
+      _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(this.editor);
 
     this.editor.editing.downcastDispatcher.on<DowncastInsertEvent>(
       "insert:codeBlock",
@@ -329,9 +331,8 @@ export class WoltlabCodeBlock extends Plugin {
   }
 
   #setupAttributeSummary(): void {
-    const localizedLanguageDefs = getNormalizedAndLocalizedLanguageDefinitions(
-      this.editor,
-    );
+    const localizedLanguageDefs =
+      _getNormalizedAndLocalizedCodeBlockLanguageDefinitions(this.editor);
 
     const attributes = ["file", "line"];
     for (const attributeName of attributes) {
