@@ -1,9 +1,9 @@
 /**
- * Modifies the existing blockquote feature to add two extra attributes for the
- * source and url.
+ * Modifies the existing blockquote feature to add extra attributes for the
+ * source, the url and the id of the inserted quote.
  *
- * @author Alexander Ebert
- * @copyright 2001-2023 WoltLab GmbH
+ * @author Alexander Ebert, Marcel Werk
+ * @copyright 2001-2026 WoltLab GmbH
  * @license LGPL-2.1-or-later
  * @since 6.0
  */
@@ -44,7 +44,7 @@ export class WoltlabBlockQuote extends Plugin {
     const editor = this.editor;
 
     editor.model.schema.extend("blockQuote", {
-      allowAttributes: ["author", "link"],
+      allowAttributes: ["author", "link", "quoteId"],
     });
 
     const command = editor.commands.get("blockQuote")!;
@@ -164,6 +164,11 @@ export class WoltlabBlockQuote extends Plugin {
           blockQuote,
         );
 
+        const quoteId = viewItem.getAttribute("data-quote-id");
+        if (quoteId) {
+          writer.setAttribute("quoteId", quoteId, blockQuote);
+        }
+
         conversionApi.convertChildren(viewItem, blockQuote);
 
         if (!conversionApi.safeInsert(blockQuote, data.modelCursor)) {
@@ -194,6 +199,13 @@ export class WoltlabBlockQuote extends Plugin {
         const attributes: Record<string, string> = {};
         if (source !== "") {
           attributes["data-source"] = source;
+        }
+
+        const quoteId = attributeValueToString(
+          data.item.getAttribute("quoteId"),
+        );
+        if (quoteId !== "") {
+          attributes["data-quote-id"] = quoteId;
         }
 
         const blockquote = writer.createContainerElement(
@@ -246,6 +258,22 @@ export class WoltlabBlockQuote extends Plugin {
         }
       },
     );
+
+    this.editor.editing.downcastDispatcher.on(
+      "attribute:quoteId:blockQuote",
+      (_evt, data, conversionApi) => {
+        const { writer, mapper } = conversionApi;
+
+        const quoteId = attributeValueToString(data.attributeNewValue);
+
+        const blockquote = mapper.toViewElement(data.item);
+        if (quoteId === "") {
+          writer.removeAttribute("data-quote-id", blockquote);
+        } else {
+          writer.setAttribute("data-quote-id", quoteId, blockquote);
+        }
+      },
+    );
   }
 
   #setupDowncast(): void {
@@ -265,10 +293,19 @@ export class WoltlabBlockQuote extends Plugin {
           this.editor.model.createPositionBefore(data.item),
         );
 
-        const pre = writer.createContainerElement("woltlab-quote", {
+        const attributes: Record<string, string> = {
           "data-author": author,
           "data-link": link,
-        });
+        };
+
+        const quoteId = attributeValueToString(
+          data.item.getAttribute("quoteId"),
+        );
+        if (quoteId !== "") {
+          attributes["data-quote-id"] = quoteId;
+        }
+
+        const pre = writer.createContainerElement("woltlab-quote", attributes);
 
         writer.insert(targetViewPosition, pre);
         mapper.bindElements(data.item, pre);
